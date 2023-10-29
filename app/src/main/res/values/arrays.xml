@@ -1,0 +1,25 @@
+<resources>
+    <string-array name="language_entries">
+        <item>@string/system_default</item>
+        <item>@string/en</item>
+        <item>@string/ru</item>
+        <item>@string/de</item>
+    </string-array>
+    <string-array name="theme_entries">
+        <item>@string/system_default</item>
+        <item>@string/dark</item>
+        <item>@string/light</item>
+    </string-array>
+
+    <string-array name="language_values">
+        <item>sys</item>
+        <item>en</item>
+        <item>ru</item>
+        <item>de</item>
+    </string-array>
+    <string-array name="theme_values">
+        <item>system</item>
+        <item>dark</item>
+        <item>light</item>
+    </string-array>
+</resources>
