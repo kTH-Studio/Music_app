@@ -77,5 +77,9 @@
     <string name="animated_art">Animated Art</string>
     <string name="animated_art_hint">Albums and artist pages will automatically play</string>
     <string name="high_quality">High Quality</string>
-    <string name="wifi_connected">When WiFi is connected</string>
+    <string name="wifi_connected">Nur WiFi</string>
+    <string name="profile">Profile</string>
+    <string name="mobile_connected">WiFi and mobile</string>
+    <string name="disabled">Disabled</string>
+    <string name="internet_lost">No Internet Connection!</string>
 </resources>

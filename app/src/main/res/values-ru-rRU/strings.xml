@@ -78,5 +78,10 @@
     <string name="animated_art">Анимированные обложки</string>
     <string name="animated_art_hint">Страницы альбомов и артистов будут автоматически воспроизводиться</string>
     <string name="high_quality">Высокое качество</string>
-    <string name="wifi_connected">Когда WiFi подключен</string>
+    <string name="wifi_connected">Только WiFi</string>
+    <string name="profile">Профиль</string>
+    <string name="disabled">Отключено</string>
+    <string name="internet_lost">Нет Интернет соединения!</string>
+    <string name="mobile_connected">WiFi и мобильные данные</string>
+
 </resources>

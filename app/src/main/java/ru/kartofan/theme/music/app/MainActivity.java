@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 	private final Intent settings = new Intent();
 	private AlertDialog.Builder d;
 	private TimerTask t;
+	private DatabaseReference user = _firebase.getReference("users");
 	private DatabaseReference Ver = _firebase.getReference("version");
 	private ChildEventListener _Ver_child_listener;
 	private FirebaseAuth fauth;
@@ -127,8 +128,11 @@ public class MainActivity extends AppCompatActivity {
 		if (sp.getString("explicit", "").equals("")) {
 			sp.edit().putString("explicit", "no").commit();
 		}
-		if (sp.getString("video", "").equals("")) {
-			sp.edit().putString("video", "no").commit();
+		if (sp.getString("animation", "").equals("")) {
+			sp.edit().putString("animation", "no").commit();
+		}
+		if (sp.getString("quality", "").equals("")) {
+			sp.edit().putString("quality", "no").commit();
 		}
 
 		fauth = FirebaseAuth.getInstance();
@@ -432,6 +436,9 @@ public class MainActivity extends AppCompatActivity {
 
 	private void initializeLogic() {
 		if ((FirebaseAuth.getInstance().getCurrentUser() != null)) {
+			//if () {
+
+			//}
 		} else {
 			i.setClass(getApplicationContext(), RegisterActivity.class);
 			startActivity(i);
@@ -477,7 +484,12 @@ public class MainActivity extends AppCompatActivity {
 		if (networkInfo != null && networkInfo.isConnected()) {
 			site = "https://kth-studio.github.io/Music/music.json";
 			new BackTask().execute(site);
-		} else {}
+		} else {
+			com.google.android.material.snackbar.Snackbar.make(listview1, R.string.internet_lost, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+				@Override
+				public void onClick(View _view) {}
+			}).show();
+		}
 		listview1.setVisibility(View.INVISIBLE);
 	}
 

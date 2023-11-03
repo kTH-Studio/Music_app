@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.*;
 
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
@@ -249,9 +251,35 @@ public class AlbumActivity extends AppCompatActivity {
 		imageview1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				i.setClass(getApplicationContext(), ImageActivity.class);
-				i.putExtra("imageq", map.get((int) 0).get("image").toString());
-				startActivity(i);
+				if (sp.getString("quality", "").equals("mobile")) {
+					if (map.get((int) 0).containsKey("image4k")) {
+						i.setClass(getApplicationContext(), ImageActivity.class);
+						i.putExtra("imageq", map.get((int) 0).get("image4k").toString());
+						startActivity(i);
+					} else {
+						i.setClass(getApplicationContext(), ImageActivity.class);
+						i.putExtra("imageq", map.get((int) 0).get("image").toString());
+						startActivity(i);
+					}
+				} else if (sp.getString("quality", "").equals("wifi")) {
+					if (map.get((int) 0).containsKey("image4k")) {
+						ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+						NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+						if (mWifi.isConnected()) {
+							i.setClass(getApplicationContext(), ImageActivity.class);
+							i.putExtra("imageq", map.get((int) 0).get("image4k").toString());
+							startActivity(i);
+						}
+					} else {
+						i.setClass(getApplicationContext(), ImageActivity.class);
+						i.putExtra("imageq", map.get((int) 0).get("image").toString());
+						startActivity(i);
+					}
+				} else {
+					i.setClass(getApplicationContext(), ImageActivity.class);
+					i.putExtra("imageq", map.get((int) 0).get("image").toString());
+					startActivity(i);
+				}
 			}
 		});
 	}
@@ -402,6 +430,24 @@ public class AlbumActivity extends AppCompatActivity {
 		subtitleCollapsingToolbarLayout.setTitle(map.get((int) 0).get("name").toString());
 		subtitleCollapsingToolbarLayout.setSubtitle(map.get((int) 0).get("artist").toString().concat(" • ".concat(map.get((int) 0).get("genre_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(map.get((int) 0).get("release").toString())))));
 		Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(imageview1);
+		if (sp.getString("quality", "").equals("mobile")) {
+			if (map.get((int) 0).containsKey("image4k")) {
+				Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image4k").toString())).into(imageview1);
+			}
+		} else if (sp.getString("quality", "").equals("wifi")) {
+			if (map.get((int) 0).containsKey("image4k")) {
+				ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+				NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+				if (mWifi.isConnected()) {
+					Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image4k").toString())).into(imageview1);
+				}
+			}
+		} else {
+			Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(imageview1);
+		}
+		if (sp.getString("animation", "").equals("yes")) {
+			Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("gif").toString())).into(imageview1);
+		}
 		name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		artist.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		date.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);

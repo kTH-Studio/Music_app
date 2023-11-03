@@ -79,4 +79,8 @@
     <string name="animated_art_hint">Alben und Künstlerseiten werden automatisch abgespielt</string>
     <string name="high_quality">Hochwertig</string>
     <string name="wifi_connected">Wenn WiFi verbunden ist</string>
+    <string name="profile">Profil</string>
+    <string name="mobile_connected">WiFi und Mobilfunk</string>
+    <string name="disabled">Behinderte</string>
+    <string name="internet_lost">Keine Internetverbindung!</string>
 </resources>

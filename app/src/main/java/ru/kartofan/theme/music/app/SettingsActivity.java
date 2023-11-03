@@ -6,6 +6,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import android.app.Activity;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
@@ -176,10 +177,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        explicit_hint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                explicit_choice.setOnClickListener(new View.OnClickListener() {
+                explicit_hint.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (!sp.getString("restrictions", "").equals("no")) {
@@ -199,6 +197,58 @@ public class SettingsActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        display_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton _param1, boolean _param2) {
+                final boolean _isChecked = _param2;
+                    if (_isChecked) {
+                        sp.edit().putString("animation", "yes").commit();
+                        display_switch.setChecked(true);
+                    } else {
+                        sp.edit().putString("animation", "no").commit();
+                        display_switch.setChecked(false);
+                    }
+            }
+        });
+
+        display_choice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    if (sp.getString("animation", "").equals("no")) {
+                        sp.edit().putString("animation", "yes").commit();
+                        display_switch.setChecked(true);
+                    } else {
+                        sp.edit().putString("animation", "no").commit();
+                        display_switch.setChecked(false);
+                    }
+            }
+        });
+
+                display_hint.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                            if (sp.getString("animation", "").equals("no")) {
+                                sp.edit().putString("animation", "yes").commit();
+                                display_switch.setChecked(true);
+                            } else {
+                                sp.edit().putString("animation", "no").commit();
+                                display_switch.setChecked(false);
+                            }
+                    }
+                });
+
+        quality_choice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _quality();
+            }
+        });
+
+        quality_hint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _quality();
             }
         });
 
@@ -236,6 +286,11 @@ public class SettingsActivity extends AppCompatActivity {
         theme_choice.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         explicit_choice.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+        if (sp.getString("animation", "").equals("no")) {
+            display_switch.setChecked(false);
+        } else {
+            display_switch.setChecked(true);
+        }
         if (sp.getString("restrictions", "").equals("no")) {
             restrictions_hint.setChecked(false);
             explicit_choice.setAlpha((float) 0.5d);
@@ -259,6 +314,54 @@ public class SettingsActivity extends AppCompatActivity {
         } else {
             display_switch.setChecked(true);
         }
+        if (sp.getString("quality", "").equals("wifi")) {
+            quality_choice.setText(getString(R.string.wifi_connected));
+        } else if (sp.getString("quality", "").equals("mobile")) {
+            quality_choice.setText(getString(R.string.mobile_connected));
+        } else {
+            quality_choice.setText(getString(R.string.disabled));
+        }
+    }
+
+    public void _quality(){
+        final com.google.android.material.bottomsheet.BottomSheetDialog bs_base = new com.google.android.material.bottomsheet.BottomSheetDialog(SettingsActivity.this);
+        bs_base.setCancelable(true);
+        View layBase = getLayoutInflater().inflate(R.layout.quality, null);
+        bs_base.setContentView(layBase);
+        TextView quality = (TextView)layBase.findViewById(R.id.quality);
+        Button wifi = (Button) layBase.findViewById(R.id.wifi);
+        Button mobile = (Button) layBase.findViewById(R.id.mobile);
+        Button never = (Button) layBase.findViewById(R.id.never);
+        quality.setText(getString(R.string.high_quality));
+        quality.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+        wifi.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+        mobile.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+        never.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+        wifi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quality_choice.setText(getString(R.string.wifi_connected));
+                sp.edit().putString("quality", "wifi").commit();
+                bs_base.cancel();
+            }
+        });
+        mobile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quality_choice.setText(getString(R.string.mobile_connected));
+                sp.edit().putString("quality", "mobile").commit();
+                bs_base.cancel();
+            }
+        });
+        never.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quality_choice.setText(getString(R.string.disabled));
+                sp.edit().putString("quality", "no").commit();
+                bs_base.cancel();
+            }
+        });
+        bs_base.show();
     }
 
     @Override
