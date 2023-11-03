@@ -23,14 +23,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 import android.widget.AdapterView;
 import android.graphics.Typeface;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.bumptech.glide.Glide;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.app.ActivityCompat;
-import android.Manifest;
-import android.content.pm.PackageManager;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
@@ -274,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
 						description = map1.get((int) 0).get("description_".concat(sp.getString("prefix", ""))).toString();
 						link = map1.get((int) 0).get("link").toString();
 						if (Double.parseDouble(latest_version) > Double.parseDouble(current_version)) {
-							com.google.android.material.snackbar.Snackbar.make(listview1, R.string.update, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction(R.string.check_button, new View.OnClickListener() {
+							com.google.android.material.snackbar.Snackbar.make(listview1, R.string.update, Snackbar.LENGTH_INDEFINITE).setAction(R.string.check_button, new View.OnClickListener() {
 								@Override
 								public void onClick(View _view) {
 									final com.google.android.material.bottomsheet.BottomSheetDialog bs_base = new com.google.android.material.bottomsheet.BottomSheetDialog(MainActivity.this);
@@ -346,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
 						description = map1.get((int) 0).get("description_".concat(sp.getString("prefix", ""))).toString();
 						link = map1.get((int) 0).get("link").toString();
 						if (Double.parseDouble(latest_version) > Double.parseDouble(current_version)) {
-							com.google.android.material.snackbar.Snackbar.make(listview1, R.string.update, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction(R.string.check_button, new View.OnClickListener() {
+							com.google.android.material.snackbar.Snackbar.make(listview1, R.string.update, Snackbar.LENGTH_INDEFINITE).setAction(R.string.check_button, new View.OnClickListener() {
 								@Override
 								public void onClick(View _view) {
 									final com.google.android.material.bottomsheet.BottomSheetDialog bs_base = new com.google.android.material.bottomsheet.BottomSheetDialog(MainActivity.this);
@@ -485,7 +482,7 @@ public class MainActivity extends AppCompatActivity {
 			site = "https://kth-studio.github.io/Music/music.json";
 			new BackTask().execute(site);
 		} else {
-			com.google.android.material.snackbar.Snackbar.make(listview1, R.string.internet_lost, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+			com.google.android.material.snackbar.Snackbar.make(listview1, R.string.internet_lost, Snackbar.LENGTH_INDEFINITE).setAction("Ok", new View.OnClickListener() {
 				@Override
 				public void onClick(View _view) {}
 			}).show();

@@ -1,6 +1,7 @@
 package ru.kartofan.theme.music.app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.appbar.AppBarLayout;
@@ -8,6 +9,7 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.*;
+import android.text.TextUtils;
 import android.view.*;
 import android.widget.*;
 import android.content.*;
@@ -252,6 +254,20 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        theme_choice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _theme();
+            }
+        });
+
+        theme_hint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _theme();
+            }
+        });
+
         display_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton _param1, boolean _param2) {
@@ -286,6 +302,7 @@ public class SettingsActivity extends AppCompatActivity {
         theme_choice.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         explicit_choice.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+        _marquee(display_choice, getString(R.string.animated_art_hint));
         if (sp.getString("animation", "").equals("no")) {
             display_switch.setChecked(false);
         } else {
@@ -321,6 +338,77 @@ public class SettingsActivity extends AppCompatActivity {
         } else {
             quality_choice.setText(getString(R.string.disabled));
         }
+        if (sp.getString("theme", "").equals("battery")) {
+            theme_choice.setText(getString(R.string.battery));
+        } else if (sp.getString("theme", "").equals("light")) {
+            theme_choice.setText(getString(R.string.light));
+        } else if (sp.getString("theme", "").equals("dark")) {
+            theme_choice.setText(getString(R.string.dark));
+        } else {
+            theme_choice.setText(getString(R.string.system_default));
+        }
+    }
+
+    public void _marquee(final TextView _textview, final String _text) {
+        _textview.setText(_text);
+        _textview.setSingleLine(true);
+        _textview.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        _textview.setSelected(true);
+    }
+
+    public void _theme(){
+        final com.google.android.material.bottomsheet.BottomSheetDialog bs_base = new com.google.android.material.bottomsheet.BottomSheetDialog(SettingsActivity.this);
+        bs_base.setCancelable(true);
+        View layBase = getLayoutInflater().inflate(R.layout.theme, null);
+        bs_base.setContentView(layBase);
+        TextView theme = (TextView)layBase.findViewById(R.id.theme);
+        Button system = (Button) layBase.findViewById(R.id.system);
+        Button battery = (Button) layBase.findViewById(R.id.battery);
+        Button light = (Button) layBase.findViewById(R.id.light);
+        Button dark = (Button) layBase.findViewById(R.id.dark);
+        theme.setText(getString(R.string.theme));
+        theme.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+        system.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+        battery.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+        light.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+        dark.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+        system.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                theme_choice.setText(getString(R.string.system_default));
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                sp.edit().putString("theme", "system").commit();
+                bs_base.cancel();
+            }
+        });
+        battery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                theme_choice.setText(getString(R.string.battery));
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
+                sp.edit().putString("theme", "battery").commit();
+                bs_base.cancel();
+            }
+        });
+        light.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                theme_choice.setText(getString(R.string.light));
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                sp.edit().putString("theme", "light").commit();
+                bs_base.cancel();
+            }
+        });
+        dark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                theme_choice.setText(getString(R.string.dark));
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                sp.edit().putString("theme", "dark").commit();
+                bs_base.cancel();
+            }
+        });
+        bs_base.show();
     }
 
     public void _quality(){

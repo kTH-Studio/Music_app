@@ -89,7 +89,6 @@
                 android:paddingRight="18dp"
                 android:orientation="vertical">
                 <TextView
-                    android:alpha="0.5"
                     android:id="@+id/theme_hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -100,7 +99,6 @@
                     android:textSize="18sp"
                     android:textColor="@color/text2"/>
                 <TextView
-                    android:alpha="0.5"
                     android:id="@+id/theme_choice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

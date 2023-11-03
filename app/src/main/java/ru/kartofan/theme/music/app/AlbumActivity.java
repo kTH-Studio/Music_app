@@ -237,6 +237,20 @@ public class AlbumActivity extends AppCompatActivity {
 				startActivity(p);
 			}
 		});
+
+		artist.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (map.get((int) 0).containsKey("artist_uri") || map.get((int) 0).containsKey("artists_uri")) {
+					if (map.get((int) 0).containsKey("artist_uri")) {
+						i.setClass(getApplicationContext(), ArtistActivity.class);
+						i.putExtra("link", map.get((int) 0).get("artist_uri").toString());
+						startActivity(i);
+					}
+				}
+			}
+		});
+
 		featured_artists_text.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
