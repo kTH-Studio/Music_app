@@ -63,6 +63,7 @@ public class MusicActivity extends AppCompatActivity {
 	private ListView listview3;
 	private RecyclerView recyclerview1;
 	private ImageView imageview1;
+	private ImageView explicit;
 	private LinearLayout linear3;
 	private ImageView imageview2;
 	private TextView textview1;
@@ -115,6 +116,7 @@ public class MusicActivity extends AppCompatActivity {
 		imageview3 = (ImageView) findViewById(R.id.imageview3);
 		imageview4 = (ImageView) findViewById(R.id.imageview4);
 		imageview5 = (ImageView) findViewById(R.id.imageview5);
+		explicit = (ImageView) findViewById(R.id.explicit);
 
 		seekbar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
@@ -389,6 +391,15 @@ public class MusicActivity extends AppCompatActivity {
 	}
 	public void _me() {
 		currentfile = map.get((int) 0).get("music").toString();
+		if (map.get((int) 0).containsKey("explicit")) {
+			if (map.get((int) 0).get("explicit").toString().equals("yes")) {
+				explicit.setVisibility(View.VISIBLE);
+			} else {
+				explicit.setVisibility(View.GONE);
+			}
+		} else {
+			explicit.setVisibility(View.GONE);
+		}
 		if (map.get((int) 0).containsKey("text")) {
 			imageview6.setVisibility(View.GONE);
 			imageview1.setVisibility(View.VISIBLE);

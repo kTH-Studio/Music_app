@@ -2,6 +2,8 @@ package ru.kartofan.theme.music.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.*;
+
+import android.graphics.Color;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
@@ -255,6 +257,8 @@ public class AlbumActivity extends AppCompatActivity {
 	}
 
 	private void initializeLogic() {
+		getWindow().setFlags(WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT, WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT);
+		getWindow().setStatusBarColor(Color.TRANSPARENT);
 		new BackTask().execute(getIntent().getStringExtra("link"));
 		other_versions_linear.setVisibility(View.GONE);
 		more_by_linear.setVisibility(View.GONE);

@@ -3,6 +3,7 @@ package ru.kartofan.theme.music.app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
@@ -141,7 +142,6 @@ public class ArtistActivity extends AppCompatActivity {
 		appear_on_linear = (LinearLayout) findViewById(R.id.appears_on_linear);
 		appears_on_hint = (TextView) findViewById(R.id.appears_on_hint);
 		appears_on_list = (ListView) findViewById(R.id.appears_on_list);
-		view = (View) findViewById(R.id.view);
 		sp = getSharedPreferences("sp", Activity.MODE_PRIVATE);
 
 		latest_release_hint.setOnClickListener(new View.OnClickListener() {
@@ -429,6 +429,8 @@ public class ArtistActivity extends AppCompatActivity {
 	}
 
 	private void initializeLogic() {
+		getWindow().setFlags(WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT, WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT);
+		getWindow().setStatusBarColor(Color.TRANSPARENT);
 		latest_release_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		top_songs_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		albums_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -596,11 +598,7 @@ public class ArtistActivity extends AppCompatActivity {
 	}
 
 	public void _text() {
-		if (map.get((int)0).containsKey("image")) {
-			view.setVisibility(View.VISIBLE);
-		} else {
-			view.setVisibility(View.GONE);
-		}
+
 		Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(imageview1);
 		_marquee(textview1, map.get((int) 0).get("name").toString());
 		textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -623,13 +621,13 @@ public class ArtistActivity extends AppCompatActivity {
 			if (info.get((int) 0).containsKey("hometown_".concat(sp.getString("prefix", ""))) || info.get((int) 0).containsKey("from_".concat(sp.getString("prefix", "")))) {
 				if (info.get((int) 0).containsKey("hometown_".concat(sp.getString("prefix", "")))) {
 					hometown_hint.setText(R.string.hometown);
-					hometown_text.setText(info.get((int) 0).get("hometown_".concat(sp.getString("prefix", ""))).toString());
+					_marquee(hometown_text, info.get((int) 0).get("hometown_".concat(sp.getString("prefix", ""))).toString());
 					hometown_line.setVisibility(View.VISIBLE);
 					hometown_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 					hometown_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 				} else {
 					hometown_hint.setText(R.string.from);
-					hometown_text.setText(info.get((int) 0).get("from_".concat(sp.getString("prefix", ""))).toString());
+					_marquee(hometown_text, info.get((int) 0).get("from_".concat(sp.getString("prefix", ""))).toString());
 					hometown_line.setVisibility(View.VISIBLE);
 					hometown_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 					hometown_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);

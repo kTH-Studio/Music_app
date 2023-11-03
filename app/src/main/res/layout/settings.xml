@@ -219,7 +219,7 @@
                         android:paddingTop="2dp"
                         android:paddingLeft="2dp"
                         android:paddingRight="2dp"
-                        android:text="Animated Art"
+                        android:text="@string/animated_art"
                         android:textSize="18sp"
                         android:textColor="@color/text2"/>
                     <TextView
@@ -229,7 +229,7 @@
                         android:paddingBottom="2dp"
                         android:paddingLeft="2dp"
                         android:paddingRight="2dp"
-                        android:text="Albums and artist pages will automatically play"
+                        android:text="@string/animated_art_hint"
                         android:textSize="16sp"
                         android:textColor="@color/text2"/>
                 </LinearLayout>
@@ -258,7 +258,7 @@
                     android:paddingTop="2dp"
                     android:paddingLeft="2dp"
                     android:paddingRight="2dp"
-                    android:text="High Quality"
+                    android:text="@string/high_quality"
                     android:textSize="18sp"
                     android:textColor="@color/text2"/>
                 <TextView
@@ -269,7 +269,7 @@
                     android:paddingBottom="2dp"
                     android:paddingLeft="2dp"
                     android:paddingRight="2dp"
-                    android:text="When WiFi is connected"
+                    android:text="@string/wifi_connected"
                     android:textSize="16sp"
                     android:textColor="@color/text2"/>
             </LinearLayout>

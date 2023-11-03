@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Музыка</string>
-    <string name="version">Версия: 1.27 от 29 октября 2023. @kTH-Studio.</string>
+    <string name="version">Версия: 1.28 от 3 ноября 2023. @kTH-Studio.</string>
     <string name="new_in_music">Новое в Музыке:</string>
     <string name="about">ИНФОРМАЦИЯ</string>
     <string name="hometown">МЕСТО РОЖДЕНИЯ</string>
@@ -73,4 +73,10 @@
     <string name="info_about">Для продолжения, заполните информацию о себе</string>
     <string name="edit">Редактировать</string>
     <string name="written_by">Автор: </string>
+    <string name="phone_number_short">Номер телефона слишком короткий!</string>
+    <string name="verify_code_short">Проверочный код слишком короткий!</string>
+    <string name="animated_art">Анимированные обложки</string>
+    <string name="animated_art_hint">Страницы альбомов и артистов будут автоматически воспроизводиться</string>
+    <string name="high_quality">Высокое качество</string>
+    <string name="wifi_connected">Когда WiFi подключен</string>
 </resources>

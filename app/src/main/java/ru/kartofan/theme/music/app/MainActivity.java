@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 	private String language = "";
 	private String site = "";
 	private String latest_version = "";
-	private String current_version = "1.27";
+	private String current_version = "1.28";
 	private String description = "";
 	private String link = "";
 	private String package_name = "";

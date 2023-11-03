@@ -122,17 +122,33 @@ public class RegisterActivity extends  AppCompatActivity  {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                _sendVerificationCode();
-                linear10.setVisibility(View.GONE);
-                linear2.setVisibility(View.VISIBLE);
-                SketchwareUtil.hideKeyboard(getApplicationContext());
+                if (edittext2.length() == 10) {
+                    _sendVerificationCode();
+                    linear10.setVisibility(View.GONE);
+                    linear2.setVisibility(View.VISIBLE);
+                    SketchwareUtil.hideKeyboard(getApplicationContext());
+                } else {
+                    SketchwareUtil.hideKeyboard(getApplicationContext());
+                    com.google.android.material.snackbar.Snackbar.make(linear1, R.string.phone_number_short, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View _view) {}
+                    }).show();
+                }
             }
         });
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                _verifyCode();
+                if (edittext3.length() == 6) {
+                    _verifyCode();
+                } else {
+                    SketchwareUtil.hideKeyboard(getApplicationContext());
+                    com.google.android.material.snackbar.Snackbar.make(linear1, R.string.verify_code_short, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View _view) {}
+                    }).show();
+                }
             }
         });
 
@@ -382,6 +398,7 @@ public class RegisterActivity extends  AppCompatActivity  {
     public void _sendVerificationCode () {
         phone = number.getText().toString().concat(edittext2.getText().toString());
         com.google.firebase.auth.PhoneAuthProvider.getInstance().verifyPhoneNumber(phone, 60, java.util.concurrent.TimeUnit.SECONDS, this, mCallbacks);
+        fauth.useAppLanguage();
     }
 
     com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -404,7 +421,6 @@ public class RegisterActivity extends  AppCompatActivity  {
         code = edittext3.getText().toString();
         com.google.firebase.auth.PhoneAuthCredential credential = com.google.firebase.auth.PhoneAuthProvider.getCredential(codeSent, code);
         signInWithPhoneAuthCredential(credential);
-        sp.edit().putString("permission", "yes").commit();
     }
 
     private void signInWithPhoneAuthCredential(com.google.firebase.auth.PhoneAuthCredential credential) {

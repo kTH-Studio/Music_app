@@ -92,6 +92,13 @@
 						android:textColor="@color/text2"/>
 				</LinearLayout>
 				<ImageView
+					android:id="@+id/explicit"
+					android:layout_width="35dp"
+					android:layout_height="35dp"
+					android:padding="8dp"
+					android:src="@drawable/ic_outline_explicit"
+					android:scaleType="centerInside"/>
+				<ImageView
 					android:id="@+id/imageview2"
 					android:layout_width="35dp"
 					android:layout_height="35dp"
