@@ -33,6 +33,8 @@ import android.graphics.Typeface;
 import com.google.android.material.appbar.SubtitleCollapsingToolbarLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
 public class AlbumActivity extends AppCompatActivity {
@@ -51,6 +53,7 @@ public class AlbumActivity extends AppCompatActivity {
 	private ArrayList < HashMap < String, Object >> other = new ArrayList < > ();
 	private ArrayList < HashMap < String, Object >> more = new ArrayList < > ();
 	private ArrayList < HashMap < String, Object >> artists = new ArrayList < > ();
+	private ArrayList < HashMap < String, Object >> uri = new ArrayList < > ();
 	private LinearLayout linear2;
 	private LinearLayout linear5;
 	private LinearLayout other_versions_linear;
@@ -117,8 +120,7 @@ public class AlbumActivity extends AppCompatActivity {
 				bs_base.setCancelable(true);
 				View layBase = getLayoutInflater().inflate(R.layout.bottom, null);
 				bs_base.setContentView(layBase);
-				TextView text = (TextView)
-						layBase.findViewById(R.id.text);
+				TextView text = (TextView) layBase.findViewById(R.id.text);
 				text.setText(map.get((int) 0).get("tale_".concat(sp.getString("prefix", ""))).toString());
 				text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 				TextView about = (TextView) layBase.findViewById(R.id.about);
@@ -241,12 +243,16 @@ public class AlbumActivity extends AppCompatActivity {
 		artist.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (map.get((int) 0).containsKey("artist_uri") || map.get((int) 0).containsKey("artists_uri")) {
-					if (map.get((int) 0).containsKey("artist_uri")) {
-						i.setClass(getApplicationContext(), ArtistActivity.class);
-						i.putExtra("link", map.get((int) 0).get("artist_uri").toString());
-						startActivity(i);
-					}
+				if (uri.size() > 1) {
+					i.setClass(getApplicationContext(), FullActivity.class);
+					i.putExtra("data", new Gson().toJson(uri));
+					i.putExtra("artist", map.get((int) 0).get("artist").toString());
+					i.putExtra("title", getString(R.string.featured_artists_1));
+					startActivity(i);
+				} else {
+					i.setClass(getApplicationContext(), ArtistActivity.class);
+					i.putExtra("link", uri.get((int) 0).get("link").toString());
+					startActivity(i);
 				}
 			}
 		});
@@ -265,25 +271,11 @@ public class AlbumActivity extends AppCompatActivity {
 		imageview1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				if (sp.getString("quality", "").equals("mobile")) {
-					if (map.get((int) 0).containsKey("image4k")) {
+				if (map.get((int) 0).containsKey("image4k")) {
+					if (sp.getString("quality", "").equals("mobile")) {
 						i.setClass(getApplicationContext(), ImageActivity.class);
 						i.putExtra("imageq", map.get((int) 0).get("image4k").toString());
 						startActivity(i);
-					} else {
-						i.setClass(getApplicationContext(), ImageActivity.class);
-						i.putExtra("imageq", map.get((int) 0).get("image").toString());
-						startActivity(i);
-					}
-				} else if (sp.getString("quality", "").equals("wifi")) {
-					if (map.get((int) 0).containsKey("image4k")) {
-						ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-						NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-						if (mWifi.isConnected()) {
-							i.setClass(getApplicationContext(), ImageActivity.class);
-							i.putExtra("imageq", map.get((int) 0).get("image4k").toString());
-							startActivity(i);
-						}
 					} else {
 						i.setClass(getApplicationContext(), ImageActivity.class);
 						i.putExtra("imageq", map.get((int) 0).get("image").toString());
@@ -299,8 +291,19 @@ public class AlbumActivity extends AppCompatActivity {
 	}
 
 	private void initializeLogic() {
-		getWindow().setFlags(WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT, WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT);
-		getWindow().setStatusBarColor(Color.TRANSPARENT);
+		if (sp.getString("theme", "").equals("system")){
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+		} else if (sp.getString("theme", "").equals("battery")){
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
+		} else if (sp.getString("theme", "").equals("dark")){
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+		} else if (sp.getString("theme", "").equals("light")){
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+		}
+		if (Build.VERSION.SDK_INT >=23) {
+			getWindow().setFlags(WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT, WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT);
+			getWindow().setStatusBarColor(Color.TRANSPARENT);
+		}
 		new BackTask().execute(getIntent().getStringExtra("link"));
 		other_versions_linear.setVisibility(View.GONE);
 		more_by_linear.setVisibility(View.GONE);
@@ -357,6 +360,7 @@ public class AlbumActivity extends AppCompatActivity {
 			str = s;
 			map = new Gson().fromJson(str, new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
 			play = new Gson().fromJson(map.get((int) 0).get("songs").toString(), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
+			uri = new Gson().fromJson(map.get((int) 0).get("artist_uri").toString(), new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType());
 			listview1.setAdapter(new AlbumActivity.Listview1Adapter(play));
 			num = 0;
 			for (int _repeat21 = 0; _repeat21 < (int)(play.size()); _repeat21++) {

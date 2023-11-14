@@ -27,14 +27,6 @@
                 android:textSize="22sp"
                 android:textColor="@color/text1"/>
             <Button
-                android:id="@+id/wifi"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:text="@string/wifi_connected"
-                android:textColor="@color/text1"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"/>
-            <Button
                 android:id="@+id/mobile"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"

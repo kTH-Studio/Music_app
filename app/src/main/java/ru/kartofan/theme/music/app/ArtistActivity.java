@@ -29,6 +29,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.SubtitleCollapsingToolbarLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
 public class ArtistActivity extends AppCompatActivity {
@@ -281,25 +283,11 @@ public class ArtistActivity extends AppCompatActivity {
 		imageview1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				if (sp.getString("quality", "").equals("mobile")) {
-					if (map.get((int) 0).containsKey("image4k")) {
+				if (map.get((int) 0).containsKey("image4k")) {
+					if (sp.getString("quality", "").equals("mobile")) {
 						i.setClass(getApplicationContext(), ImageActivity.class);
 						i.putExtra("imageq", map.get((int) 0).get("image4k").toString());
 						startActivity(i);
-					} else {
-						i.setClass(getApplicationContext(), ImageActivity.class);
-						i.putExtra("imageq", map.get((int) 0).get("image").toString());
-						startActivity(i);
-					}
-				} else if (sp.getString("quality", "").equals("wifi")) {
-					if (map.get((int) 0).containsKey("image4k")) {
-						ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-						NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-						if (mWifi.isConnected()) {
-							i.setClass(getApplicationContext(), ImageActivity.class);
-							i.putExtra("imageq", map.get((int) 0).get("image4k").toString());
-							startActivity(i);
-						}
 					} else {
 						i.setClass(getApplicationContext(), ImageActivity.class);
 						i.putExtra("imageq", map.get((int) 0).get("image").toString());
@@ -457,8 +445,19 @@ public class ArtistActivity extends AppCompatActivity {
 	}
 
 	private void initializeLogic() {
-		getWindow().setFlags(WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT, WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT);
-		getWindow().setStatusBarColor(Color.TRANSPARENT);
+		if (sp.getString("theme", "").equals("system")){
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+		} else if (sp.getString("theme", "").equals("battery")){
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
+		} else if (sp.getString("theme", "").equals("dark")){
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+		} else if (sp.getString("theme", "").equals("light")){
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+		}
+		if (Build.VERSION.SDK_INT >=23) {
+			getWindow().setFlags(WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT, WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT);
+			getWindow().setStatusBarColor(Color.TRANSPARENT);
+		}
 		latest_release_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		top_songs_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		albums_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);

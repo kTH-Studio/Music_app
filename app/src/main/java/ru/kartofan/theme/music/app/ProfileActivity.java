@@ -1,6 +1,7 @@
 package ru.kartofan.theme.music.app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.appbar.AppBarLayout;
@@ -74,6 +75,7 @@ public class ProfileActivity extends  AppCompatActivity  {
     private Button save;
     private Button preview;
     private TextView hint_info;
+    private SharedPreferences sp;
     private Intent fp = new Intent(Intent.ACTION_GET_CONTENT);
     private DatabaseReference user = _firebase.getReference("users");
     private ChildEventListener _user_child_listener;
@@ -331,6 +333,15 @@ public class ProfileActivity extends  AppCompatActivity  {
     }
 
     private void initializeLogic() {
+        if (sp.getString("theme", "").equals("system")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        } else if (sp.getString("theme", "").equals("battery")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
+        } else if (sp.getString("theme", "").equals("dark")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else if (sp.getString("theme", "").equals("light")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         verified.setVisibility(View.GONE);
         description.setVisibility(View.GONE);
         Toolbar toolbar = findViewById(R.id.toolbar);

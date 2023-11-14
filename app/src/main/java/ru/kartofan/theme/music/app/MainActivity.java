@@ -24,9 +24,14 @@ import java.util.TimerTask;
 import android.widget.AdapterView;
 import android.graphics.Typeface;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.bumptech.glide.Glide;
+
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
@@ -92,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.main);
 		initialize(_savedInstanceState);
+		FirebaseApp.initializeApp(this);
+		FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+		firebaseAppCheck.installAppCheckProviderFactory(PlayIntegrityAppCheckProviderFactory.getInstance());
 		com.google.firebase.FirebaseApp.initializeApp(this);
 		initializeLogic();
 	}
@@ -111,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
 		textview5 = (TextView) findViewById(R.id.textview5);
 		toolbar_title = (TextView) findViewById(R.id.toolbar_title);
 		toolbar_subtitle = (TextView) findViewById(R.id.toolbar_subtitle);
+		sp = getSharedPreferences("sp", Activity.MODE_PRIVATE);
 		d = new AlertDialog.Builder(this);
 		sp = getSharedPreferences("sp", Activity.MODE_PRIVATE);
 		if (sp.getString("language", "").equals("")) {
@@ -432,10 +441,17 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void initializeLogic() {
+		if (sp.getString("theme", "").equals("system")){
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+		} else if (sp.getString("theme", "").equals("battery")){
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
+		} else if (sp.getString("theme", "").equals("dark")){
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+		} else if (sp.getString("theme", "").equals("light")){
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+		}
 		if ((FirebaseAuth.getInstance().getCurrentUser() != null)) {
-			//if () {
 
-			//}
 		} else {
 			i.setClass(getApplicationContext(), RegisterActivity.class);
 			startActivity(i);

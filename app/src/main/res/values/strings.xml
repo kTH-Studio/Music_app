@@ -83,4 +83,10 @@
     <string name="disabled">Disabled</string>
     <string name="internet_lost">No Internet Connection!</string>
     <string name="battery" >Set by Battery Default</string>
+    <string name="more">More</string>
+    <string name="go_to_artist">Go to artist</string>
+    <string name="go_to_artists">Go to artists</string>
+    <string name="go_to_album">Go to album</string>
+    <string name="show_lyrics">Show lyrics</string>
+    <string name="track_details">Track details</string>
 </resources>

@@ -1,6 +1,7 @@
 package ru.kartofan.theme.music.app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.appbar.AppBarLayout;
@@ -122,6 +123,15 @@ public class FullActivity extends AppCompatActivity {
     }
 
     private void initializeLogic() {
+        if (sp.getString("theme", "").equals("system")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        } else if (sp.getString("theme", "").equals("battery")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
+        } else if (sp.getString("theme", "").equals("dark")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else if (sp.getString("theme", "").equals("light")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         play = new Gson().fromJson(getIntent().getStringExtra("data"), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
         if (getIntent().getStringExtra("title").equals(getString(R.string.featured_artists_1))) {
             listview1.setAdapter(new ArtistsAdapter(play));
@@ -256,7 +266,11 @@ public class FullActivity extends AppCompatActivity {
             final LinearLayout linear2 = (LinearLayout) _view.findViewById(R.id.linear2);
             final TextView textview2 = (TextView) _view.findViewById(R.id.textview2);
             final TextView textview3 = (TextView) _view.findViewById(R.id.textview3);
-            if (!play.get((int) _position).containsKey("link")) {
+            if (play.get((int) _position).containsKey("link")) {
+                textview3.setAlpha((float) 1);
+                textview2.setAlpha((float) 1);
+                imageview2.setAlpha((float) 1);
+            } else {
                 textview3.setAlpha((float) 0.5d);
                 textview2.setAlpha((float) 0.5d);
                 imageview2.setAlpha((float) 0.5d);

@@ -1,11 +1,13 @@
 package ru.kartofan.theme.music.app;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.appbar.AppBarLayout;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.*;
@@ -21,6 +23,8 @@ import android.widget.Button;
 import android.content.Intent;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
@@ -122,14 +126,23 @@ public class RegisterActivity extends  AppCompatActivity  {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View _view) {
-                if (edittext2.length() == 10) {
-                    _sendVerificationCode();
-                    linear10.setVisibility(View.GONE);
-                    linear2.setVisibility(View.VISIBLE);
-                    SketchwareUtil.hideKeyboard(getApplicationContext());
+                android.net.ConnectivityManager connMgr = (android.net.ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                android.net.NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    if (edittext2.length() == 10) {
+                        _sendVerificationCode();
+                        linear10.setVisibility(View.GONE);
+                        linear2.setVisibility(View.VISIBLE);
+                        SketchwareUtil.hideKeyboard(getApplicationContext());
+                    } else {
+                        SketchwareUtil.hideKeyboard(getApplicationContext());
+                        com.google.android.material.snackbar.Snackbar.make(linear1, R.string.phone_number_short, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View _view) {}
+                        }).show();
+                    }
                 } else {
-                    SketchwareUtil.hideKeyboard(getApplicationContext());
-                    com.google.android.material.snackbar.Snackbar.make(linear1, R.string.phone_number_short, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
+                    com.google.android.material.snackbar.Snackbar.make(linear1, R.string.internet_lost, Snackbar.LENGTH_INDEFINITE).setAction("Ok", new View.OnClickListener() {
                         @Override
                         public void onClick(View _view) {}
                     }).show();
@@ -356,6 +369,15 @@ public class RegisterActivity extends  AppCompatActivity  {
     }
 
     private void initializeLogic() {
+        if (sp.getString("theme", "").equals("system")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        } else if (sp.getString("theme", "").equals("battery")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
+        } else if (sp.getString("theme", "").equals("dark")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else if (sp.getString("theme", "").equals("light")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);

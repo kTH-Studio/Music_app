@@ -186,16 +186,16 @@ public class SettingsActivity extends AppCompatActivity {
                             if (sp.getString("explicit", "").equals("no")) {
                                 sp.edit().putString("explicit", "yes").commit();
                                 explicit_switch.setChecked(true);
-                                explicit_choice.setText(getString(R.string.explicit_on));
+                                _marquee(explicit_choice, getString(R.string.explicit_on));
                             } else {
                                 sp.edit().putString("explicit", "no").commit();
                                 explicit_switch.setChecked(false);
-                                explicit_choice.setText(getString(R.string.explicit_off));
+                                _marquee(explicit_choice, getString(R.string.explicit_off));
                             }
                         } else {
                             sp.edit().putString("explicit", "no").commit();
                             explicit_switch.setChecked(false);
-                            explicit_choice.setText(getString(R.string.explicit_off));
+                            _marquee(explicit_choice, getString(R.string.explicit_off));
                         }
                     }
                 });
@@ -284,6 +284,15 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void initializeLogic() {
+        if (sp.getString("theme", "").equals("system")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        } else if (sp.getString("theme", "").equals("battery")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
+        } else if (sp.getString("theme", "").equals("dark")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else if (sp.getString("theme", "").equals("light")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         language_settings.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         theme_settings.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         restrictions_settings.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -320,10 +329,10 @@ public class SettingsActivity extends AppCompatActivity {
             explicit_hint.setAlpha(1);
             if (sp.getString("explicit", "").equals("no")) {
                 explicit_switch.setChecked(false);
-                explicit_choice.setText(getString(R.string.explicit_off));
+                _marquee(explicit_choice, getString(R.string.explicit_off));
             } else {
                 explicit_switch.setChecked(true);
-                explicit_choice.setText(getString(R.string.explicit_on));
+                _marquee(explicit_choice, getString(R.string.explicit_on));
             }
         }
         if (sp.getString("video", "").equals("no")) {
@@ -417,22 +426,12 @@ public class SettingsActivity extends AppCompatActivity {
         View layBase = getLayoutInflater().inflate(R.layout.quality, null);
         bs_base.setContentView(layBase);
         TextView quality = (TextView)layBase.findViewById(R.id.quality);
-        Button wifi = (Button) layBase.findViewById(R.id.wifi);
         Button mobile = (Button) layBase.findViewById(R.id.mobile);
         Button never = (Button) layBase.findViewById(R.id.never);
         quality.setText(getString(R.string.high_quality));
         quality.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-        wifi.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         mobile.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         never.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-        wifi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                quality_choice.setText(getString(R.string.wifi_connected));
-                sp.edit().putString("quality", "wifi").commit();
-                bs_base.cancel();
-            }
-        });
         mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
