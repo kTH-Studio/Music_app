@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Музыка</string>
-    <string name="version">Версия: 1.28 от 3 ноября 2023. @kTH-Studio.</string>
+    <string name="version">Версия: 2.0 от 18 ноября 2023. @kTH-Studio.</string>
     <string name="new_in_music">Новое в Музыке:</string>
     <string name="about">ИНФОРМАЦИЯ</string>
     <string name="hometown">МЕСТО РОЖДЕНИЯ</string>

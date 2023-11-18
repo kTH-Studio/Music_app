@@ -30,7 +30,6 @@ import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderF
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.bumptech.glide.Glide;
-
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import com.google.firebase.database.FirebaseDatabase;
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 	private String language = "";
 	private String site = "";
 	private String latest_version = "";
-	private String current_version = "1.28";
+	private String current_version = "2.0";
 	private String description = "";
 	private String link = "";
 	private String package_name = "";
@@ -103,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
 		com.google.firebase.FirebaseApp.initializeApp(this);
 		initializeLogic();
 	}
+
 	@Override
 	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -140,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
 		if (sp.getString("quality", "").equals("")) {
 			sp.edit().putString("quality", "no").commit();
 		}
-
 		fauth = FirebaseAuth.getInstance();
 
 		fauth_updateEmailListener = new OnCompleteListener<Void>() {
@@ -148,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
 			public void onComplete(Task<Void> _param1) {
 				final boolean _success = _param1.isSuccessful();
 				final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-
 			}
 		};
 
@@ -157,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
 			public void onComplete(Task<Void> _param1) {
 				final boolean _success = _param1.isSuccessful();
 				final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-
 			}
 		};
 
@@ -166,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
 			public void onComplete(Task<Void> _param1) {
 				final boolean _success = _param1.isSuccessful();
 				final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-
 			}
 		};
 
@@ -175,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
 			public void onComplete(Task<Void> _param1) {
 				final boolean _success = _param1.isSuccessful();
 				final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-
 			}
 		};
 
@@ -184,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
 			public void onComplete(Task<AuthResult> task){
 				final boolean _success = task.isSuccessful();
 				final String _errorMessage = task.getException() != null ? task.getException().getMessage() : "";
-
 			}
 		};
 
@@ -193,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
 			public void onComplete(Task<Void> _param1) {
 				final boolean _success = _param1.isSuccessful();
 				final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-
 			}
 		};
 
@@ -202,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
 			public void onComplete(Task<AuthResult> task){
 				final boolean _success = task.isSuccessful();
 				final String _errorMessage = task.getException() != null ? task.getException().getMessage() : "";
-
 			}
 		};
 
@@ -211,7 +203,6 @@ public class MainActivity extends AppCompatActivity {
 			public void onComplete(Task<AuthResult> _param1) {
 				final boolean _success = _param1.isSuccessful();
 				final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-
 			}
 		};
 
@@ -220,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
 			public void onComplete(Task<AuthResult> _param1) {
 				final boolean _success = _param1.isSuccessful();
 				final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-
 			}
 		};
 
@@ -228,7 +218,6 @@ public class MainActivity extends AppCompatActivity {
 			@Override
 			public void onComplete(Task<Void> _param1) {
 				final boolean _success = _param1.isSuccessful();
-
 			}
 		};
 
@@ -280,49 +269,11 @@ public class MainActivity extends AppCompatActivity {
 						description = map1.get((int) 0).get("description_".concat(sp.getString("prefix", ""))).toString();
 						link = map1.get((int) 0).get("link").toString();
 						if (Double.parseDouble(latest_version) > Double.parseDouble(current_version)) {
-							com.google.android.material.snackbar.Snackbar.make(listview1, R.string.update, Snackbar.LENGTH_INDEFINITE).setAction(R.string.check_button, new View.OnClickListener() {
-								@Override
-								public void onClick(View _view) {
-									final com.google.android.material.bottomsheet.BottomSheetDialog bs_base = new com.google.android.material.bottomsheet.BottomSheetDialog(MainActivity.this);
-									bs_base.setCancelable(true);
-									View layBase = getLayoutInflater().inflate(R.layout.update, null);
-									bs_base.setContentView(layBase);
-									Button Later = (Button) layBase.findViewById(R.id.later);
-									Button Update = (Button) layBase.findViewById(R.id.update);
-									Later.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-									Update.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-									Later.setOnClickListener(new View.OnClickListener() {
-										@Override
-										public void onClick(View v) {
-											bs_base.cancel();
-										}
-									});
-									Update.setOnClickListener(new View.OnClickListener() {
-										@Override
-										public void onClick(View v) {
-											upd.setAction(Intent.ACTION_VIEW);
-											upd.setData(Uri.parse(link));
-											startActivity(upd);
-										}
-									});
-									TextView text = (TextView) layBase.findViewById(R.id.text);
-									text.setText(description);
-									text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-									TextView about = (TextView) layBase.findViewById(R.id.current_version);
-									about.setText(getString(R.string.current_version).concat(current_version));
-									about.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-									TextView latest = (TextView) layBase.findViewById(R.id.latest_version);
-									latest.setText(getString(R.string.latest_version).concat(latest_version));
-									latest.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-									bs_base.show();
-								}
-							}).show();
+							_bottom();
 						} else {
 							if (Double.parseDouble(current_version) > Double.parseDouble(latest_version)) {
 								Ver.child("Music").child("version").setValue(current_version);
-							} else {
-
-							}
+							} else {}
 						}
 					}
 					@Override
@@ -352,49 +303,11 @@ public class MainActivity extends AppCompatActivity {
 						description = map1.get((int) 0).get("description_".concat(sp.getString("prefix", ""))).toString();
 						link = map1.get((int) 0).get("link").toString();
 						if (Double.parseDouble(latest_version) > Double.parseDouble(current_version)) {
-							com.google.android.material.snackbar.Snackbar.make(listview1, R.string.update, Snackbar.LENGTH_INDEFINITE).setAction(R.string.check_button, new View.OnClickListener() {
-								@Override
-								public void onClick(View _view) {
-									final com.google.android.material.bottomsheet.BottomSheetDialog bs_base = new com.google.android.material.bottomsheet.BottomSheetDialog(MainActivity.this);
-									bs_base.setCancelable(true);
-									View layBase = getLayoutInflater().inflate(R.layout.update, null);
-									bs_base.setContentView(layBase);
-									Button Later = (Button) layBase.findViewById(R.id.later);
-									Button Update = (Button) layBase.findViewById(R.id.update);
-									Later.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-									Update.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-									Later.setOnClickListener(new View.OnClickListener() {
-										@Override
-										public void onClick(View v) {
-											bs_base.cancel();
-										}
-									});
-									Update.setOnClickListener(new View.OnClickListener() {
-										@Override
-										public void onClick(View v) {
-											upd.setAction(Intent.ACTION_VIEW);
-											upd.setData(Uri.parse(link));
-											startActivity(upd);
-										}
-									});
-									TextView text = (TextView) layBase.findViewById(R.id.text);
-									text.setText(description);
-									text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-									TextView about = (TextView) layBase.findViewById(R.id.current_version);
-									about.setText(getString(R.string.current_version).concat(current_version));
-									about.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-									TextView latest = (TextView) layBase.findViewById(R.id.latest_version);
-									latest.setText(getString(R.string.latest_version).concat(latest_version));
-									latest.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-									bs_base.show();
-								}
-							}).show();
+							_bottom();
 						} else {
 							if (Double.parseDouble(current_version) > Double.parseDouble(latest_version)) {
 								Ver.child("Music").child("version").setValue(current_version);
-							} else {
-
-							}
+							} else {}
 						}
 					}
 					@Override
@@ -403,25 +316,20 @@ public class MainActivity extends AppCompatActivity {
 			}
 
 			@Override
-			public void onChildMoved(DataSnapshot _param1, String _param2) {
-
-			}
+			public void onChildMoved(DataSnapshot _param1, String _param2) {}
 
 			@Override
 			public void onChildRemoved(DataSnapshot _param1) {
 				GenericTypeIndicator < HashMap < String, Object >> _ind = new GenericTypeIndicator < HashMap < String, Object >> () {};
 				final String _childKey = _param1.getKey();
 				final HashMap < String, Object > _childValue = _param1.getValue(_ind);
-
 			}
 
 			@Override
 			public void onCancelled(DatabaseError _param1) {
 				final int _errorCode = _param1.getCode();
 				final String _errorMessage = _param1.getMessage();
-
-			}
-		};
+			}};
 		Ver.addChildEventListener(_Ver_child_listener);
 	}
 
@@ -431,6 +339,7 @@ public class MainActivity extends AppCompatActivity {
 		inflater.inflate(R.menu.main, menu);
 		return true;
 	}
+
 	@Override
 	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		if (item.getItemId() == R.id.settings) {
@@ -450,9 +359,7 @@ public class MainActivity extends AppCompatActivity {
 		} else if (sp.getString("theme", "").equals("light")){
 			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 		}
-		if ((FirebaseAuth.getInstance().getCurrentUser() != null)) {
-
-		} else {
+		if ((FirebaseAuth.getInstance().getCurrentUser() != null)) {} else {
 			i.setClass(getApplicationContext(), RegisterActivity.class);
 			startActivity(i);
 			finishAffinity();
@@ -520,6 +427,46 @@ public class MainActivity extends AppCompatActivity {
 		_textview.setSingleLine(true);
 		_textview.setEllipsize(TextUtils.TruncateAt.MARQUEE);
 		_textview.setSelected(true);
+	}
+
+	public void _bottom(){
+		com.google.android.material.snackbar.Snackbar.make(listview1, R.string.update, Snackbar.LENGTH_INDEFINITE).setAction(R.string.check_button, new View.OnClickListener() {
+			@Override
+			public void onClick(View _view) {
+				final com.google.android.material.bottomsheet.BottomSheetDialog bs_base = new com.google.android.material.bottomsheet.BottomSheetDialog(MainActivity.this);
+				bs_base.setCancelable(true);
+				View layBase = getLayoutInflater().inflate(R.layout.update, null);
+				bs_base.setContentView(layBase);
+				Button Later = (Button) layBase.findViewById(R.id.later);
+				Button Update = (Button) layBase.findViewById(R.id.update);
+				Later.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				Update.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				Later.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						bs_base.cancel();
+					}
+				});
+				Update.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						upd.setAction(Intent.ACTION_VIEW);
+						upd.setData(Uri.parse(link));
+						startActivity(upd);
+					}
+				});
+				TextView text = (TextView) layBase.findViewById(R.id.text);
+				text.setText(description);
+				text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				TextView about = (TextView) layBase.findViewById(R.id.current_version);
+				about.setText(getString(R.string.current_version).concat(current_version));
+				about.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				TextView latest = (TextView) layBase.findViewById(R.id.latest_version);
+				latest.setText(getString(R.string.latest_version).concat(latest_version));
+				latest.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				bs_base.show();
+			}
+		}).show();
 	}
 
 	private class BackTask extends AsyncTask < String, Integer, String > {
@@ -595,6 +542,15 @@ public class MainActivity extends AppCompatActivity {
 			final TextView textview3 = (TextView) _view.findViewById(R.id.textview3);
 			_marquee(textview2, map.get((int) _position).get("name").toString());
 			_marquee(textview3, map.get((int) _position).get("info_".concat(sp.getString("prefix", ""))).toString());
+			if (map.get((int)_position).containsKey("link")) {
+				imageview2.setAlpha((float) 1);
+				textview2.setAlpha((float) 1);
+				textview3.setAlpha((float) 1);
+			} else {
+				imageview2.setAlpha((float) 0.5d);
+				textview2.setAlpha((float) 0.5d);
+				textview3.setAlpha((float) 0.5d);
+			}
 			if (map.get((int)_position).containsKey("image")) {
 				Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) _position).get("image").toString())).into(imageview2);
 			}

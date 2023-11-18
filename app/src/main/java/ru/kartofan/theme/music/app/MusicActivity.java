@@ -1,7 +1,6 @@
 package ru.kartofan.theme.music.app;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -21,9 +20,7 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ListView;
-
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.recyclerview.widget.*;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.SeekBar;
 import android.media.MediaPlayer;
@@ -182,7 +179,6 @@ public class MusicActivity extends AppCompatActivity {
 				_bottom();
 			}
 		});
-
 
 		imageview6.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -439,6 +435,7 @@ public class MusicActivity extends AppCompatActivity {
 		TextView album_text = (TextView) layBase.findViewById(R.id.album_text);
 		TextView lyrics_text = (TextView) layBase.findViewById(R.id.lyrics_text);
 		TextView info_text = (TextView) layBase.findViewById(R.id.info_text);
+		LinearLayout linear1 = (LinearLayout) layBase.findViewById(R.id.linear1);
 		LinearLayout artist_linear = (LinearLayout) layBase.findViewById(R.id.artist_linear);
 		LinearLayout album_linear = (LinearLayout) layBase.findViewById(R.id.album_linear);
 		LinearLayout lyrics_linear = (LinearLayout) layBase.findViewById(R.id.lyrics_linear);
@@ -494,30 +491,35 @@ public class MusicActivity extends AppCompatActivity {
 		artist_image.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				bs_base.cancel();
 				_artist();
 			}
 		});
-		artist_image.setOnClickListener(new View.OnClickListener() {
+		artist_linear.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				bs_base.cancel();
 				_artist();
 			}
 		});
 		album_text.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				bs_base.cancel();
 				_album();
 			}
 		});
 		album_image.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				bs_base.cancel();
 				_album();
 			}
 		});
 		album_linear.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				bs_base.cancel();
 				_album();
 			}
 		});
@@ -539,7 +541,7 @@ public class MusicActivity extends AppCompatActivity {
 				_lyrics();
 			}
 		});
-		name.setText(map.get((int)0).get("name").toString());
+		_marquee(name, map.get((int)0).get("name").toString());
 		album.setText(map.get((int)0).get("album").toString());
 		artist.setText(map.get((int) 0).get("artist").toString());
 		Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(image);
@@ -554,9 +556,16 @@ public class MusicActivity extends AppCompatActivity {
 			i.putExtra("title", getString(R.string.featured_artists_1));
 			startActivity(i);
 		} else {
+			if (uri.get((int) 0).containsKey("link")) {
 			i.setClass(getApplicationContext(), ArtistActivity.class);
 			i.putExtra("link", uri.get((int) 0).get("link").toString());
 			startActivity(i);
+			} else {
+				com.google.android.material.snackbar.Snackbar.make(linear1, R.string.artist_will_be_added_soon, Snackbar.LENGTH_INDEFINITE).setAction("Ok", new View.OnClickListener() {
+					@Override
+					public void onClick(View _view) {}
+				}).show();
+			}
 		}
 	}
 
@@ -572,7 +581,11 @@ public class MusicActivity extends AppCompatActivity {
 		View layBase = getLayoutInflater().inflate(R.layout.bottom, null);
 		bs_base.setContentView(layBase);
 		TextView text = (TextView) layBase.findViewById(R.id.text);
-		text.setText(play.get((int) 0).get("text").toString().concat(getString(R.string.written_by)).concat(play.get((int) 0).get("written").toString()));
+		if (play.get((int) 0).containsKey("written")) {
+			text.setText(play.get((int) 0).get("text").toString().concat(getString(R.string.written_by)).concat(play.get((int) 0).get("written").toString()));
+		} else {
+			text.setText(play.get((int) 0).get("text").toString());
+		}
 		text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		TextView about = (TextView) layBase.findViewById(R.id.about);
 		about.setVisibility(View.VISIBLE);

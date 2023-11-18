@@ -1,34 +1,17 @@
 package ru.kartofan.theme.music.app;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.*;
-import android.app.*;
 import android.os.*;
 import android.view.*;
-import android.view.View.*;
 import android.widget.*;
 import android.content.*;
-import android.content.res.*;
 import android.graphics.*;
-import android.graphics.drawable.*;
-import android.media.*;
 import android.net.*;
-import android.text.*;
-import android.text.style.*;
 import android.util.*;
-import android.webkit.*;
-import android.animation.*;
-import android.view.animation.*;
 import java.util.*;
-import java.util.regex.*;
-import java.text.*;
-import org.json.*;
 import android.webkit.WebView;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.DialogFragment;
 
 public class ImageActivity extends AppCompatActivity {
 
@@ -42,11 +25,9 @@ public class ImageActivity extends AppCompatActivity {
 		Intent appLinkIntent = getIntent();
 		String appLinkAction = appLinkIntent.getAction();
 		Uri appLinkData = appLinkIntent.getData();
-
 	}
 
 	private void initialize(Bundle _savedInstanceState) {
-
 		webview1 = (WebView) findViewById(R.id.webview1);
 		webview1.getSettings().setJavaScriptEnabled(true);
 		webview1.getSettings().setSupportZoom(true);
@@ -55,14 +36,12 @@ public class ImageActivity extends AppCompatActivity {
 			@Override
 			public void onPageStarted(WebView _param1, String _param2, Bitmap _param3) {
 				final String _url = _param2;
-
 				super.onPageStarted(_param1, _param2, _param3);
 			}
 
 			@Override
 			public void onPageFinished(WebView _param1, String _param2) {
 				final String _url = _param2;
-
 				super.onPageFinished(_param1, _param2);
 			}
 		});
@@ -91,11 +70,8 @@ public class ImageActivity extends AppCompatActivity {
 
 	@Override
 	protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
-
 		super.onActivityResult(_requestCode, _resultCode, _data);
-
 		switch (_requestCode) {
-
 			default:
 				break;
 		}

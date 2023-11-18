@@ -7,7 +7,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import android.app.Activity;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.*;
 import android.text.TextUtils;
 import android.view.*;
@@ -58,6 +57,7 @@ public class SettingsActivity extends AppCompatActivity {
     private LinearLayout display_linear;
     private LinearLayout display_linear_2;
     private SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
@@ -179,26 +179,26 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-                explicit_hint.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!sp.getString("restrictions", "").equals("no")) {
-                            if (sp.getString("explicit", "").equals("no")) {
-                                sp.edit().putString("explicit", "yes").commit();
-                                explicit_switch.setChecked(true);
-                                _marquee(explicit_choice, getString(R.string.explicit_on));
-                            } else {
-                                sp.edit().putString("explicit", "no").commit();
-                                explicit_switch.setChecked(false);
-                                _marquee(explicit_choice, getString(R.string.explicit_off));
-                            }
-                        } else {
-                            sp.edit().putString("explicit", "no").commit();
-                            explicit_switch.setChecked(false);
-                            _marquee(explicit_choice, getString(R.string.explicit_off));
-                        }
+        explicit_hint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!sp.getString("restrictions", "").equals("no")) {
+                    if (sp.getString("explicit", "").equals("no")) {
+                        sp.edit().putString("explicit", "yes").commit();
+                        explicit_switch.setChecked(true);
+                        _marquee(explicit_choice, getString(R.string.explicit_on));
+                    } else {
+                        sp.edit().putString("explicit", "no").commit();
+                        explicit_switch.setChecked(false);
+                        _marquee(explicit_choice, getString(R.string.explicit_off));
                     }
-                });
+                } else {
+                    sp.edit().putString("explicit", "no").commit();
+                    explicit_switch.setChecked(false);
+                    _marquee(explicit_choice, getString(R.string.explicit_off));
+                }
+            }
+        });
 
         display_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -227,18 +227,18 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-                display_hint.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                            if (sp.getString("animation", "").equals("no")) {
-                                sp.edit().putString("animation", "yes").commit();
-                                display_switch.setChecked(true);
-                            } else {
-                                sp.edit().putString("animation", "no").commit();
-                                display_switch.setChecked(false);
-                            }
-                    }
-                });
+        display_hint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sp.getString("animation", "").equals("no")) {
+                    sp.edit().putString("animation", "yes").commit();
+                    display_switch.setChecked(true);
+                } else {
+                    sp.edit().putString("animation", "no").commit();
+                    display_switch.setChecked(false);
+                }
+            }
+        });
 
         quality_choice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -390,6 +390,7 @@ public class SettingsActivity extends AppCompatActivity {
                 bs_base.cancel();
             }
         });
+
         battery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -399,6 +400,7 @@ public class SettingsActivity extends AppCompatActivity {
                 bs_base.cancel();
             }
         });
+
         light.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -408,6 +410,7 @@ public class SettingsActivity extends AppCompatActivity {
                 bs_base.cancel();
             }
         });
+
         dark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

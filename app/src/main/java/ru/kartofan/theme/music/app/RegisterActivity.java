@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.appbar.AppBarLayout;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -23,7 +22,6 @@ import android.widget.Button;
 import android.content.Intent;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
@@ -91,6 +89,7 @@ public class RegisterActivity extends  AppCompatActivity  {
     private OnCompleteListener<AuthResult> _fauth_create_user_listener;
     private OnCompleteListener<AuthResult> _fauth_sign_in_listener;
     private OnCompleteListener<Void> _fauth_reset_password_listener;
+
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
@@ -448,7 +447,6 @@ public class RegisterActivity extends  AppCompatActivity  {
     private void signInWithPhoneAuthCredential(com.google.firebase.auth.PhoneAuthCredential credential) {
         fauth.signInWithCredential(credential) .addOnCompleteListener(this, _fauth_sign_in_listener);
     }{}
-
 
     @Deprecated
     public void showMessage(String _s) {

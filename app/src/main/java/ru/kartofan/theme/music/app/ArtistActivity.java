@@ -29,7 +29,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.SubtitleCollapsingToolbarLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
@@ -317,6 +316,7 @@ public class ArtistActivity extends AppCompatActivity {
 				}
 			}
 		});
+
 		top_songs_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView < ? > _param1, View _param2, int _param3, long _param4) {
@@ -333,6 +333,7 @@ public class ArtistActivity extends AppCompatActivity {
 				}
 			}
 		});
+
 		albums_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView < ? > _param1, View _param2, int _param3, long _param4) {
@@ -349,6 +350,7 @@ public class ArtistActivity extends AppCompatActivity {
 				}
 			}
 		});
+
 		singles_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView < ? > _param1, View _param2, int _param3, long _param4) {
@@ -365,6 +367,7 @@ public class ArtistActivity extends AppCompatActivity {
 				}
 			}
 		});
+
 		live_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView < ? > _param1, View _param2, int _param3, long _param4) {
@@ -381,6 +384,7 @@ public class ArtistActivity extends AppCompatActivity {
 				}
 			}
 		});
+
 		compilations_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView < ? > _param1, View _param2, int _param3, long _param4) {
@@ -397,6 +401,7 @@ public class ArtistActivity extends AppCompatActivity {
 				}
 			}
 		});
+
 		appears_on_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView < ? > _param1, View _param2, int _param3, long _param4) {
@@ -431,12 +436,10 @@ public class ArtistActivity extends AppCompatActivity {
 				bs_base.setCancelable(true);
 				View layBase = getLayoutInflater().inflate(R.layout.bottom, null);
 				bs_base.setContentView(layBase);
-				TextView text = (TextView)
-						layBase.findViewById(R.id.text);
+				TextView text = (TextView) layBase.findViewById(R.id.text);
 				text.setText(info.get((int) 0).get("tale_".concat(sp.getString("prefix", ""))).toString());
 				text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				TextView about = (TextView)
-						layBase.findViewById(R.id.about);
+				TextView about = (TextView) layBase.findViewById(R.id.about);
 				about.setVisibility(View.GONE);
 				about.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 				bs_base.show();
@@ -596,7 +599,6 @@ public class ArtistActivity extends AppCompatActivity {
 			} else {
 				appear_on_linear.setVisibility(View.GONE);
 			}
-
 			if (map.get((int) 0).containsKey("about")) {
 				info = new Gson().fromJson(map.get((int) 0).get("about").toString(), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
 			}
@@ -625,7 +627,6 @@ public class ArtistActivity extends AppCompatActivity {
 	}
 
 	public void _text() {
-
 		Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(imageview1);
 		if (sp.getString("quality", "").equals("mobile")) {
 			if (map.get((int) 0).containsKey("image4k")) {
@@ -722,6 +723,7 @@ public class ArtistActivity extends AppCompatActivity {
 		inflater.inflate(R.menu.artist, menu);
 		return true;
 	}
+
 	@Override
 	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
@@ -771,7 +773,6 @@ public class ArtistActivity extends AppCompatActivity {
 			if (_view == null) {
 				_view = _inflater.inflate(R.layout.playlists, null);
 			}
-
 			final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
 			final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
 			final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
@@ -843,7 +844,6 @@ public class ArtistActivity extends AppCompatActivity {
 			if (_view == null) {
 				_view = _inflater.inflate(R.layout.playlists, null);
 			}
-
 			final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
 			final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
 			final TextView Name = (TextView) _view.findViewById(R.id.Name);
@@ -902,7 +902,6 @@ public class ArtistActivity extends AppCompatActivity {
 			if (_view == null) {
 				_view = _inflater.inflate(R.layout.playlists, null);
 			}
-
 			final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
 			final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
 			final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
@@ -974,7 +973,6 @@ public class ArtistActivity extends AppCompatActivity {
 			if (_view == null) {
 				_view = _inflater.inflate(R.layout.playlists, null);
 			}
-
 			final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
 			final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
 			final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
@@ -1046,7 +1044,6 @@ public class ArtistActivity extends AppCompatActivity {
 			if (_view == null) {
 				_view = _inflater.inflate(R.layout.playlists, null);
 			}
-
 			final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
 			final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
 			final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
@@ -1118,7 +1115,6 @@ public class ArtistActivity extends AppCompatActivity {
 			if (_view == null) {
 				_view = _inflater.inflate(R.layout.playlists, null);
 			}
-
 			final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
 			final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
 			final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
@@ -1190,7 +1186,6 @@ public class ArtistActivity extends AppCompatActivity {
 			if (_view == null) {
 				_view = _inflater.inflate(R.layout.playlists, null);
 			}
-
 			final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
 			final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
 			final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
@@ -1262,20 +1257,17 @@ public class ArtistActivity extends AppCompatActivity {
 			if (_view == null) {
 				_view = _inflater.inflate(R.layout.links, null);
 			}
-
 			final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
 			final ImageView link_image = (ImageView) _view.findViewById(R.id.link_image);
 			final LinearLayout linear2 = (LinearLayout) _view.findViewById(R.id.linear2);
 			final ImageView open = (ImageView) _view.findViewById(R.id.open);
 			final TextView link_text = (TextView) _view.findViewById(R.id.link_text);
 			final TextView link_adress = (TextView) _view.findViewById(R.id.link_adress);
-
 			Glide.with(getApplicationContext()).load(Uri.parse(links.get((int) _position).get("image").toString())).into(link_image);
 			link_text.setText(links.get((int) _position).get("text_".concat(sp.getString("prefix", ""))).toString());
 			_marquee(link_adress, links.get((int) _position).get("link").toString());
 			link_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 			link_adress.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-
 			return _view;
 		}
 	}

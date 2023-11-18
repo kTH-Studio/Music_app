@@ -159,6 +159,7 @@ public class FullActivity extends AppCompatActivity {
                 break;
         }
     }
+
     public void _marquee(final TextView _textview, final String _text) {
         _textview.setText(_text);
         _textview.setSingleLine(true);
@@ -260,7 +261,6 @@ public class FullActivity extends AppCompatActivity {
             if (_view == null) {
                 _view = _inflater.inflate(R.layout.artists, null);
             }
-
             final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
             final de.hdodenhof.circleimageview.CircleImageView imageview2 = (de.hdodenhof.circleimageview.CircleImageView) _view.findViewById(R.id.imageview2);
             final LinearLayout linear2 = (LinearLayout) _view.findViewById(R.id.linear2);

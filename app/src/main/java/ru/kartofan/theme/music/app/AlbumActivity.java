@@ -2,7 +2,6 @@ package ru.kartofan.theme.music.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.*;
-
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -33,7 +32,6 @@ import android.graphics.Typeface;
 import com.google.android.material.appbar.SubtitleCollapsingToolbarLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
@@ -170,6 +168,14 @@ public class AlbumActivity extends AppCompatActivity {
 			}
 		});
 
+		listview1.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> _param1, View _param2, int _param3, long _param4) {
+				final int _position = _param3;
+				return true;
+			}
+		});
+
 		other_versions_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView < ? > _param1, View _param2, int _param3, long _param4) {
@@ -186,6 +192,7 @@ public class AlbumActivity extends AppCompatActivity {
 				}
 			}
 		});
+
 		more_by_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView < ? > _param1, View _param2, int _param3, long _param4) {
@@ -202,6 +209,7 @@ public class AlbumActivity extends AppCompatActivity {
 				}
 			}
 		});
+
 		featured_artists_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView < ? > _param1, View _param2, int _param3, long _param4) {
@@ -229,6 +237,7 @@ public class AlbumActivity extends AppCompatActivity {
 				startActivity(p);
 			}
 		});
+
 		more_by_text.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -315,9 +324,7 @@ public class AlbumActivity extends AppCompatActivity {
 
 	@Override
 	protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
-
 		super.onActivityResult(_requestCode, _resultCode, _data);
-
 		switch (_requestCode) {
 			default:
 				break;
@@ -473,12 +480,173 @@ public class AlbumActivity extends AppCompatActivity {
 		time.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 	}
 
+	public void _bottom() {
+		final com.google.android.material.bottomsheet.BottomSheetDialog bs_base = new com.google.android.material.bottomsheet.BottomSheetDialog(AlbumActivity.this);
+		bs_base.setCancelable(true);
+		View layBase = getLayoutInflater().inflate(R.layout.info, null);
+		bs_base.setContentView(layBase);
+		ImageView image = (ImageView) layBase.findViewById(R.id.image);
+		ImageView explicit = (ImageView) layBase.findViewById(R.id.explicit);
+		ImageView artist_image = (ImageView) layBase.findViewById(R.id.artist_image);
+		ImageView album_image = (ImageView) layBase.findViewById(R.id.album_image);
+		ImageView lyrics_image = (ImageView) layBase.findViewById(R.id.lyrics_image);
+		ImageView info_image = (ImageView) layBase.findViewById(R.id.info_image);
+		TextView name = (TextView) layBase.findViewById(R.id.name);
+		TextView album = (TextView) layBase.findViewById(R.id.album);
+		TextView artist = (TextView) layBase.findViewById(R.id.artist);
+		TextView artist_text = (TextView) layBase.findViewById(R.id.artist_text);
+		TextView album_text = (TextView) layBase.findViewById(R.id.album_text);
+		TextView lyrics_text = (TextView) layBase.findViewById(R.id.lyrics_text);
+		TextView info_text = (TextView) layBase.findViewById(R.id.info_text);
+		LinearLayout artist_linear = (LinearLayout) layBase.findViewById(R.id.artist_linear);
+		LinearLayout album_linear = (LinearLayout) layBase.findViewById(R.id.album_linear);
+		LinearLayout lyrics_linear = (LinearLayout) layBase.findViewById(R.id.lyrics_linear);
+		LinearLayout info_linear = (LinearLayout) layBase.findViewById(R.id.info_linear);
+		name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		artist.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		artist_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		album_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		lyrics_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		info_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		if (uri.size() > 1) {
+			artist_text.setText(getString(R.string.go_to_artists));
+		} else {
+			artist_text.setText(getString(R.string.go_to_artist));
+		}
+		if (map.get((int) 0).get("explicit").toString().equals("yes")) {
+			explicit.setVisibility(View.VISIBLE);
+		} else {
+			explicit.setVisibility(View.GONE);
+		}
+		if (map.get((int) 0).containsKey("text")) {
+			lyrics_linear.setVisibility(View.VISIBLE);
+		} else {
+			lyrics_linear.setVisibility(View.GONE);
+		}
+		image.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (map.get((int) 0).containsKey("image4k")) {
+					if (sp.getString("quality", "").equals("mobile")) {
+						i.setClass(getApplicationContext(), ImageActivity.class);
+						i.putExtra("imageq", map.get((int) 0).get("image4k").toString());
+						startActivity(i);
+					} else {
+						i.setClass(getApplicationContext(), ImageActivity.class);
+						i.putExtra("imageq", map.get((int) 0).get("image").toString());
+						startActivity(i);
+					}
+				} else {
+					i.setClass(getApplicationContext(), ImageActivity.class);
+					i.putExtra("imageq", map.get((int) 0).get("image").toString());
+					startActivity(i);
+				}
+			}
+		});
+		artist_text.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				_artist();
+			}
+		});
+		artist_image.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				_artist();
+			}
+		});
+		artist_image.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				_artist();
+			}
+		});
+		album_text.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				_album();
+			}
+		});
+		album_image.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				_album();
+			}
+		});
+		album_linear.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				_album();
+			}
+		});
+		lyrics_text.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				_lyrics();
+			}
+		});
+		lyrics_image.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				_lyrics();
+			}
+		});
+		lyrics_linear.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				_lyrics();
+			}
+		});
+		name.setText(map.get((int)0).get("name").toString());
+		album.setText(map.get((int)0).get("album").toString());
+		artist.setText(map.get((int) 0).get("artist").toString());
+		Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(image);
+		bs_base.show();
+	}
+
+	public void _artist() {
+		if (uri.size() > 1) {
+			i.setClass(getApplicationContext(), FullActivity.class);
+			i.putExtra("data", new Gson().toJson(uri));
+			i.putExtra("artist", map.get((int) 0).get("artist").toString());
+			i.putExtra("title", getString(R.string.featured_artists_1));
+			startActivity(i);
+		} else {
+			i.setClass(getApplicationContext(), ArtistActivity.class);
+			i.putExtra("link", uri.get((int) 0).get("link").toString());
+			startActivity(i);
+		}
+	}
+
+	public void _album() {
+		i.setClass(getApplicationContext(), AlbumActivity.class);
+		i.putExtra("link", map.get((int) 0).get("album_uri").toString());
+		startActivity(i);
+	}
+
+	public void _lyrics() {
+		final com.google.android.material.bottomsheet.BottomSheetDialog bs_base = new com.google.android.material.bottomsheet.BottomSheetDialog(AlbumActivity.this);
+		bs_base.setCancelable(true);
+		View layBase = getLayoutInflater().inflate(R.layout.bottom, null);
+		bs_base.setContentView(layBase);
+		TextView text = (TextView) layBase.findViewById(R.id.text);
+		text.setText(play.get((int) 0).get("text").toString().concat(getString(R.string.written_by)).concat(play.get((int) 0).get("written").toString()));
+		text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		TextView about = (TextView) layBase.findViewById(R.id.about);
+		about.setVisibility(View.VISIBLE);
+		about.setText(map.get((int) 0).get("name").toString().concat("\n").concat(map.get((int) 0).get("artist").toString()));
+		about.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		bs_base.show();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.artist, menu);
 		return true;
 	}
+
 	@Override
 	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {

@@ -41,10 +41,6 @@ import java.util.TimerTask;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.view.View;
-import androidx.core.content.ContextCompat;
-import androidx.core.app.ActivityCompat;
-import android.Manifest;
-import android.content.pm.PackageManager;
 
 public class ProfileActivity extends  AppCompatActivity  {
 
@@ -99,6 +95,7 @@ public class ProfileActivity extends  AppCompatActivity  {
     private OnCompleteListener<Void> _fauth_reset_password_listener;
     private TimerTask t;
     private SharedPreferences theme;
+
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
@@ -107,6 +104,7 @@ public class ProfileActivity extends  AppCompatActivity  {
         com.google.firebase.FirebaseApp.initializeApp(this);
         initializeLogic();
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
