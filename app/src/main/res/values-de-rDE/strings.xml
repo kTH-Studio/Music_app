@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Musik</string>
-    <string name="version">Version: 2.0 vom 18.November 2023. @kTH-Studio.</string>
+    <string name="version">Version: 2.1 vom 26.November 2023. @kTH-Studio.</string>
     <string name="new_in_music">Neu in der Musik:</string>
     <string name="about">ÜBER</string>
     <string name="hometown">HEIMATSTADT</string>
@@ -36,8 +36,8 @@
     <string name="explicit_hint" >Anstößige Inhalte erlauben</string>
     <string name="set_theme">Thema festlegen</string>
     <string name="set_language">Sprache einstellen</string>
-    <string name="explicit_off">Wir werden keine beschrifteten Titel abspielen 🅴</string>
-    <string name="explicit_on">wir werden Titel mit der Aufschrift 🅴 spielen</string>
+    <string name="explicit_off">Wir werden keine Titel mit der Bezeichnung 🅴 abspielen</string>
+    <string name="explicit_on">Wir werden Titel mit der Bezeichnung 🅴 spielen</string>
     <string name="albums_1">Alben</string>
     <string name="latest_release_1">Neuerscheinung</string>
     <string name="top_songs_1">Top-Titel</string>
@@ -78,9 +78,16 @@
     <string name="animated_art">Animierte Kunst</string>
     <string name="animated_art_hint">Alben und Künstlerseiten werden automatisch abgespielt</string>
     <string name="high_quality">Hochwertig</string>
-    <string name="wifi_connected">Nur WiFi</string>
     <string name="profile">Profil</string>
-    <string name="mobile_connected">WiFi und Mobilfunk</string>
     <string name="disabled">Behinderte</string>
     <string name="internet_lost">Keine Internetverbindung!</string>
+    <string name="battery">Durch Batterie Standard</string>
+    <string name="more">Mehr</string>
+    <string name="go_to_artist">Zum Künstler</string>
+    <string name="go_to_artists">Zu den Künstlern</string>
+    <string name="go_to_album">Gehe zum Album</string>
+    <string name="show_lyrics">Liedtext anzeigen</string>
+    <string name="track_details">Streckendetails</string>
+    <string name="enabled">Aktiviert</string>
+    <string name="single">Single</string>
 </resources>

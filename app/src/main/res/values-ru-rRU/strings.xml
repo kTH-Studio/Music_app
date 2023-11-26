@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Музыка</string>
-    <string name="version">Версия: 2.0 от 18 ноября 2023. @kTH-Studio.</string>
+    <string name="version">Версия: 2.1 от 26 ноября 2023. @kTH-Studio.</string>
     <string name="new_in_music">Новое в Музыке:</string>
     <string name="about">ИНФОРМАЦИЯ</string>
     <string name="hometown">МЕСТО РОЖДЕНИЯ</string>
@@ -78,10 +78,16 @@
     <string name="animated_art">Анимированные обложки</string>
     <string name="animated_art_hint">Страницы альбомов и артистов будут автоматически воспроизводиться</string>
     <string name="high_quality">Высокое качество</string>
-    <string name="wifi_connected">Только WiFi</string>
     <string name="profile">Профиль</string>
     <string name="disabled">Отключено</string>
     <string name="internet_lost">Нет Интернет соединения!</string>
-    <string name="mobile_connected">WiFi и мобильные данные</string>
-
+    <string name="enabled">Включено</string>
+    <string name="track_details">Информация о треке</string>
+    <string name="show_lyrics">Текст песни</string>
+    <string name="go_to_album">Перейти к альбому</string>
+    <string name="go_to_artists">Перейти к артистам</string>
+    <string name="go_to_artist">Перейти к артисту</string>
+    <string name="more">Больше</string>
+    <string name="battery">По энергосберегающему моду</string>
+    <string name="single">Сингл</string>
 </resources>

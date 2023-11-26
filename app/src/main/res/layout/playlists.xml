@@ -34,7 +34,7 @@
 			<TextView
 				android:id="@+id/Name"
 				android:focusable="false"
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:gravity="center_vertical"
 				android:text=""
@@ -44,7 +44,7 @@
 			<TextView
 				android:id="@+id/album"
 				android:focusable="false"
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text=""
 				android:textSize="16sp"
@@ -52,29 +52,17 @@
 			<TextView
 				android:id="@+id/Release"
 				android:focusable="false"
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text=""
 				android:textSize="16sp"
 				android:textColor="@color/text2"/>
 		</LinearLayout>
-		<LinearLayout
-			android:layout_gravity="center_horizontal|center_vertical"
-			android:gravity="center_vertical|center_horizontal"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content">
-			<ImageView
-				android:paddingLeft="5dp"
-				android:id="@+id/explicit"
-				android:layout_width="20dp"
-				android:layout_height="20dp"
-				android:src="@drawable/ic_outline_explicit"/>
 			<ImageView
 				android:paddingLeft="5dp"
 				android:id="@+id/more"
 				android:layout_width="30dp"
 				android:layout_height="30dp"
 				android:src="@drawable/ic_more_vert"/>
-		</LinearLayout>
 	</LinearLayout>
 </LinearLayout>

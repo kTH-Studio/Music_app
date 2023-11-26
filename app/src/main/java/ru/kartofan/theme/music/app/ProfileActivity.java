@@ -246,7 +246,6 @@ public class ProfileActivity extends  AppCompatActivity  {
             @Override
             public void onFailure(Exception _param1) {
                 final String _message = _param1.getMessage();
-                SketchwareUtil.showMessage(getApplicationContext(), _message);
             }
         };
 

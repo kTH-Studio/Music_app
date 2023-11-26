@@ -46,13 +46,19 @@ import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends AppCompatActivity {
 
+	private LinearLayout mini_player;
+	private ImageView player_image;
+	private ImageView player_explicit;
+	private TextView player_name;
+	private TextView player_artist;
+	private ImageView play;
 	private FirebaseDatabase _firebase = FirebaseDatabase.getInstance();
 	private final Timer _timer = new Timer();
 	private String str = "";
 	private String language = "";
 	private String site = "";
 	private String latest_version = "";
-	private String current_version = "2.0";
+	private String current_version = "2.1";
 	private String description = "";
 	private String link = "";
 	private String package_name = "";
@@ -112,6 +118,11 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void initialize(Bundle _savedInstanceState) {
+		mini_player = (LinearLayout) findViewById(R.id.mini_player);
+		player_image = (ImageView) findViewById(R.id.player_image);
+		player_name = (TextView) findViewById(R.id.player_name);
+		player_artist = (TextView) findViewById(R.id.player_artist);
+		play = (ImageView) findViewById(R.id.play);
 		linear1 = (LinearLayout) findViewById(R.id.linear1);
 		textview1 = (TextView) findViewById(R.id.textview1);
 		listview1 = (ListView) findViewById(R.id.listview1);
@@ -128,9 +139,6 @@ public class MainActivity extends AppCompatActivity {
 		if (sp.getString("theme", "").equals("")) {
 			sp.edit().putString("theme", "default").commit();
 		}
-		if (sp.getString("restrictions", "").equals("")) {
-			sp.edit().putString("restrictions", "no").commit();
-		}
 		if (sp.getString("explicit", "").equals("")) {
 			sp.edit().putString("explicit", "no").commit();
 		}
@@ -139,6 +147,9 @@ public class MainActivity extends AppCompatActivity {
 		}
 		if (sp.getString("quality", "").equals("")) {
 			sp.edit().putString("quality", "no").commit();
+		}
+		if (sp.getString("player", "").equals("")) {
+			sp.edit().putString("player", "no").commit();
 		}
 		fauth = FirebaseAuth.getInstance();
 
@@ -499,7 +510,7 @@ public class MainActivity extends AppCompatActivity {
 			str = s;
 			map = new Gson().fromJson(str, new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
 			listview1.setAdapter(new Listview1Adapter(map));
-			_ViewSetHeight(listview1, map.size() * SketchwareUtil.getDip(getApplicationContext(), (int)(69)));
+			_ViewSetHeight(listview1, map.size() * kTHUtil.getDip(getApplicationContext(), (int)(69)));
 			((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
 			listview1.setVisibility(View.VISIBLE);
 		}

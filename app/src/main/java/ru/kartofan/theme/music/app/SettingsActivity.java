@@ -30,7 +30,6 @@ public class SettingsActivity extends AppCompatActivity {
     private LinearLayout theme_linear;
     private LinearLayout segment_2;
     private TextView restrictions_settings;
-    private Switch restrictions_hint;
     private LinearLayout explicit_linear;
     private LinearLayout segment_3;
     private TextView video_settings;
@@ -89,7 +88,6 @@ public class SettingsActivity extends AppCompatActivity {
         theme_linear = (LinearLayout) findViewById(R.id.theme_linear);
         segment_2 = (LinearLayout) findViewById(R.id.segment_2);
         restrictions_settings = (TextView) findViewById(R.id.restrictions_settings);
-        restrictions_hint = (Switch) findViewById(R.id.restrictions_hint);
         explicit_linear = (LinearLayout) findViewById(R.id.explicit_linear);
         segment_3 = (LinearLayout) findViewById(R.id.segment_3);
         linear2 = (LinearLayout) findViewById(R.id.linear2);
@@ -114,27 +112,6 @@ public class SettingsActivity extends AppCompatActivity {
         quality_linear = (LinearLayout) findViewById(R.id.quality_linear);
         quality_hint = (TextView) findViewById(R.id.quality_hint);
         quality_choice = (TextView) findViewById(R.id.quality_choice);
-
-        restrictions_hint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton _param1, boolean _param2) {
-                final boolean _isChecked = _param2;
-                if (_isChecked) {
-                    sp.edit().putString("restrictions", "yes").commit();
-                    restrictions_hint.setChecked(true);
-                    explicit_choice.setAlpha(1);
-                    explicit_switch.setAlpha(1);
-                    explicit_hint.setAlpha(1);
-                } else {
-                    sp.edit().putString("restrictions", "no").commit();
-                    restrictions_hint.setChecked(false);
-                    explicit_choice.setAlpha((float) 0.5d);
-                    explicit_switch.setAlpha((float) 0.5 );
-                    explicit_hint.setAlpha((float) 0.5d);
-                    explicit_switch.setChecked(false);
-                }
-            }
-        });
 
         explicit_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -303,7 +280,6 @@ public class SettingsActivity extends AppCompatActivity {
         quality_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         language_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         theme_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-        restrictions_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         explicit_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         display_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         textview2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -317,34 +293,21 @@ public class SettingsActivity extends AppCompatActivity {
         } else {
             display_switch.setChecked(true);
         }
-        if (sp.getString("restrictions", "").equals("no")) {
-            restrictions_hint.setChecked(false);
-            explicit_choice.setAlpha((float) 0.5d);
-            explicit_switch.setAlpha((float) 0.5d);
-            explicit_hint.setAlpha((float) 0.5d);
+        if (sp.getString("explicit", "").equals("no")) {
+            explicit_switch.setChecked(false);
+            _marquee(explicit_choice, getString(R.string.explicit_off));
         } else {
-            restrictions_hint.setChecked(true);
-            explicit_choice.setAlpha(1);
-            explicit_switch.setAlpha(1);
-            explicit_hint.setAlpha(1);
-            if (sp.getString("explicit", "").equals("no")) {
-                explicit_switch.setChecked(false);
-                _marquee(explicit_choice, getString(R.string.explicit_off));
-            } else {
-                explicit_switch.setChecked(true);
-                _marquee(explicit_choice, getString(R.string.explicit_on));
-            }
+            explicit_switch.setChecked(true);
+            _marquee(explicit_choice, getString(R.string.explicit_on));
         }
         if (sp.getString("video", "").equals("no")) {
             display_switch.setChecked(false);
         } else {
             display_switch.setChecked(true);
         }
-        if (sp.getString("quality", "").equals("wifi")) {
-            quality_choice.setText(getString(R.string.wifi_connected));
-        } else if (sp.getString("quality", "").equals("mobile")) {
-            quality_choice.setText(getString(R.string.mobile_connected));
-        } else {
+        if (sp.getString("quality", "").equals("yes")) {
+            quality_choice.setText(getString(R.string.enabled));
+       } else {
             quality_choice.setText(getString(R.string.disabled));
         }
         if (sp.getString("theme", "").equals("battery")) {
@@ -438,8 +401,8 @@ public class SettingsActivity extends AppCompatActivity {
         mobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                quality_choice.setText(getString(R.string.mobile_connected));
-                sp.edit().putString("quality", "mobile").commit();
+                quality_choice.setText(getString(R.string.enabled));
+                sp.edit().putString("quality", "yes").commit();
                 bs_base.cancel();
             }
         });

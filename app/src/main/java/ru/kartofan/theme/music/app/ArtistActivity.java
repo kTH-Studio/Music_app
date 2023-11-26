@@ -3,10 +3,8 @@ package ru.kartofan.theme.music.app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
-import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.*;
+import android.text.style.ForegroundColorSpan;
 import android.view.*;
 import android.widget.*;
 import android.content.*;
@@ -26,14 +24,23 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.graphics.Typeface;
 import com.bumptech.glide.Glide;
-import com.google.android.material.appbar.SubtitleCollapsingToolbarLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 public class ArtistActivity extends AppCompatActivity {
+
+	private ImageView image_quality;
 	private String str;
+	private String lateststr;
+	private String topstr;
+	private String albumsstr;
+	private String singlesstr;
+	private String livestr;
+	private String compilationsstr;
+	private String appearsstr;
 	private ArrayList < HashMap < String, Object >> map = new ArrayList < > ();
 	private ArrayList < HashMap < String, Object >> latest = new ArrayList < > ();
 	private ArrayList < HashMap < String, Object >> top = new ArrayList < > ();
@@ -88,7 +95,6 @@ public class ArtistActivity extends AppCompatActivity {
 	private ListView compilations_list;
 	private ListView appears_on_list;
 	private SharedPreferences sp;
-	private View view;
 	private final Intent i = new Intent();
 	private final Intent p = new Intent();
 	private final Intent l = new Intent();
@@ -103,7 +109,8 @@ public class ArtistActivity extends AppCompatActivity {
 	}
 
 	private void initialize(Bundle _savedInstanceState) {
-		imageview1 = (ImageView) findViewById(R.id.imageview1);
+		image_quality = (ImageView) findViewById(R.id.image_quality);
+		imageview1 = (pl.droidsonroids.gif.GifImageView) findViewById(R.id.imageview1);
 		textview1 = (TextView) findViewById(R.id.textview1);
 		about_segment = (LinearLayout) findViewById(R.id.about_segment);
 		links_segment = (LinearLayout) findViewById(R.id.links_segment);
@@ -283,18 +290,24 @@ public class ArtistActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View _view) {
 				if (map.get((int) 0).containsKey("image4k")) {
-					if (sp.getString("quality", "").equals("mobile")) {
+					if (sp.getString("quality", "").equals("yes")) {
 						i.setClass(getApplicationContext(), ImageActivity.class);
 						i.putExtra("imageq", map.get((int) 0).get("image4k").toString());
+						i.putExtra("name", map.get((int) 0).get("name").toString());
+						i.putExtra("artist", "");
 						startActivity(i);
 					} else {
 						i.setClass(getApplicationContext(), ImageActivity.class);
 						i.putExtra("imageq", map.get((int) 0).get("image").toString());
+						i.putExtra("name", map.get((int) 0).get("name").toString());
+						i.putExtra("artist", "");
 						startActivity(i);
 					}
 				} else {
 					i.setClass(getApplicationContext(), ImageActivity.class);
 					i.putExtra("imageq", map.get((int) 0).get("image").toString());
+					i.putExtra("name", map.get((int) 0).get("name").toString());
+					i.putExtra("artist", "");
 					startActivity(i);
 				}
 			}
@@ -457,10 +470,6 @@ public class ArtistActivity extends AppCompatActivity {
 		} else if (sp.getString("theme", "").equals("light")){
 			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 		}
-		if (Build.VERSION.SDK_INT >=23) {
-			getWindow().setFlags(WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT, WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT);
-			getWindow().setStatusBarColor(Color.TRANSPARENT);
-		}
 		latest_release_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		top_songs_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		albums_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -514,7 +523,7 @@ public class ArtistActivity extends AppCompatActivity {
 				latest_release_linear.setVisibility(View.VISIBLE);
 				latest = new Gson().fromJson(map.get((int) 0).get("latest").toString(), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
 				latest_release_list.setAdapter(new Latest_release_listAdapter(albums));
-					_ViewSetHeight(latest_release_list, latest.size() * SketchwareUtil.getDip(getApplicationContext(), (int)(77)));
+					_ViewSetHeight(latest_release_list, latest.size() * kTHUtil.getDip(getApplicationContext(), (int)(77)));
 					latest_release_hint.setText(getString(R.string.albums_1).concat(" (").concat(String.valueOf(latest.size())).concat(") >"));
 				((BaseAdapter) latest_release_list.getAdapter()).notifyDataSetChanged();
 			} else {
@@ -524,7 +533,7 @@ public class ArtistActivity extends AppCompatActivity {
 				top_songs_linear.setVisibility(View.VISIBLE);
 				top = new Gson().fromJson(map.get((int) 0).get("top_songs").toString(), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
 				top_songs_list.setAdapter(new Top_songs_listAdapter(top));
-				_ViewSetHeight(top_songs_list, top.size() * SketchwareUtil.getDip(getApplicationContext(), (int)(51)));
+				_ViewSetHeight(top_songs_list, top.size() * kTHUtil.getDip(getApplicationContext(), (int)(51)));
 				((BaseAdapter) top_songs_list.getAdapter()).notifyDataSetChanged();
 			} else {
 				top_songs_linear.setVisibility(View.GONE);
@@ -534,9 +543,9 @@ public class ArtistActivity extends AppCompatActivity {
 				albums = new Gson().fromJson(map.get((int) 0).get("albums").toString(), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
 				albums_list.setAdapter(new Albums_listAdapter(albums));
 				if (albums.size() < 5) {
-					_ViewSetHeight(albums_list, albums.size() * SketchwareUtil.getDip(getApplicationContext(), (int)(77)));
+					_ViewSetHeight(albums_list, albums.size() * kTHUtil.getDip(getApplicationContext(), (int)(77)));
 				} else {
-					_ViewSetHeight(albums_list, 5 * SketchwareUtil.getDip(getApplicationContext(), (int)(77)));
+					_ViewSetHeight(albums_list, 5 * kTHUtil.getDip(getApplicationContext(), (int)(77)));
 				}
 				albums_hint.setText(getString(R.string.albums_1).concat(" (").concat(String.valueOf(albums.size())).concat(") >"));
 				((BaseAdapter) albums_list.getAdapter()).notifyDataSetChanged();
@@ -548,9 +557,9 @@ public class ArtistActivity extends AppCompatActivity {
 				singles = new Gson().fromJson(map.get((int) 0).get("singles").toString(), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
 				singles_list.setAdapter(new Singles_listAdapter(singles));
 				if (singles.size() < 5) {
-					_ViewSetHeight(singles_list, singles.size() * SketchwareUtil.getDip(getApplicationContext(), (int)(77)));
+					_ViewSetHeight(singles_list, singles.size() * kTHUtil.getDip(getApplicationContext(), (int)(77)));
 				} else {
-					_ViewSetHeight(singles_list, 5 * SketchwareUtil.getDip(getApplicationContext(), (int)(77)));
+					_ViewSetHeight(singles_list, 5 * kTHUtil.getDip(getApplicationContext(), (int)(77)));
 				}
 				singles_hint.setText(getString(R.string.singles_1).concat(" (").concat(String.valueOf(singles.size())).concat(") >"));
 				((BaseAdapter) singles_list.getAdapter()).notifyDataSetChanged();
@@ -562,9 +571,9 @@ public class ArtistActivity extends AppCompatActivity {
 				live = new Gson().fromJson(map.get((int) 0).get("live").toString(), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
 				live_list.setAdapter(new Live_listAdapter(live));
 				if (live.size() < 5) {
-					_ViewSetHeight(live_list, live.size() * SketchwareUtil.getDip(getApplicationContext(), (int)(77)));
+					_ViewSetHeight(live_list, live.size() * kTHUtil.getDip(getApplicationContext(), (int)(77)));
 				} else {
-					_ViewSetHeight(live_list, 5 * SketchwareUtil.getDip(getApplicationContext(), (int)(77)));
+					_ViewSetHeight(live_list, 5 * kTHUtil.getDip(getApplicationContext(), (int)(77)));
 				}
 				live_hint.setText(getString(R.string.live_1).concat(" (").concat(String.valueOf(live.size())).concat(") >"));
 				((BaseAdapter) live_list.getAdapter()).notifyDataSetChanged();
@@ -576,9 +585,9 @@ public class ArtistActivity extends AppCompatActivity {
 				compilations = new Gson().fromJson(map.get((int) 0).get("compilations").toString(), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
 				compilations_list.setAdapter(new Compilations_listAdapter(compilations));
 				if (compilations.size() < 5) {
-					_ViewSetHeight(compilations_list, compilations.size() * SketchwareUtil.getDip(getApplicationContext(), (int)(77)));
+					_ViewSetHeight(compilations_list, compilations.size() * kTHUtil.getDip(getApplicationContext(), (int)(77)));
 				} else {
-					_ViewSetHeight(compilations_list, 5 * SketchwareUtil.getDip(getApplicationContext(), (int)(77)));
+					_ViewSetHeight(compilations_list, 5 * kTHUtil.getDip(getApplicationContext(), (int)(77)));
 				}
 				compilations_hint.setText(getString(R.string.compilations_1).concat(" (").concat(String.valueOf(compilations.size())).concat(") >"));
 				((BaseAdapter) compilations_list.getAdapter()).notifyDataSetChanged();
@@ -590,9 +599,9 @@ public class ArtistActivity extends AppCompatActivity {
 				appears = new Gson().fromJson(map.get((int) 0).get("appear").toString(), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
 				appears_on_list.setAdapter(new Appears_listAdapter(appears));
 				if (appears.size() < 5) {
-					_ViewSetHeight(appears_on_list, appears.size() * SketchwareUtil.getDip(getApplicationContext(), (int)(77)));
+					_ViewSetHeight(appears_on_list, appears.size() * kTHUtil.getDip(getApplicationContext(), (int)(77)));
 				} else {
-					_ViewSetHeight(appears_on_list, 5 * SketchwareUtil.getDip(getApplicationContext(), (int)(77)));
+					_ViewSetHeight(appears_on_list, 5 * kTHUtil.getDip(getApplicationContext(), (int)(77)));
 				}
 				appears_on_hint.setText(getString(R.string.appears_on_1).concat(" (").concat(String.valueOf(appears.size())).concat(") >"));
 				((BaseAdapter) appears_on_list.getAdapter()).notifyDataSetChanged();
@@ -605,7 +614,7 @@ public class ArtistActivity extends AppCompatActivity {
 			if (map.get((int) 0).containsKey("links")) {
 				links = new Gson().fromJson(map.get((int) 0).get("links").toString(), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
 				links_list.setAdapter(new Links_listAdapter(links));
-				_ViewSetHeight(links_list, links.size() * SketchwareUtil.getDip(getApplicationContext(), (int)(50)));
+				_ViewSetHeight(links_list, links.size() * kTHUtil.getDip(getApplicationContext(), (int)(50)));
 				((BaseAdapter) links_list.getAdapter()).notifyDataSetChanged();
 				if (map.get((int) 0).containsKey("about")) {
 					links_list.setVisibility(View.GONE);
@@ -628,23 +637,21 @@ public class ArtistActivity extends AppCompatActivity {
 
 	public void _text() {
 		Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(imageview1);
-		if (sp.getString("quality", "").equals("mobile")) {
+		image_quality.setImageResource(R.drawable.ic_hd);
+		if (sp.getString("quality", "").equals("yes")) {
 			if (map.get((int) 0).containsKey("image4k")) {
 				Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image4k").toString())).into(imageview1);
-			}
-		} else if (sp.getString("quality", "").equals("wifi")) {
-			if (map.get((int) 0).containsKey("image4k")) {
-				ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-				NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-				if (mWifi.isConnected()) {
-					Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image4k").toString())).into(imageview1);
-				}
+				image_quality.setImageResource(R.drawable.ic_4k);
 			}
 		} else {
 			Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(imageview1);
+			image_quality.setImageResource(R.drawable.ic_hd);
 		}
 		if (sp.getString("animation", "").equals("yes")) {
-			Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("gif").toString())).into(imageview1);
+			if (map.get((int) 0).containsKey("gif")) {
+				Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("gif").toString())).into(imageview1);
+			image_quality.setImageResource(R.drawable.ic_gif);
+			}
 		}
 		_marquee(textview1, map.get((int) 0).get("name").toString());
 		textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -652,8 +659,6 @@ public class ArtistActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
-		final SubtitleCollapsingToolbarLayout subtitleCollapsingToolbarLayout = findViewById(R.id.toolbar_layout);
-		subtitleCollapsingToolbarLayout.setTitle(map.get((int) 0).get("name").toString());
 		if (map.get((int) 0).containsKey("about")) {
 			about_segment.setVisibility(View.VISIBLE);
 			if (info.get((int) 0).containsKey("tale_".concat(sp.getString("prefix", "")))) {
@@ -732,6 +737,13 @@ public class ArtistActivity extends AppCompatActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	public void _marque(final TextView _textview, final SpannableStringBuilder _text) {
+		_textview.setText(_text);
+		_textview.setSingleLine(true);
+		_textview.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+		_textview.setSelected(true);
+	}
+
 	public void _marquee(final TextView _textview, final String _text) {
 		_textview.setText(_text);
 		_textview.setSingleLine(true);
@@ -775,13 +787,11 @@ public class ArtistActivity extends AppCompatActivity {
 			}
 			final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
 			final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
-			final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
 			final TextView Name = (TextView) _view.findViewById(R.id.Name);
 			final TextView album = (TextView) _view.findViewById(R.id.album);
 			final TextView Release = (TextView) _view.findViewById(R.id.Release);
 			final ImageView more = (ImageView) _view.findViewById(R.id.more);
 			if (!latest.get((int) _position).containsKey("link")) {
-				explicit.setAlpha((float) 0.5d);
 				Release.setAlpha((float) 0.5d);
 				album.setAlpha((float) 0.5d);
 				imageview1.setAlpha((float) 0.5d);
@@ -789,7 +799,25 @@ public class ArtistActivity extends AppCompatActivity {
 				more.setAlpha((float) 0.5d);
 			}
 			if (_position < 1) {
-				_marquee(Name, latest.get((int) _position).get("name").toString());
+				if (latest.get((int) _position).get("explicit").toString().equals("yes")) {
+					if (latest.get((int) _position).containsKey("prefix")) {
+						lateststr = latest.get((int) _position).get("name").toString().concat(" ").concat(latest.get((int) _position).get("prefix").toString()).concat(" 🅴");
+					} else {
+						lateststr = latest.get((int) _position).get("name").toString().concat(" 🅴");
+					}
+				} else {
+					if (latest.get((int) _position).containsKey("prefix")) {
+						lateststr = latest.get((int) _position).get("name").toString().concat(" ").concat(latest.get((int) _position).get("prefix").toString());
+					} else {
+						lateststr = latest.get((int) _position).get("name").toString();
+					}
+				}
+				SpannableString ss = new SpannableString(lateststr);
+				SpannableStringBuilder ssb = new SpannableStringBuilder(lateststr);
+				int color = ContextCompat.getColor(ArtistActivity.this, R.color.text2);
+				ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
+				ssb.setSpan(fcsRed, latest.get((int) _position).get("name").toString().length(), lateststr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				_marque(Name, ssb);
 				if (latest.get((int) _position).containsKey("image")) {
 					Glide.with(getApplicationContext()).load(Uri.parse(latest.get((int) _position).get("image").toString())).into(imageview1);
 				}
@@ -801,11 +829,6 @@ public class ArtistActivity extends AppCompatActivity {
 				}
 				if (latest.get((int) _position).containsKey("release_".concat(sp.getString("prefix", ""))) && latest.get((int) _position).containsKey("time_".concat(sp.getString("prefix", "")))) {
 					_marquee(Release, latest.get((int) _position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(latest.get((int) _position).get("time_".concat(sp.getString("prefix", ""))).toString())));
-				}
-				if (latest.get((int) _position).get("explicit").toString().equals("yes")) {
-					explicit.setVisibility(View.VISIBLE);
-				} else {
-					explicit.setVisibility(View.GONE);
 				}
 				Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 				album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -845,12 +868,28 @@ public class ArtistActivity extends AppCompatActivity {
 				_view = _inflater.inflate(R.layout.playlists, null);
 			}
 			final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
-			final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
 			final TextView Name = (TextView) _view.findViewById(R.id.Name);
 			final TextView album = (TextView) _view.findViewById(R.id.album);
 			final TextView Release = (TextView) _view.findViewById(R.id.Release);
-
-			_marquee(Name, top.get((int) _position).get("name").toString());
+			if (top.get((int) _position).get("explicit").toString().equals("yes")) {
+				if (top.get((int) _position).containsKey("prefix")) {
+					topstr = top.get((int) _position).get("name").toString().concat(" ").concat(top.get((int) _position).get("prefix").toString()).concat(" 🅴");
+				} else {
+					topstr = top.get((int) _position).get("name").toString().concat(" 🅴");
+				}
+			} else {
+				if (top.get((int) _position).containsKey("prefix")) {
+					topstr = top.get((int) _position).get("name").toString().concat(" ").concat(top.get((int) _position).get("prefix").toString());
+				} else {
+					topstr = top.get((int) _position).get("name").toString();
+				}
+			}
+			SpannableString ss = new SpannableString(topstr);
+			SpannableStringBuilder ssb = new SpannableStringBuilder(topstr);
+			int color = ContextCompat.getColor(ArtistActivity.this, R.color.text2);
+			ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
+			ssb.setSpan(fcsRed, top.get((int) _position).get("name").toString().length(), topstr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			_marque(Name, ssb);
 			if (top.get((int) _position).containsKey("image")) {
 				Glide.with(getApplicationContext()).load(Uri.parse(top.get((int) _position).get("image").toString())).into(imageview1);
 			}
@@ -862,11 +901,6 @@ public class ArtistActivity extends AppCompatActivity {
 			}
 			if (top.get((int) _position).containsKey("release_".concat(sp.getString("prefix", ""))) && top.get((int) _position).containsKey("time_".concat(sp.getString("prefix", "")))) {
 				_marquee(Release, top.get((int) _position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(top.get((int) _position).get("time_".concat(sp.getString("prefix", ""))).toString())));
-			}
-			if (top.get((int) _position).get("explicit").toString().equals("yes")) {
-				explicit.setVisibility(View.VISIBLE);
-			} else {
-				explicit.setVisibility(View.GONE);
 			}
 			Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 			album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -904,13 +938,11 @@ public class ArtistActivity extends AppCompatActivity {
 			}
 			final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
 			final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
-			final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
 			final TextView Name = (TextView) _view.findViewById(R.id.Name);
 			final TextView album = (TextView) _view.findViewById(R.id.album);
 			final TextView Release = (TextView) _view.findViewById(R.id.Release);
 			final ImageView more = (ImageView) _view.findViewById(R.id.more);
 			if (!albums.get((int) _position).containsKey("link")) {
-				explicit.setAlpha((float) 0.5d);
 				Release.setAlpha((float) 0.5d);
 				album.setAlpha((float) 0.5d);
 				imageview1.setAlpha((float) 0.5d);
@@ -918,7 +950,25 @@ public class ArtistActivity extends AppCompatActivity {
 				more.setAlpha((float) 0.5d);
 			}
 			if (_position < 5) {
-				_marquee(Name, albums.get((int) _position).get("name").toString());
+				if (albums.get((int) _position).get("explicit").toString().equals("yes")) {
+					if (albums.get((int) _position).containsKey("prefix")) {
+						albumsstr = albums.get((int) _position).get("name").toString().concat(" ").concat(albums.get((int) _position).get("prefix").toString()).concat(" 🅴");
+					} else {
+						albumsstr = albums.get((int) _position).get("name").toString().concat(" 🅴");
+					}
+				} else {
+					if (albums.get((int) _position).containsKey("prefix")) {
+						albumsstr = albums.get((int) _position).get("name").toString().concat(" ").concat(albums.get((int) _position).get("prefix").toString());
+					} else {
+						albumsstr = albums.get((int) _position).get("name").toString();
+					}
+				}
+				SpannableString ss = new SpannableString(albumsstr);
+				SpannableStringBuilder ssb = new SpannableStringBuilder(albumsstr);
+				int color = ContextCompat.getColor(ArtistActivity.this, R.color.text2);
+				ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
+				ssb.setSpan(fcsRed, albums.get((int) _position).get("name").toString().length(), albumsstr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				_marque(Name, ssb);
 				if (albums.get((int) _position).containsKey("image")) {
 					Glide.with(getApplicationContext()).load(Uri.parse(albums.get((int) _position).get("image").toString())).into(imageview1);
 				}
@@ -930,11 +980,6 @@ public class ArtistActivity extends AppCompatActivity {
 				}
 				if (albums.get((int) _position).containsKey("release_".concat(sp.getString("prefix", ""))) && albums.get((int) _position).containsKey("time_".concat(sp.getString("prefix", "")))) {
 					_marquee(Release, albums.get((int) _position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(albums.get((int) _position).get("time_".concat(sp.getString("prefix", ""))).toString())));
-				}
-				if (albums.get((int) _position).get("explicit").toString().equals("yes")) {
-					explicit.setVisibility(View.VISIBLE);
-				} else {
-					explicit.setVisibility(View.GONE);
 				}
 				Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 				album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -975,13 +1020,11 @@ public class ArtistActivity extends AppCompatActivity {
 			}
 			final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
 			final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
-			final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
 			final TextView Name = (TextView) _view.findViewById(R.id.Name);
 			final TextView album = (TextView) _view.findViewById(R.id.album);
 			final TextView Release = (TextView) _view.findViewById(R.id.Release);
 			final ImageView more = (ImageView) _view.findViewById(R.id.more);
 			if (!singles.get((int) _position).containsKey("link")) {
-				explicit.setAlpha((float) 0.5d);
 				Release.setAlpha((float) 0.5d);
 				album.setAlpha((float) 0.5d);
 				imageview1.setAlpha((float) 0.5d);
@@ -989,7 +1032,25 @@ public class ArtistActivity extends AppCompatActivity {
 				more.setAlpha((float) 0.5d);
 			}
 			if (_position < 5) {
-				_marquee(Name, singles.get((int) _position).get("name").toString());
+				if (singles.get((int) _position).get("explicit").toString().equals("yes")) {
+					if (singles.get((int) _position).containsKey("prefix")) {
+						singlesstr = singles.get((int) _position).get("name").toString().concat(" ").concat(singles.get((int) _position).get("prefix").toString()).concat(" 🅴");
+					} else {
+						singlesstr = singles.get((int) _position).get("name").toString().concat(" 🅴");
+					}
+				} else {
+					if (singles.get((int) _position).containsKey("prefix")) {
+						singlesstr = singles.get((int) _position).get("name").toString().concat(" ").concat(singles.get((int) _position).get("prefix").toString());
+					} else {
+						singlesstr = singles.get((int) _position).get("name").toString();
+					}
+				}
+				SpannableString ss = new SpannableString(singlesstr);
+				SpannableStringBuilder ssb = new SpannableStringBuilder(singlesstr);
+				int color = ContextCompat.getColor(ArtistActivity.this, R.color.text2);
+				ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
+				ssb.setSpan(fcsRed, singles.get((int) _position).get("name").toString().length(), singlesstr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				_marque(Name, ssb);
 				if (singles.get((int) _position).containsKey("image")) {
 					Glide.with(getApplicationContext()).load(Uri.parse(singles.get((int) _position).get("image").toString())).into(imageview1);
 				}
@@ -1001,11 +1062,6 @@ public class ArtistActivity extends AppCompatActivity {
 				}
 				if (singles.get((int) _position).containsKey("release_".concat(sp.getString("prefix", ""))) && singles.get((int) _position).containsKey("time_".concat(sp.getString("prefix", "")))) {
 					_marquee(Release, singles.get((int) _position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(singles.get((int) _position).get("time_".concat(sp.getString("prefix", ""))).toString())));
-				}
-				if (singles.get((int) _position).get("explicit").toString().equals("yes")) {
-					explicit.setVisibility(View.VISIBLE);
-				} else {
-					explicit.setVisibility(View.GONE);
 				}
 				Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 				album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -1046,13 +1102,11 @@ public class ArtistActivity extends AppCompatActivity {
 			}
 			final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
 			final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
-			final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
 			final TextView Name = (TextView) _view.findViewById(R.id.Name);
 			final TextView album = (TextView) _view.findViewById(R.id.album);
 			final TextView Release = (TextView) _view.findViewById(R.id.Release);
 			final ImageView more = (ImageView) _view.findViewById(R.id.more);
 			if (!live.get((int) _position).containsKey("link")) {
-				explicit.setAlpha((float) 0.5d);
 				Release.setAlpha((float) 0.5d);
 				album.setAlpha((float) 0.5d);
 				imageview1.setAlpha((float) 0.5d);
@@ -1060,7 +1114,25 @@ public class ArtistActivity extends AppCompatActivity {
 				more.setAlpha((float) 0.5d);
 			}
 			if (_position < 5) {
-				_marquee(Name, live.get((int) _position).get("name").toString());
+				if (live.get((int) _position).get("explicit").toString().equals("yes")) {
+					if (live.get((int) _position).containsKey("prefix")) {
+						livestr = live.get((int) _position).get("name").toString().concat(" ").concat(live.get((int) _position).get("prefix").toString()).concat(" 🅴");
+					} else {
+						livestr = live.get((int) _position).get("name").toString().concat(" 🅴");
+					}
+				} else {
+					if (live.get((int) _position).containsKey("prefix")) {
+						livestr = live.get((int) _position).get("name").toString().concat(" ").concat(live.get((int) _position).get("prefix").toString());
+					} else {
+						livestr = live.get((int) _position).get("name").toString();
+					}
+				}
+				SpannableString ss = new SpannableString(livestr);
+				SpannableStringBuilder ssb = new SpannableStringBuilder(livestr);
+				int color = ContextCompat.getColor(ArtistActivity.this, R.color.text2);
+				ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
+				ssb.setSpan(fcsRed, live.get((int) _position).get("name").toString().length(), livestr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				_marque(Name, ssb);
 				if (live.get((int) _position).containsKey("image")) {
 					Glide.with(getApplicationContext()).load(Uri.parse(live.get((int) _position).get("image").toString())).into(imageview1);
 				}
@@ -1072,11 +1144,6 @@ public class ArtistActivity extends AppCompatActivity {
 				}
 				if (live.get((int) _position).containsKey("release_".concat(sp.getString("prefix", ""))) && live.get((int) _position).containsKey("time_".concat(sp.getString("prefix", "")))) {
 					_marquee(Release, live.get((int) _position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(live.get((int) _position).get("time_".concat(sp.getString("prefix", ""))).toString())));
-				}
-				if (live.get((int) _position).get("explicit").toString().equals("yes")) {
-					explicit.setVisibility(View.VISIBLE);
-				} else {
-					explicit.setVisibility(View.GONE);
 				}
 				Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 				album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -1117,13 +1184,11 @@ public class ArtistActivity extends AppCompatActivity {
 			}
 			final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
 			final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
-			final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
 			final TextView Name = (TextView) _view.findViewById(R.id.Name);
 			final TextView album = (TextView) _view.findViewById(R.id.album);
 			final TextView Release = (TextView) _view.findViewById(R.id.Release);
 			final ImageView more = (ImageView) _view.findViewById(R.id.more);
 			if (!compilations.get((int) _position).containsKey("link")) {
-				explicit.setAlpha((float) 0.5d);
 				Release.setAlpha((float) 0.5d);
 				album.setAlpha((float) 0.5d);
 				imageview1.setAlpha((float) 0.5d);
@@ -1131,7 +1196,25 @@ public class ArtistActivity extends AppCompatActivity {
 				more.setAlpha((float) 0.5d);
 			}
 			if (_position < 5) {
-				_marquee(Name, compilations.get((int) _position).get("name").toString());
+				if (compilations.get((int) _position).get("explicit").toString().equals("yes")) {
+					if (compilations.get((int) _position).containsKey("prefix")) {
+						compilationsstr = compilations.get((int) _position).get("name").toString().concat(" ").concat(compilations.get((int) _position).get("prefix").toString()).concat(" 🅴");
+					} else {
+						compilationsstr = compilations.get((int) _position).get("name").toString().concat(" 🅴");
+					}
+				} else {
+					if (compilations.get((int) _position).containsKey("prefix")) {
+						compilationsstr = compilations.get((int) _position).get("name").toString().concat(" ").concat(compilations.get((int) _position).get("prefix").toString());
+					} else {
+						compilationsstr = compilations.get((int) _position).get("name").toString();
+					}
+				}
+				SpannableString ss = new SpannableString(compilationsstr);
+				SpannableStringBuilder ssb = new SpannableStringBuilder(compilationsstr);
+				int color = ContextCompat.getColor(ArtistActivity.this, R.color.text2);
+				ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
+				ssb.setSpan(fcsRed, compilations.get((int) _position).get("name").toString().length(), compilationsstr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				_marque(Name, ssb);
 				if (compilations.get((int) _position).containsKey("image")) {
 					Glide.with(getApplicationContext()).load(Uri.parse(compilations.get((int) _position).get("image").toString())).into(imageview1);
 				}
@@ -1143,11 +1226,6 @@ public class ArtistActivity extends AppCompatActivity {
 				}
 				if (compilations.get((int) _position).containsKey("release_".concat(sp.getString("prefix", ""))) && compilations.get((int) _position).containsKey("time_".concat(sp.getString("prefix", "")))) {
 					_marquee(Release, compilations.get((int) _position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(compilations.get((int) _position).get("time_".concat(sp.getString("prefix", ""))).toString())));
-				}
-				if (compilations.get((int) _position).get("explicit").toString().equals("yes")) {
-					explicit.setVisibility(View.VISIBLE);
-				} else {
-					explicit.setVisibility(View.GONE);
 				}
 				Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 				album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -1188,13 +1266,11 @@ public class ArtistActivity extends AppCompatActivity {
 			}
 			final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
 			final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
-			final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
 			final TextView Name = (TextView) _view.findViewById(R.id.Name);
 			final TextView album = (TextView) _view.findViewById(R.id.album);
 			final TextView Release = (TextView) _view.findViewById(R.id.Release);
 			final ImageView more = (ImageView) _view.findViewById(R.id.more);
 			if (!appears.get((int) _position).containsKey("link")) {
-				explicit.setAlpha((float) 0.5d);
 				Release.setAlpha((float) 0.5d);
 				album.setAlpha((float) 0.5d);
 				imageview1.setAlpha((float) 0.5d);
@@ -1202,7 +1278,25 @@ public class ArtistActivity extends AppCompatActivity {
 				more.setAlpha((float) 0.5d);
 			}
 			if (_position < 5) {
-				_marquee(Name, appears.get((int) _position).get("name").toString());
+				if (appears.get((int) _position).get("explicit").toString().equals("yes")) {
+					if (appears.get((int) _position).containsKey("prefix")) {
+						appearsstr = appears.get((int) _position).get("name").toString().concat(" ").concat(appears.get((int) _position).get("prefix").toString()).concat(" 🅴");
+					} else {
+						appearsstr = appears.get((int) _position).get("name").toString().concat(" 🅴");
+					}
+				} else {
+					if (appears.get((int) _position).containsKey("prefix")) {
+						appearsstr = appears.get((int) _position).get("name").toString().concat(" ").concat(appears.get((int) _position).get("prefix").toString());
+					} else {
+						appearsstr = appears.get((int) _position).get("name").toString();
+					}
+				}
+				SpannableString ss = new SpannableString(appearsstr);
+				SpannableStringBuilder ssb = new SpannableStringBuilder(appearsstr);
+				int color = ContextCompat.getColor(ArtistActivity.this, R.color.text2);
+				ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
+				ssb.setSpan(fcsRed, appears.get((int) _position).get("name").toString().length(), appearsstr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				_marque(Name, ssb);
 				if (appears.get((int) _position).containsKey("image")) {
 					Glide.with(getApplicationContext()).load(Uri.parse(appears.get((int) _position).get("image").toString())).into(imageview1);
 				}
@@ -1214,11 +1308,6 @@ public class ArtistActivity extends AppCompatActivity {
 				}
 				if (appears.get((int) _position).containsKey("release_".concat(sp.getString("prefix", ""))) && appears.get((int) _position).containsKey("time_".concat(sp.getString("prefix", "")))) {
 					_marquee(Release, appears.get((int) _position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(appears.get((int) _position).get("time_".concat(sp.getString("prefix", ""))).toString())));
-				}
-				if (appears.get((int) _position).get("explicit").toString().equals("yes")) {
-					explicit.setVisibility(View.VISIBLE);
-				} else {
-					explicit.setVisibility(View.GONE);
 				}
 				Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 				album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);

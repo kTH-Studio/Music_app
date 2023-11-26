@@ -41,7 +41,8 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:supportsPictureInPicture="true"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/Theme.Music.NoActionBar"/>
         <activity
             android:name=".MusicActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
@@ -55,7 +56,8 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:supportsPictureInPicture="true"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/Theme.Music.NoActionBar"/>
         <activity
             android:name=".RegisterActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
@@ -84,11 +86,12 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:supportsPictureInPicture="true"
-            android:theme="@style/Theme.Music.FullScreen"
-            android:windowSoftInputMode="stateHidden" >
+            android:theme="@style/Theme.Music.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+        <receiver android:name=".NotificationReceiver" />
     </application>
 </manifest>

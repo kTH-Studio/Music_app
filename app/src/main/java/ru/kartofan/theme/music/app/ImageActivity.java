@@ -1,7 +1,10 @@
 package ru.kartofan.theme.music.app;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.os.*;
+import android.text.TextUtils;
 import android.view.*;
 import android.widget.*;
 import android.content.*;
@@ -16,6 +19,9 @@ import android.webkit.WebViewClient;
 public class ImageActivity extends AppCompatActivity {
 
 	private WebView webview1;
+	private TextView name;
+	private TextView artist;
+
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
@@ -29,6 +35,8 @@ public class ImageActivity extends AppCompatActivity {
 
 	private void initialize(Bundle _savedInstanceState) {
 		webview1 = (WebView) findViewById(R.id.webview1);
+		name = (TextView) findViewById(R.id.name);
+		artist = (TextView) findViewById(R.id.artist);
 		webview1.getSettings().setJavaScriptEnabled(true);
 		webview1.getSettings().setSupportZoom(true);
 
@@ -48,10 +56,6 @@ public class ImageActivity extends AppCompatActivity {
 	}
 
 	private void initializeLogic() {
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			getWindow().setStatusBarColor(Color.TRANSPARENT);
-		}
 		webview1.loadUrl(getIntent().getStringExtra("imageq"));
 		webview1.getSettings().setLoadWithOverviewMode(false);
 		webview1.getSettings().setDisplayZoomControls(false);
@@ -62,10 +66,41 @@ public class ImageActivity extends AppCompatActivity {
 		final String newUserAgent;
 		newUserAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36";
 		webSettings.setUserAgentString(newUserAgent);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			getWindow().setStatusBarColor(Color.TRANSPARENT);
+		Toolbar toolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+		_marquee(name, getIntent().getStringExtra("name"));
+		name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		if (getIntent().getStringExtra("artist").equals("")) {
+			artist.setVisibility(View.GONE);
+		} else {
+			artist.setVisibility(View.VISIBLE);
+			_marquee(artist, getIntent().getStringExtra("artist"));
+			artist.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.artist, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			onBackPressed();
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	public void _marquee(final TextView _textview, final String _text) {
+		_textview.setText(_text);
+		_textview.setSingleLine(true);
+		_textview.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+		_textview.setSelected(true);
 	}
 
 	@Override

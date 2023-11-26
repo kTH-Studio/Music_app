@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import com.google.android.material.appbar.AppBarLayout;
 import android.os.*;
+import android.text.style.ForegroundColorSpan;
 import android.view.*;
 import android.widget.*;
 import android.content.*;
@@ -28,6 +30,7 @@ import android.graphics.Typeface;
 public class FullActivity extends AppCompatActivity {
 
     private Toolbar _toolbar;
+    private String playstr;
     private AppBarLayout _app_bar;
     private CoordinatorLayout _coordinator;
     private ArrayList < HashMap < String, Object >> map = new ArrayList < > ();
@@ -160,6 +163,13 @@ public class FullActivity extends AppCompatActivity {
         }
     }
 
+    public void _marque(final TextView _textview, final SpannableStringBuilder _text) {
+        _textview.setText(_text);
+        _textview.setSingleLine(true);
+        _textview.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        _textview.setSelected(true);
+    }
+
     public void _marquee(final TextView _textview, final String _text) {
         _textview.setText(_text);
         _textview.setSingleLine(true);
@@ -196,13 +206,29 @@ public class FullActivity extends AppCompatActivity {
             }
             final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
             final ImageView imageview1 = (ImageView) _view.findViewById(R.id.imageview1);
-            final ImageView explicit = (ImageView) _view.findViewById(R.id.explicit);
             final TextView Name = (TextView) _view.findViewById(R.id.Name);
             final TextView album = (TextView) _view.findViewById(R.id.album);
             final TextView Release = (TextView) _view.findViewById(R.id.Release);
-            _marquee(Name, play.get((int) _position).get("name").toString());
+            if (play.get((int) _position).get("explicit").toString().equals("yes")) {
+                if (play.get((int) _position).containsKey("prefix")) {
+                    playstr = play.get((int) _position).get("name").toString().concat(" ").concat(play.get((int) _position).get("prefix").toString()).concat(" 🅴");
+                } else {
+                    playstr = play.get((int) _position).get("name").toString().concat(" 🅴");
+                }
+            } else {
+                if (play.get((int) _position).containsKey("prefix")) {
+                    playstr = play.get((int) _position).get("name").toString().concat(" ").concat(play.get((int) _position).get("prefix").toString());
+                } else {
+                    playstr = play.get((int) _position).get("name").toString();
+                }
+            }
+            SpannableString ss = new SpannableString(playstr);
+            SpannableStringBuilder ssb = new SpannableStringBuilder(playstr);
+            int color = ContextCompat.getColor(FullActivity.this, R.color.text2);
+            ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
+            ssb.setSpan(fcsRed, play.get((int) _position).get("name").toString().length(), playstr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            _marque(Name, ssb);
             if (!play.get((int) _position).containsKey("link")) {
-                explicit.setAlpha((float) 0.5d);
                 Release.setAlpha((float) 0.5d);
                 album.setAlpha((float) 0.5d);
                 imageview1.setAlpha((float) 0.5d);
@@ -219,11 +245,6 @@ public class FullActivity extends AppCompatActivity {
             }
             if (play.get((int) _position).containsKey("release_".concat(sp.getString("prefix", ""))) && play.get((int) _position).containsKey("time_".concat(sp.getString("prefix", "")))) {
                 _marquee(Release, play.get((int) _position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(play.get((int) _position).get("time_".concat(sp.getString("prefix", ""))).toString())));
-            }
-            if (play.get((int) _position).get("explicit").toString().equals("yes")) {
-                explicit.setVisibility(View.VISIBLE);
-            } else {
-                explicit.setVisibility(View.GONE);
             }
             Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
             album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);

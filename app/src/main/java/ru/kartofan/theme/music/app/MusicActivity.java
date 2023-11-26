@@ -4,12 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.*;
+import android.text.style.ForegroundColorSpan;
 import android.view.*;
 import android.widget.*;
-import android.graphics.*;
 import android.text.*;
 import android.util.*;
 import java.util.*;
@@ -21,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ListView;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.SeekBar;
 import android.media.MediaPlayer;
@@ -33,23 +34,31 @@ import android.widget.AdapterView;
 import com.bumptech.glide.Glide;
 import android.graphics.Typeface;
 import java.text.DecimalFormat;
-
+import android.app.Notification;
+import android.support.v4.media.session.MediaSessionCompat;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import static ru.kartofan.theme.music.app.App.CHANNEL_2_ID;
 
 public class MusicActivity extends AppCompatActivity {
 
 	private final Timer _timer = new Timer();
 	private String str = "";
+	private String namestr = "";
+	private String infostr = "";
+	private String notifname = "";
 	private String currentfile = "";
 	private double song_duration = 0;
 	private double pos = 0;
 	private String text = "";
+	private String lyrics = "";
 	private double time = 0;
 	private String str1 = "";
+	private String image = "";
 	private double play1 = 0;
 	private String str2 = "";
+	private String color = "";
 	private double tr = 0;
 	private ArrayList < HashMap < String, Object >> map = new ArrayList < > ();
 	private final ArrayList < String > n = new ArrayList < > ();
@@ -85,6 +94,8 @@ public class MusicActivity extends AppCompatActivity {
 	private TimerTask a;
 	private final Intent i = new Intent();
 	private SharedPreferences sp;
+    private NotificationManagerCompat notificationManager;
+    private MediaSessionCompat mediaSession;
 
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
@@ -95,6 +106,8 @@ public class MusicActivity extends AppCompatActivity {
 		//animationDrawable.setEnterFadeDuration(2500);
 		//animationDrawable.setExitFadeDuration(5000);
 		//animationDrawable.start();
+        notificationManager = NotificationManagerCompat.from(this);
+        mediaSession = new MediaSessionCompat(this, "tag");
 		initialize(_savedInstanceState);
 		initializeLogic();
 	}
@@ -121,7 +134,6 @@ public class MusicActivity extends AppCompatActivity {
 		imageview3 = (ImageView) findViewById(R.id.imageview3);
 		imageview4 = (ImageView) findViewById(R.id.imageview4);
 		imageview5 = (ImageView) findViewById(R.id.imageview5);
-		explicit = (ImageView) findViewById(R.id.explicit);
 		sp = getSharedPreferences("sp", Activity.MODE_PRIVATE);
 
 		seekbar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -274,10 +286,6 @@ public class MusicActivity extends AppCompatActivity {
 		} else if (sp.getString("theme", "").equals("light")){
 			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 		}
-		if (Build.VERSION.SDK_INT >=23) {
-			getWindow().setFlags(WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT, WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT);
-			getWindow().setStatusBarColor(Color.TRANSPARENT);
-		}
 		pos = 0;
 		tr = 0;
 		textview5.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -330,6 +338,11 @@ public class MusicActivity extends AppCompatActivity {
 			str = s;
 			map = new Gson().fromJson(str, new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
 			uri = new Gson().fromJson(map.get((int) 0).get("artist_uri").toString(), new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType());
+			if (sp.getString("player", "").equals("yes")) {
+				if (raone != null && raone.isPlaying()) {
+					raone.stop();
+				}
+			}
 			_me();
 		}
 	}
@@ -344,13 +357,19 @@ public class MusicActivity extends AppCompatActivity {
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						textview3.setText(new DecimalFormat("00").format((raone.getCurrentPosition() / 1000) / 60).concat(":".concat(new DecimalFormat("00").format((raone.getCurrentPosition() / 1000) % 60))));
-						textview4.setText("-".concat(new DecimalFormat("00").format(((raone.getDuration() - raone.getCurrentPosition()) / 1000) / 60).concat(":".concat(new DecimalFormat("00").format(((raone.getDuration() - raone.getCurrentPosition()) / 1000) % 60)))));
-						textview4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-						textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-						seekbar1.setProgress((int) raone.getCurrentPosition());
-						song_duration = raone.getCurrentPosition();
-						seekbar1.setProgress((int) song_duration);
+						if (sp.getString("player", "").equals("yes") && raone.isPlaying()) {
+							textview3.setText(new DecimalFormat("00").format((raone.getCurrentPosition() / 1000) / 60).concat(":".concat(new DecimalFormat("00").format((raone.getCurrentPosition() / 1000) % 60))));
+							textview4.setText("-".concat(new DecimalFormat("00").format(((raone.getDuration() - raone.getCurrentPosition()) / 1000) / 60).concat(":".concat(new DecimalFormat("00").format(((raone.getDuration() - raone.getCurrentPosition()) / 1000) % 60)))));
+							textview4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+							textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+							seekbar1.setProgress((int) raone.getCurrentPosition());
+							song_duration = raone.getCurrentPosition();
+							seekbar1.setProgress((int) song_duration);
+						} else if (sp.getString("player", "").equals("no") && raone.isPlaying()) {
+							raone.pause();
+						} else if (sp.getString("player", "").equals("yes") && !raone.isPlaying()) {
+							raone.start();
+						}
 					}
 				});
 			}
@@ -359,6 +378,13 @@ public class MusicActivity extends AppCompatActivity {
 	}
 
 	public void _music() {
+		sp.edit().putString("player", "yes").commit();
+		sp.edit().putString("player_explicit", map.get((int) 0).get("explicit").toString()).commit();
+		sp.edit().putString("player_name", map.get((int) 0).get("name").toString()).commit();
+		sp.edit().putString("player_artist", map.get((int) 0).get("artist").toString()).commit();
+		sp.edit().putString("player_image", map.get((int) 0).get("image").toString()).commit();
+		sp.edit().putString("player_duration", "yes").commit();
+		sp.edit().putString("player_time", "yes").commit();
 		currentfile = map.get((int) 0).get("music").toString();
 		raone = new MediaPlayer();
 		raone.setAudioStreamType(3);
@@ -410,6 +436,13 @@ public class MusicActivity extends AppCompatActivity {
 		_player();
 	}
 
+	public void _marque(final TextView _textview, final SpannableStringBuilder _text) {
+		_textview.setText(_text);
+		_textview.setSingleLine(true);
+		_textview.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+		_textview.setSelected(true);
+	}
+
 	public void _marquee(final TextView _textview, final String _text) {
 		_textview.setText(_text);
 		_textview.setSingleLine(true);
@@ -423,7 +456,6 @@ public class MusicActivity extends AppCompatActivity {
 		View layBase = getLayoutInflater().inflate(R.layout.info, null);
 		bs_base.setContentView(layBase);
 		ImageView image = (ImageView) layBase.findViewById(R.id.image);
-		ImageView explicit = (ImageView) layBase.findViewById(R.id.explicit);
 		ImageView artist_image = (ImageView) layBase.findViewById(R.id.artist_image);
 		ImageView album_image = (ImageView) layBase.findViewById(R.id.album_image);
 		ImageView lyrics_image = (ImageView) layBase.findViewById(R.id.lyrics_image);
@@ -448,14 +480,11 @@ public class MusicActivity extends AppCompatActivity {
 		lyrics_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		info_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		if (uri.size() > 1) {
+			artist_image.setImageResource(R.drawable.ic_people);
 			artist_text.setText(getString(R.string.go_to_artists));
 		} else {
+			artist_image.setImageResource(R.drawable.ic_timer_auto);
 			artist_text.setText(getString(R.string.go_to_artist));
-		}
-		if (map.get((int) 0).get("explicit").toString().equals("yes")) {
-			explicit.setVisibility(View.VISIBLE);
-		} else {
-			explicit.setVisibility(View.GONE);
 		}
 		if (map.get((int) 0).containsKey("text")) {
 			lyrics_linear.setVisibility(View.VISIBLE);
@@ -469,15 +498,21 @@ public class MusicActivity extends AppCompatActivity {
 					if (sp.getString("quality", "").equals("mobile")) {
 						i.setClass(getApplicationContext(), ImageActivity.class);
 						i.putExtra("imageq", map.get((int) 0).get("image4k").toString());
+						i.putExtra("name", name.getText().toString().concat(" - ").concat(artist.getText().toString()));
+						i.putExtra("artist", album.getText().toString());
 						startActivity(i);
 					} else {
 						i.setClass(getApplicationContext(), ImageActivity.class);
 						i.putExtra("imageq", map.get((int) 0).get("image").toString());
+						i.putExtra("name", name.getText().toString().concat(" - ").concat(artist.getText().toString()));
+						i.putExtra("artist", album.getText().toString());
 						startActivity(i);
 					}
 				} else {
 					i.setClass(getApplicationContext(), ImageActivity.class);
 					i.putExtra("imageq", map.get((int) 0).get("image").toString());
+					i.putExtra("name", name.getText().toString().concat(" - ").concat(artist.getText().toString()));
+					i.putExtra("artist", album.getText().toString());
 					startActivity(i);
 				}
 			}
@@ -541,8 +576,34 @@ public class MusicActivity extends AppCompatActivity {
 				_lyrics();
 			}
 		});
-		_marquee(name, map.get((int)0).get("name").toString());
-		album.setText(map.get((int)0).get("album").toString());
+		if (map.get((int) 0).get("explicit").toString().equals("yes")) {
+			if (map.get((int) 0).containsKey("prefix")) {
+				infostr = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString()).concat(" 🅴");
+			} else {
+				infostr = map.get((int) 0).get("name").toString().concat(" 🅴");
+			}
+		} else {
+			if (map.get((int) 0).containsKey("prefix")) {
+				infostr = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString());
+			} else {
+				infostr = map.get((int) 0).get("name").toString();
+			}
+		}
+		SpannableString ss = new SpannableString(infostr);
+		SpannableStringBuilder ssb = new SpannableStringBuilder(infostr);
+		int color = ContextCompat.getColor(MusicActivity.this, R.color.text2);
+		ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
+		ssb.setSpan(fcsRed, map.get((int) 0).get("name").toString().length(), infostr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		_marque(name, ssb);
+		if (map.get(0).containsKey("additional")) {
+			if (map.get(0).get("additional").equals("single")) {
+				_marquee(album, map.get((int) 0).get("album").toString().concat(" - ").concat(getString(R.string.single)));
+			} else {
+				_marquee(album, map.get((int) 0).get("album").toString().concat(" - ").concat(getString(R.string.ep)));
+			}
+		} else {
+			_marquee(album, map.get((int) 0).get("album").toString());
+		}
 		artist.setText(map.get((int) 0).get("artist").toString());
 		Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(image);
 		bs_base.show();
@@ -589,18 +650,89 @@ public class MusicActivity extends AppCompatActivity {
 		text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		TextView about = (TextView) layBase.findViewById(R.id.about);
 		about.setVisibility(View.VISIBLE);
-		about.setText(map.get((int) 0).get("name").toString().concat("\n").concat(map.get((int) 0).get("artist").toString()));
+		if (map.get((int) 0).get("explicit").toString().equals("yes")) {
+			if (map.get((int) 0).containsKey("prefix")) {
+				lyrics = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString()).concat(" 🅴\n").concat(map.get((int) 0).get("artist").toString());
+			} else {
+				lyrics = map.get((int) 0).get("name").toString().concat(" 🅴\n").concat(map.get((int) 0).get("artist").toString());
+			}
+		} else {
+			if (map.get((int) 0).containsKey("prefix")) {
+				lyrics = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString()).concat(" \n").concat(map.get((int) 0).get("artist").toString());
+			} else {
+				lyrics = map.get((int) 0).get("name").toString().concat("\n").concat(map.get((int) 0).get("artist").toString());
+			}
+		}
+		SpannableString ss = new SpannableString(lyrics);
+		SpannableStringBuilder ssb = new SpannableStringBuilder(lyrics);
+		int color = ContextCompat.getColor(this, R.color.text2);
+		ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
+		ssb.setSpan(fcsRed, map.get((int)0).get("name").toString().length() + 1, lyrics.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		about.setText(ssb);
 		about.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		bs_base.show();
 	}
 
+    public void sendOnChannel2(View v) {
+		if (map.get((int) 0).get("explicit").toString().equals("yes")) {
+			if (map.get((int) 0).containsKey("prefix")) {
+				notifname = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString()).concat(" 🅴");
+			} else {
+				notifname = map.get((int) 0).get("name").toString().concat(" 🅴");
+			}
+		} else {
+			if (map.get((int) 0).containsKey("prefix")) {
+				notifname = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString());
+			} else {
+				notifname = map.get((int) 0).get("name").toString();
+			}
+		}
+		image = map.get((int)0).get("image").toString();
+		//Bitmap bitmap = ((BitmapDrawable) imageview6.getDrawable()).getBitmap();
+
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_2_ID)
+                .setSmallIcon(R.mipmap.ic_launcher_foreground)
+                .setContentTitle(notifname)
+                .setContentText(map.get((int)0).get("artist").toString())
+				//.setLargeIcon(bitmap)
+                .addAction(R.drawable.ic_fast_rewind, "Previous", null)
+                .addAction(R.drawable.ic_pause, "Pause", null)
+                .addAction(R.drawable.ic_fast_forward, "Next", null)
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                        .setShowActionsInCompactView(1)
+                        .setMediaSession(mediaSession.getSessionToken()))
+                .setSubText(map.get((int)0).get("album").toString())
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .build();
+        notificationManager.notify(2, notification);
+    }
+
 	public void _me() {
 		currentfile = map.get((int) 0).get("music").toString();
-			if (map.get((int) 0).get("explicit").toString().equals("yes")) {
-				explicit.setVisibility(View.VISIBLE);
+		if (map.get((int) 0).get("explicit").toString().equals("yes")) {
+			if (map.get((int) 0).containsKey("prefix")) {
+				namestr = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString()).concat(" 🅴");
 			} else {
-				explicit.setVisibility(View.GONE);
+				namestr = map.get((int) 0).get("name").toString().concat(" 🅴");
 			}
+		} else {
+			if (map.get((int) 0).containsKey("prefix")) {
+				namestr = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString());
+			} else {
+				namestr = map.get((int) 0).get("name").toString();
+			}
+		}
+		SpannableString ss = new SpannableString(namestr);
+		SpannableStringBuilder ssb = new SpannableStringBuilder(namestr);
+		int color = ContextCompat.getColor(MusicActivity.this, R.color.text2);
+		ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
+		ssb.setSpan(fcsRed, map.get((int) 0).get("name").toString().length(), namestr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		_marque(textview1, ssb);
+		_marquee(textview2, map.get((int) 0).get("artist").toString());
+		textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		textview2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(imageview6);
+		_music();
 		if (map.get((int) 0).containsKey("text")) {
 			imageview6.setVisibility(View.GONE);
 			imageview1.setVisibility(View.VISIBLE);
@@ -610,16 +742,10 @@ public class MusicActivity extends AppCompatActivity {
 			progressbar2.setVisibility(View.GONE);
 			linear11.setVisibility(View.GONE);
 			linear14.setVisibility(View.GONE);
-			_marquee(textview1, map.get((int) 0).get("name").toString());
-			_marquee(textview2, map.get((int) 0).get("artist").toString());
-			Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(imageview1);
-			Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(imageview6);
-			textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-			textview2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				play = new Gson().fromJson(map.get((int) 0).get("text").toString(), new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType());
-				listview3.setAdapter(new Listview1Adapter(play));
+			play = new Gson().fromJson(map.get((int) 0).get("text").toString(), new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType());
+			listview3.setAdapter(new Listview1Adapter(play));
 			((BaseAdapter)listview3.getAdapter()).notifyDataSetChanged();
-			_music();
+			Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(imageview1);
 		} else {
 			imageview6.setVisibility(View.VISIBLE);
 			imageview1.setVisibility(View.GONE);
@@ -628,13 +754,8 @@ public class MusicActivity extends AppCompatActivity {
 			progressbar2.setVisibility(View.GONE);
 			linear11.setVisibility(View.VISIBLE);
 			linear14.setVisibility(View.VISIBLE);
-			_marquee(textview1, map.get((int) 0).get("name").toString());
-			_marquee(textview2, map.get((int) 0).get("artist").toString());
-			Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(imageview6);
-			textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-			textview2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-			_music();
-		}
+			}
+		sendOnChannel2(imageview6);
 	}
 
 	public class Listview1Adapter extends BaseAdapter {

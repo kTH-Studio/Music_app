@@ -132,9 +132,9 @@ public class RegisterActivity extends  AppCompatActivity  {
                         _sendVerificationCode();
                         linear10.setVisibility(View.GONE);
                         linear2.setVisibility(View.VISIBLE);
-                        SketchwareUtil.hideKeyboard(getApplicationContext());
+                        kTHUtil.hideKeyboard(getApplicationContext());
                     } else {
-                        SketchwareUtil.hideKeyboard(getApplicationContext());
+                        kTHUtil.hideKeyboard(getApplicationContext());
                         com.google.android.material.snackbar.Snackbar.make(linear1, R.string.phone_number_short, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
                             @Override
                             public void onClick(View _view) {}
@@ -155,7 +155,7 @@ public class RegisterActivity extends  AppCompatActivity  {
                 if (edittext3.length() == 6) {
                     _verifyCode();
                 } else {
-                    SketchwareUtil.hideKeyboard(getApplicationContext());
+                    kTHUtil.hideKeyboard(getApplicationContext());
                     com.google.android.material.snackbar.Snackbar.make(linear1, R.string.verify_code_short, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("Ok", new View.OnClickListener() {
                         @Override
                         public void onClick(View _view) {}
@@ -299,9 +299,7 @@ public class RegisterActivity extends  AppCompatActivity  {
                 final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
                 if (_success) {
                     _user();
-                } else {
-                    SketchwareUtil.showMessage(getApplicationContext(), _errorMessage);
-                }
+                } else {}
             }
         };
 
@@ -329,18 +327,14 @@ public class RegisterActivity extends  AppCompatActivity  {
                             if (list.size() == 0) {
                                 if (_success) {
                                     _user();
-                                } else {
-                                    SketchwareUtil.showMessage(getApplicationContext(), _errorMessage);
-                                }
+                                } else {}
                             } else {
                                 for(int _repeat72 = 0; _repeat72 < (int)(list.size()); _repeat72++) {
                                     if (list.get((int)n).containsKey(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                                     } else {
                                         if (_success) {
                                             _user();
-                                        } else {
-                                            SketchwareUtil.showMessage(getApplicationContext(), _errorMessage);
-                                        }
+                                        } else {}
                                     }
                                     n = n + 1;
                                 }
@@ -353,9 +347,7 @@ public class RegisterActivity extends  AppCompatActivity  {
                     i.setClass(getApplicationContext(), MainActivity.class);
                     startActivity(i);
                     finishAffinity();
-                } else {
-                    SketchwareUtil.showMessage(getApplicationContext(), _errorMessage);
-                }
+                } else {}
             }
         };
 
