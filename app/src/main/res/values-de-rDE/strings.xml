@@ -90,4 +90,6 @@
     <string name="track_details">Streckendetails</string>
     <string name="enabled">Aktiviert</string>
     <string name="single">Single</string>
+    <string name="confirm_short">Bestätigen Sie die Aktion</string>
+    <string name="confirm_long">Bestätige, dass du explizite Inhalte aktivieren möchtest</string>
 </resources>

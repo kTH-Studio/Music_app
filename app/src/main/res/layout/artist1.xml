@@ -188,7 +188,7 @@
                 android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
-            android:background="@color/text4"
+            android:background="@color/inverse2"
             android:id="@+id/about_segment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -288,7 +288,7 @@
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
-            android:background="@color/text4"
+            android:background="@color/inverse2"
             android:id="@+id/links_segment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

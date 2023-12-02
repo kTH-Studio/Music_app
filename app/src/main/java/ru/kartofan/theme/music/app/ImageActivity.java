@@ -1,6 +1,5 @@
 package ru.kartofan.theme.music.app;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.os.*;
@@ -17,39 +16,35 @@ import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
 
 public class ImageActivity extends AppCompatActivity {
-
 	private WebView webview1;
-	private TextView name;
-	private TextView artist;
+	private TextView name, artist;
 
 	@Override
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.image);
-		initialize(_savedInstanceState);
+		initialize();
 		initializeLogic();
 		Intent appLinkIntent = getIntent();
 		String appLinkAction = appLinkIntent.getAction();
 		Uri appLinkData = appLinkIntent.getData();
 	}
 
-	private void initialize(Bundle _savedInstanceState) {
-		webview1 = (WebView) findViewById(R.id.webview1);
-		name = (TextView) findViewById(R.id.name);
-		artist = (TextView) findViewById(R.id.artist);
+	private void initialize() {
+		webview1 = findViewById(R.id.webview1);
+		name = findViewById(R.id.name);
+		artist = findViewById(R.id.artist);
 		webview1.getSettings().setJavaScriptEnabled(true);
 		webview1.getSettings().setSupportZoom(true);
 
 		webview1.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageStarted(WebView _param1, String _param2, Bitmap _param3) {
-				final String _url = _param2;
 				super.onPageStarted(_param1, _param2, _param3);
 			}
 
 			@Override
 			public void onPageFinished(WebView _param1, String _param2) {
-				final String _url = _param2;
 				super.onPageFinished(_param1, _param2);
 			}
 		});
@@ -89,7 +84,7 @@ public class ImageActivity extends AppCompatActivity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
 			onBackPressed();
 		}
@@ -106,10 +101,6 @@ public class ImageActivity extends AppCompatActivity {
 	@Override
 	protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
 		super.onActivityResult(_requestCode, _resultCode, _data);
-		switch (_requestCode) {
-			default:
-				break;
-		}
 	}
 
 	@Deprecated

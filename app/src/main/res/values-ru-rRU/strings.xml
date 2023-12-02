@@ -90,4 +90,6 @@
     <string name="more">Больше</string>
     <string name="battery">По энергосберегающему моду</string>
     <string name="single">Сингл</string>
+    <string name="confirm_short">Подтвердите действие</string>
+    <string name="confirm_long">Подтвердите, что вы хотите включить Откровенный контент</string>
 </resources>

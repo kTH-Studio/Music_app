@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:background="@color/inverse"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,6 +9,7 @@
     android:layout_height="match_parent">
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/_app_bar"
+        android:background="@color/inverse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.Music.AppBarOverlay">
@@ -48,23 +50,23 @@
                     android:textColor="@color/text1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-            <EditText
-                android:gravity="center_horizontal"
-                android:id="@+id/edittext2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="25dp"
-                android:layout_marginBottom="5dp"
-                android:hint="@string/phone_number"
-                android:imeOptions="actionDone"
-                android:inputType="phone"
-                android:lines="1"
-                android:padding="8dp"
-                android:singleLine="true"
-                android:textColor="@color/text1"
-                android:textColorHint="@color/text2"
-                android:textSize="18sp"
-                tools:ignore="TouchTargetSizeCheck" />
+                <EditText
+                    android:gravity="center_horizontal"
+                    android:id="@+id/edittext2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginBottom="5dp"
+                    android:hint="@string/phone_number"
+                    android:imeOptions="actionDone"
+                    android:inputType="phone"
+                    android:lines="1"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textColor="@color/text1"
+                    android:textColorHint="@color/text2"
+                    android:textSize="18sp"
+                    tools:ignore="TouchTargetSizeCheck" />
             </LinearLayout>
             <Button
                 android:id="@+id/button1"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:background="@color/inverse"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -7,6 +8,7 @@
     android:fitsSystemWindows="true">
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
+        android:background="@color/inverse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.Music.AppBarOverlay">
@@ -15,6 +17,7 @@
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/inverse"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|snap"
@@ -28,6 +31,7 @@
                 android:src="@drawable/ic_timer_auto"/>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
         <TextView
+            android:background="@color/inverse"
             app:layout_collapseMode="parallax"
             android:textColor="@color/text2"
             android:id="@+id/description"

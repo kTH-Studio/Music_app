@@ -36,46 +36,31 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import android.net.Uri;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import java.util.Timer;
-import java.util.TimerTask;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.view.View;
 
 public class ProfileActivity extends  AppCompatActivity  {
-
     public final int REQ_CD_FP = 101;
-    private Intent i = new Intent();
-    private Timer _timer = new Timer();
-    private FirebaseDatabase _firebase = FirebaseDatabase.getInstance();
-    private FirebaseStorage _firebase_storage = FirebaseStorage.getInstance();
+    private final Intent i = new Intent();
+    private final FirebaseDatabase _firebase = FirebaseDatabase.getInstance();
+    private final FirebaseStorage _firebase_storage = FirebaseStorage.getInstance();
     private Toolbar _toolbar;
     private AppBarLayout _app_bar;
     private CoordinatorLayout _coordinator;
     private HashMap<String, Object> map = new HashMap<>();
-    private String path = "";
-    private String pic = "";
-    private double connect = 0;
-    private double prev = 0;
-    private ArrayList<String> list = new ArrayList<>();
-    private ImageView avatar;
-    private ImageView verified;
-    private ImageView more;
-    private TextView name;
-    private TextView nickname;
-    private TextView description;
-    private EditText name_field;
-    private EditText surname_field;
-    private EditText nickname_field;
-    private EditText description_field;
-    private Button save;
-    private Button preview;
-    private TextView hint_info;
+    private String path;
+    private final String pic = "";
+    private double connect, prev = 0;
+    private ImageView avatar, verified, more;
+    private TextView name, nickname, description, hint_info;
+    private EditText name_field, surname_field, nickname_field, description_field;
+    private Button save, preview;
     private SharedPreferences sp;
-    private Intent fp = new Intent(Intent.ACTION_GET_CONTENT);
-    private DatabaseReference user = _firebase.getReference("users");
+    private final Intent fp = new Intent(Intent.ACTION_GET_CONTENT);
+    private final DatabaseReference user = _firebase.getReference("users");
     private ChildEventListener _user_child_listener;
-    private StorageReference fstore = _firebase_storage.getReference("profile_pics");
+    private final StorageReference fstore = _firebase_storage.getReference("profile_pics");
     private OnCompleteListener<Uri> _fstore_upload_success_listener;
     private OnSuccessListener<FileDownloadTask.TaskSnapshot> _fstore_download_success_listener;
     private OnSuccessListener _fstore_delete_success_listener;
@@ -93,14 +78,12 @@ public class ProfileActivity extends  AppCompatActivity  {
     private OnCompleteListener<AuthResult> _fauth_create_user_listener;
     private OnCompleteListener<AuthResult> _fauth_sign_in_listener;
     private OnCompleteListener<Void> _fauth_reset_password_listener;
-    private TimerTask t;
-    private SharedPreferences theme;
 
     @Override
     protected void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.profile);
-        initialize(_savedInstanceState);
+        initialize();
         com.google.firebase.FirebaseApp.initializeApp(this);
         initializeLogic();
     }
@@ -113,53 +96,45 @@ public class ProfileActivity extends  AppCompatActivity  {
         }
     }
 
-    private void initialize(Bundle _savedInstanceState) {
-        avatar = (ImageView) findViewById(R.id.avatar);
-        verified = (ImageView) findViewById(R.id.verified);
-        more = (ImageView) findViewById(R.id.more);
-        name = (TextView) findViewById(R.id.name);
-        nickname = (TextView) findViewById(R.id.nickname);
-        description = (TextView) findViewById(R.id.description);
-        name_field = (EditText) findViewById(R.id.name_field);
-        surname_field = (EditText) findViewById(R.id.surname_field);
-        nickname_field = (EditText) findViewById(R.id.nickname_field);
-        description_field = (EditText) findViewById(R.id.description_field);
-        save = (Button) findViewById(R.id.save);
-        preview = (Button) findViewById(R.id.preview);
-        hint_info = (TextView) findViewById(R.id.hint_info);
+    private void initialize() {
+        avatar = findViewById(R.id.avatar);
+        verified = findViewById(R.id.verified);
+        more = findViewById(R.id.more);
+        name = findViewById(R.id.name);
+        nickname = findViewById(R.id.nickname);
+        description = findViewById(R.id.description);
+        name_field = findViewById(R.id.name_field);
+        surname_field = findViewById(R.id.surname_field);
+        nickname_field = findViewById(R.id.nickname_field);
+        description_field = findViewById(R.id.description_field);
+        save = findViewById(R.id.save);
+        preview = findViewById(R.id.preview);
+        hint_info = findViewById(R.id.hint_info);
         fp.setType("image/*");
         fp.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         fauth = FirebaseAuth.getInstance();
-        theme = getSharedPreferences("theme", Activity.MODE_PRIVATE);
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-            }
-        });
+        save.setOnClickListener(_view -> {});
 
-        preview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View _view) {
-                if (prev == 0) {
-                    prev++;
-                    hint_info.setVisibility(View.GONE);
-                    name_field.setVisibility(View.GONE);
-                    surname_field.setVisibility(View.GONE);
-                    nickname_field.setVisibility(View.GONE);
-                    description_field.setVisibility(View.GONE);
-                    save.setVisibility(View.GONE);
-                    preview.setText(R.string.edit);
-                } else {
-                    prev = 0;
-                    hint_info.setVisibility(View.VISIBLE);
-                    name_field.setVisibility(View.VISIBLE);
-                    surname_field.setVisibility(View.VISIBLE);
-                    nickname_field.setVisibility(View.VISIBLE);
-                    description_field.setVisibility(View.VISIBLE);
-                    save.setVisibility(View.VISIBLE);
-                    preview.setText(R.string.preview);
-                }
+        preview.setOnClickListener(_view -> {
+            if (prev == 0) {
+                prev++;
+                hint_info.setVisibility(View.GONE);
+                name_field.setVisibility(View.GONE);
+                surname_field.setVisibility(View.GONE);
+                nickname_field.setVisibility(View.GONE);
+                description_field.setVisibility(View.GONE);
+                save.setVisibility(View.GONE);
+                preview.setText(R.string.edit);
+            } else {
+                prev = 0;
+                hint_info.setVisibility(View.VISIBLE);
+                name_field.setVisibility(View.VISIBLE);
+                surname_field.setVisibility(View.VISIBLE);
+                nickname_field.setVisibility(View.VISIBLE);
+                description_field.setVisibility(View.VISIBLE);
+                save.setVisibility(View.VISIBLE);
+                preview.setText(R.string.preview);
             }
         });
 
@@ -203,122 +178,77 @@ public class ProfileActivity extends  AppCompatActivity  {
         };
         user.addChildEventListener(_user_child_listener);
 
-        _fstore_upload_progress_listener = new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot _param1) {
-                double _progressValue = (100.0 * _param1.getBytesTransferred()) / _param1.getTotalByteCount();
-            }
+        _fstore_upload_progress_listener = (OnProgressListener<UploadTask.TaskSnapshot>) _param1 -> {
+            double _progressValue = (100.0 * _param1.getBytesTransferred()) / _param1.getTotalByteCount();
         };
 
-        _fstore_download_progress_listener = new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(FileDownloadTask.TaskSnapshot _param1) {
-                double _progressValue = (100.0 * _param1.getBytesTransferred()) / _param1.getTotalByteCount();
-            }
+        _fstore_download_progress_listener = (OnProgressListener<FileDownloadTask.TaskSnapshot>) _param1 -> {
+            double _progressValue = (100.0 * _param1.getBytesTransferred()) / _param1.getTotalByteCount();
         };
 
-        _fstore_upload_success_listener = new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(Task<Uri> _param1) {
-                final String _downloadUrl = _param1.getResult().toString();
-                map = new HashMap<>();
-                map.put("username", "");
-                map.put("pic", _downloadUrl);
-                user.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(map);
-                user.addChildEventListener(_user_child_listener);
-            }
+        _fstore_upload_success_listener = _param1 -> {
+            final String _downloadUrl = _param1.getResult().toString();
+            map = new HashMap<>();
+            map.put("username", "");
+            map.put("pic", _downloadUrl);
+            user.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).updateChildren(map);
+            user.addChildEventListener(_user_child_listener);
         };
 
-        _fstore_download_success_listener = new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot _param1) {
-                final long _totalByteCount = _param1.getTotalByteCount();
-            }
+        _fstore_download_success_listener = _param1 -> {
+            final long _totalByteCount = _param1.getTotalByteCount();
         };
 
-        _fstore_delete_success_listener = new OnSuccessListener() {
-            @Override
-            public void onSuccess(Object _param1) {
-            }
+        _fstore_delete_success_listener = _param1 -> {
         };
 
-        _fstore_failure_listener = new OnFailureListener() {
-            @Override
-            public void onFailure(Exception _param1) {
-                final String _message = _param1.getMessage();
-            }
+        _fstore_failure_listener = _param1 -> {
+            final String _message = _param1.getMessage();
         };
 
-        fauth_updateEmailListener = new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(Task<Void> _param1) {
-                final boolean _success = _param1.isSuccessful();
-                final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-            }
+        fauth_updateEmailListener = _param1 -> {
+            final boolean _success = _param1.isSuccessful();
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
         };
 
-        fauth_updatePasswordListener = new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(Task<Void> _param1) {
-                final boolean _success = _param1.isSuccessful();
-                final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-            }
+        fauth_updatePasswordListener = _param1 -> {
+            final boolean _success = _param1.isSuccessful();
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
         };
 
-        fauth_emailVerificationSentListener = new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(Task<Void> _param1) {
-                final boolean _success = _param1.isSuccessful();
-                final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-            }
+        fauth_emailVerificationSentListener = _param1 -> {
+            final boolean _success = _param1.isSuccessful();
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
         };
 
-        fauth_deleteUserListener = new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(Task<Void> _param1) {
-                final boolean _success = _param1.isSuccessful();
-                final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-            }
+        fauth_deleteUserListener = _param1 -> {
+            final boolean _success = _param1.isSuccessful();
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
         };
 
-        fauth_phoneAuthListener = new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(Task<AuthResult> task){
-                final boolean _success = task.isSuccessful();
-                final String _errorMessage = task.getException() != null ? task.getException().getMessage() : "";
-            }
+        fauth_phoneAuthListener = task -> {
+            final boolean _success = task.isSuccessful();
+            final String _errorMessage = task.getException() != null ? task.getException().getMessage() : "";
         };
 
-        fauth_updateProfileListener = new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(Task<Void> _param1) {
-                final boolean _success = _param1.isSuccessful();
-                final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-            }
+        fauth_updateProfileListener = _param1 -> {
+            final boolean _success = _param1.isSuccessful();
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
         };
 
-        fauth_googleSignInListener = new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(Task<AuthResult> task){
-                final boolean _success = task.isSuccessful();
-                final String _errorMessage = task.getException() != null ? task.getException().getMessage() : "";
-            }
+        fauth_googleSignInListener = task -> {
+            final boolean _success = task.isSuccessful();
+            final String _errorMessage = task.getException() != null ? task.getException().getMessage() : "";
         };
 
-        _fauth_create_user_listener = new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(Task<AuthResult> _param1) {
-                final boolean _success = _param1.isSuccessful();
-                final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-            }
+        _fauth_create_user_listener = _param1 -> {
+            final boolean _success = _param1.isSuccessful();
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
         };
 
-        _fauth_sign_in_listener = new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(Task<AuthResult> _param1) {
-                final boolean _success = _param1.isSuccessful();
-                final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-            }
+        _fauth_sign_in_listener = _param1 -> {
+            final boolean _success = _param1.isSuccessful();
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
         };
 
         _fauth_reset_password_listener = new OnCompleteListener<Void>() {
@@ -371,18 +301,14 @@ public class ProfileActivity extends  AppCompatActivity  {
                                 ClipData.Item _item = _data.getClipData().getItemAt(_index);
                                 _filePath.add(FileUtil.convertUriToFilePath(getApplicationContext(), _item.getUri()));
                             }
-                        }
-                        else {
+                        } else {
                             _filePath.add(FileUtil.convertUriToFilePath(getApplicationContext(), _data.getData()));
                         }
                     }
-                    path = _filePath.get((int)(0));
-                } else {
-
+                    path = _filePath.get(0);
                 }
                 break;
-            default:
-                break;
+            default: break;
         }
     }
 
@@ -393,14 +319,14 @@ public class ProfileActivity extends  AppCompatActivity  {
 
     @Deprecated
     public int getLocationX(View _v) {
-        int _location[] = new int[2];
+        int[] _location = new int[2];
         _v.getLocationInWindow(_location);
         return _location[0];
     }
 
     @Deprecated
     public int getLocationY(View _v) {
-        int _location[] = new int[2];
+        int[] _location = new int[2];
         _v.getLocationInWindow(_location);
         return _location[1];
     }

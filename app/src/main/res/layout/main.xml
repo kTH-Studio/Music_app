@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+	android:background="@color/inverse"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:fitsSystemWindows="false">
 	<com.google.android.material.appbar.AppBarLayout
 		android:id="@+id/app_bar"
+		android:background="@color/inverse"
 		android:layout_width="match_parent"
 		android:layout_height="?attr/actionBarSize"
 		android:fitsSystemWindows="false"

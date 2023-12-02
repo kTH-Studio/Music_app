@@ -9,8 +9,7 @@ import android.view.inputmethod.*;
 public class kTHUtil {
 
 	public static void hideKeyboard(Context c) {
-		InputMethodManager imm = (InputMethodManager)
-				c.getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm = (InputMethodManager) c.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 	}
 

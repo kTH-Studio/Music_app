@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.*;
 import android.text.style.ForegroundColorSpan;
 import android.view.*;
@@ -30,7 +32,6 @@ import java.util.TimerTask;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
-import android.widget.AdapterView;
 import com.bumptech.glide.Glide;
 import android.graphics.Typeface;
 import java.text.DecimalFormat;
@@ -42,56 +43,33 @@ import com.google.gson.reflect.TypeToken;
 import static ru.kartofan.theme.music.app.App.CHANNEL_2_ID;
 
 public class MusicActivity extends AppCompatActivity {
-
 	private final Timer _timer = new Timer();
-	private String str = "";
-	private String namestr = "";
-	private String infostr = "";
-	private String notifname = "";
-	private String currentfile = "";
-	private double song_duration = 0;
-	private double pos = 0;
-	private String text = "";
-	private String lyrics = "";
-	private double time = 0;
-	private String str1 = "";
-	private String image = "";
-	private double play1 = 0;
-	private String str2 = "";
-	private String color = "";
-	private double tr = 0;
-	private ArrayList < HashMap < String, Object >> map = new ArrayList < > ();
+	private String str;
+	private String namestr;
+	private String infostr;
+	private String notifname;
+	private String currentfile;
+	private String text;
+	private String lyrics;
+	private String str1;
+	private String image;
+	private String str2;
+	private final String color = "";
+	private double song_duration, pos, time, play1, tr = 0;
+	private ArrayList < HashMap < String, Object >> map;
+	private ArrayList < HashMap < String, Object >> play;
+	private ArrayList < HashMap < String, Object >> uri;
+	private final ArrayList < HashMap < String, Object >> artists = new ArrayList < > ();
 	private final ArrayList < String > n = new ArrayList < > ();
-	private ArrayList < HashMap < String, Object >> play = new ArrayList < > ();
-	private ArrayList < HashMap < String, Object >> uri = new ArrayList < > ();
-	private ArrayList < HashMap < String, Object >> artists = new ArrayList < > ();
-	private LinearLayout linear1;
-	private TextView textview5;
-	private LinearLayout linear11;
-	private ImageView imageview6;
-	private LinearLayout linear14;
-	private LinearLayout linear2;
-	private ProgressBar progressbar1;
-	private ProgressBar progressbar2;
+	private LinearLayout linear1, linear11, linear14, linear2, linear3;
+	private TextView textview5, textview1, textview2, textview3, textview4;
+	private ImageView imageview6, imageview1, imageview2, imageview3, imageview4, imageview5;
+	private ProgressBar progressbar1, progressbar2;
 	private ListView listview3;
 	private RecyclerView recyclerview1;
-	private ImageView imageview1;
-	private ImageView explicit;
-	private LinearLayout linear3;
-	private ImageView imageview2;
-	private TextView textview1;
-	private TextView textview2;
-	private TextView textview3;
-	private TextView textview4;
-	private ImageView imageview3;
-	private ImageView imageview4;
-	private ImageView imageview5;
 	private SeekBar seekbar1;
 	private MediaPlayer raone;
 	private TimerTask t;
-	private TimerTask x;
-	private TimerTask s;
-	private TimerTask a;
 	private final Intent i = new Intent();
 	private SharedPreferences sp;
     private NotificationManagerCompat notificationManager;
@@ -101,45 +79,39 @@ public class MusicActivity extends AppCompatActivity {
 	protected void onCreate(Bundle _savedInstanceState) {
 		super.onCreate(_savedInstanceState);
 		setContentView(R.layout.music);
-		//ConstraintLayout constraintLayout = findViewById(R.id.main);
-		//AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
-		//animationDrawable.setEnterFadeDuration(2500);
-		//animationDrawable.setExitFadeDuration(5000);
-		//animationDrawable.start();
-        notificationManager = NotificationManagerCompat.from(this);
+		notificationManager = NotificationManagerCompat.from(this);
         mediaSession = new MediaSessionCompat(this, "tag");
-		initialize(_savedInstanceState);
+		initialize();
 		initializeLogic();
 	}
 
-	private void initialize(Bundle _savedInstanceState) {
-		seekbar1 = (SeekBar) findViewById(R.id.seekbar1);
-		linear1 = (LinearLayout) findViewById(R.id.linear1);
-		textview5 = (TextView) findViewById(R.id.textview5);
-		linear11 = (LinearLayout) findViewById(R.id.linear11);
-		imageview6 = (ImageView) findViewById(R.id.imageview6);
-		linear14 = (LinearLayout) findViewById(R.id.linear14);
-		linear2 = (LinearLayout) findViewById(R.id.linear2);
-		progressbar1 = (ProgressBar) findViewById(R.id.progressbar1);
-		progressbar2 = (ProgressBar) findViewById(R.id.progressbar2);
-		listview3 = (ListView) findViewById(R.id.listview3);
-		recyclerview1 = (RecyclerView) findViewById(R.id.recyclerview1);
-		imageview1 = (ImageView) findViewById(R.id.imageview1);
-		linear3 = (LinearLayout) findViewById(R.id.linear3);
-		imageview2 = (ImageView) findViewById(R.id.imageview2);
-		textview1 = (TextView) findViewById(R.id.textview1);
-		textview2 = (TextView) findViewById(R.id.textview2);
-		textview3 = (TextView) findViewById(R.id.textview3);
-		textview4 = (TextView) findViewById(R.id.textview4);
-		imageview3 = (ImageView) findViewById(R.id.imageview3);
-		imageview4 = (ImageView) findViewById(R.id.imageview4);
-		imageview5 = (ImageView) findViewById(R.id.imageview5);
+	private void initialize() {
+		seekbar1 = findViewById(R.id.seekbar1);
+		linear1 = findViewById(R.id.linear1);
+		textview5 = findViewById(R.id.textview5);
+		linear11 = findViewById(R.id.linear11);
+		imageview6 = findViewById(R.id.imageview6);
+		linear14 = findViewById(R.id.linear14);
+		linear2 = findViewById(R.id.linear2);
+		progressbar1 = findViewById(R.id.progressbar1);
+		progressbar2 = findViewById(R.id.progressbar2);
+		listview3 = findViewById(R.id.listview3);
+		recyclerview1 = findViewById(R.id.recyclerview1);
+		imageview1 = findViewById(R.id.imageview1);
+		linear3 = findViewById(R.id.linear3);
+		imageview2 = findViewById(R.id.imageview2);
+		textview1 = findViewById(R.id.textview1);
+		textview2 = findViewById(R.id.textview2);
+		textview3 = findViewById(R.id.textview3);
+		textview4 = findViewById(R.id.textview4);
+		imageview3 = findViewById(R.id.imageview3);
+		imageview4 = findViewById(R.id.imageview4);
+		imageview5 = findViewById(R.id.imageview5);
 		sp = getSharedPreferences("sp", Activity.MODE_PRIVATE);
 
 		seekbar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar _param1, int _param2, boolean _param3) {
-				final int _progressValue = _param2;
 			}
 
 			@Override
@@ -151,18 +123,15 @@ public class MusicActivity extends AppCompatActivity {
 				t = new TimerTask() {
 					@Override
 					public void run() {
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								textview3.setText(new DecimalFormat("00").format((raone.getCurrentPosition() / 1000) / 60).concat(":".concat(new DecimalFormat("00").format((raone.getCurrentPosition() / 1000) % 60))));
-								textview4.setText("-".concat(new DecimalFormat("00").format(((raone.getDuration() - raone.getCurrentPosition()) / 1000) / 60).concat(":".concat(new DecimalFormat("00").format(((raone.getDuration() - raone.getCurrentPosition()) / 1000) % 60)))));
-								textview5.setText(new DecimalFormat("00").format((seekbar1.getProgress() / 1000) / 60).concat(":".concat(new DecimalFormat("00").format((seekbar1.getProgress() / 1000) % 60))));
-								textview5.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-							}
+						runOnUiThread(() -> {
+							textview3.setText(new DecimalFormat("00").format((raone.getCurrentPosition() / 1000) / 60).concat(":".concat(new DecimalFormat("00").format((raone.getCurrentPosition() / 1000) % 60))));
+							textview4.setText("-".concat(new DecimalFormat("00").format(((raone.getDuration() - raone.getCurrentPosition()) / 1000) / 60).concat(":".concat(new DecimalFormat("00").format(((raone.getDuration() - raone.getCurrentPosition()) / 1000) % 60)))));
+							textview5.setText(new DecimalFormat("00").format((seekbar1.getProgress() / 1000) / 60).concat(":".concat(new DecimalFormat("00").format((seekbar1.getProgress() / 1000) % 60))));
+							textview5.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 						});
 					}
 				};
-				_timer.scheduleAtFixedRate(t, (int)(100), (int)(100));
+				_timer.scheduleAtFixedRate(t, 100, 100);
 			}
 
 			@Override
@@ -174,102 +143,77 @@ public class MusicActivity extends AppCompatActivity {
 				if (raone.isPlaying()) {
 					raone.pause();
 					t.cancel();
-					raone.seekTo((int)(seekbar1.getProgress()));
-					raone.start();
-					_player();
-				} else {
-					raone.seekTo((int)(seekbar1.getProgress()));
-					raone.start();
-					_player();
 				}
+				raone.seekTo(seekbar1.getProgress());
+				raone.start();
+				_player();
 			}
 		});
 
-		imageview2.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				_bottom();
+		imageview2.setOnClickListener(_view -> _bottom());
+		textview2.setOnClickListener(_view -> _bottom());
+		textview1.setOnClickListener(_view -> _bottom());
+		linear3.setOnClickListener(_view -> _bottom());
+
+		imageview6.setOnClickListener(_view -> {
+			if (map.get(0).containsKey("text")) {
+				imageview6.setVisibility(View.GONE);
+				imageview1.setVisibility(View.VISIBLE);
+				recyclerview1.setVisibility(View.VISIBLE);
+				listview3.setVisibility(View.VISIBLE);
+				linear11.setVisibility(View.GONE);
+				linear14.setVisibility(View.GONE);
 			}
 		});
 
-		imageview6.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				if (map.get((int) 0).containsKey("text")) {
-					imageview6.setVisibility(View.GONE);
-					imageview1.setVisibility(View.VISIBLE);
-					recyclerview1.setVisibility(View.VISIBLE);
-					listview3.setVisibility(View.VISIBLE);
-					linear11.setVisibility(View.GONE);
-					linear14.setVisibility(View.GONE);
-				}
-			}
-		});
-
-		imageview3.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				if (map.get((int) 0).containsKey("previous")) {
-						raone.pause();
-						t.cancel();
-					new BackTask().execute(map.get((int) 0).get("previous").toString());
-				}
-			}
-		});
-
-		imageview5.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				if (map.get((int) 0).containsKey("next")) {
-						raone.pause();
-						t.cancel();
-					new BackTask().execute(map.get((int) 0).get("next").toString());
-				}
-			}
-		});
-
-		listview3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView < ? > _param1, View _param2, int _param3, long _param4) {
-				final int _position = _param3;
-				if (play.get((int) _position).get("text").toString().equals("!")) {
-					i.setClass(getApplicationContext(), ImageActivity.class);
-					i.putExtra("imageq", play.get((int) _position).get("link").toString());
-					startActivity(i);
-				} else {}
-			}
-		});
-
-		imageview1.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				imageview6.setVisibility(View.VISIBLE);
-				imageview1.setVisibility(View.GONE);
-				recyclerview1.setVisibility(View.GONE);
-				listview3.setVisibility(View.GONE);
-				linear11.setVisibility(View.VISIBLE);
-				linear14.setVisibility(View.VISIBLE);
-			}
-		});
-
-		imageview4.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View _view) {
-				if (raone.isPlaying()) {
+		imageview3.setOnClickListener(_view -> {
+			if (map.get(0).containsKey("previous")) {
 					raone.pause();
 					t.cancel();
-					imageview4.setImageResource(R.drawable.ic_play_arrow);
+				new BackTask().execute(map.get(0).get("previous").toString());
+			}
+		});
+
+		imageview5.setOnClickListener(_view -> {
+			if (map.get(0).containsKey("next")) {
+					raone.pause();
+					t.cancel();
+				new BackTask().execute(map.get(0).get("next").toString());
+			}
+		});
+
+		listview3.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
+			if (play.get(_param3).get("text").toString().equals("!")) {
+				i.setClass(getApplicationContext(), ImageActivity.class);
+				i.putExtra("imageq", play.get(_param3).get("link").toString());
+				startActivity(i);
+			}
+		});
+
+		imageview1.setOnClickListener(_view -> {
+			imageview6.setVisibility(View.VISIBLE);
+			imageview1.setVisibility(View.GONE);
+			recyclerview1.setVisibility(View.GONE);
+			listview3.setVisibility(View.GONE);
+			linear11.setVisibility(View.VISIBLE);
+			linear14.setVisibility(View.VISIBLE);
+		});
+
+		imageview4.setOnClickListener(_view -> {
+			if (raone.isPlaying()) {
+				raone.pause();
+				t.cancel();
+				imageview4.setImageResource(R.drawable.ic_play_arrow);
+			} else {
+				if (song_duration < raone.getDuration()) {
+					raone.start();
+					imageview4.setImageResource(R.drawable.ic_pause);
+					_player();
 				} else {
-					if (song_duration < raone.getDuration()) {
-						raone.start();
-						imageview4.setImageResource(R.drawable.ic_pause);
-						_player();
+					if (map.get(0).containsKey("next")) {
+						new BackTask().execute(map.get(0).get("next").toString());
 					} else {
-						if (map.get((int) 0).containsKey("next")) {
-							new BackTask().execute(map.get((int) 0).get("next").toString());
-						} else {
-							_music();
-						}
+						_music();
 					}
 				}
 			}
@@ -302,16 +246,11 @@ public class MusicActivity extends AppCompatActivity {
 	@Override
 	protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
 		super.onActivityResult(_requestCode, _resultCode, _data);
-		switch (_requestCode) {
-			default:
-				break;
-		}
 	}
 
 	private class BackTask extends AsyncTask < String, Integer, String > {
 		@Override
 		protected void onPreExecute() {}
-
 		protected String doInBackground(String...address) {
 			String output = "";
 			try {
@@ -331,13 +270,11 @@ public class MusicActivity extends AppCompatActivity {
 			}
 			return output;
 		}
-
 		protected void onProgressUpdate(Integer...values) {}
-
 		protected void onPostExecute(String s) {
 			str = s;
 			map = new Gson().fromJson(str, new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
-			uri = new Gson().fromJson(map.get((int) 0).get("artist_uri").toString(), new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType());
+			uri = new Gson().fromJson(map.get(0).get("artist_uri").toString(), new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType());
 			if (sp.getString("player", "").equals("yes")) {
 				if (raone != null && raone.isPlaying()) {
 					raone.stop();
@@ -349,43 +286,27 @@ public class MusicActivity extends AppCompatActivity {
 
 	public void _player() {
 		imageview4.setImageResource(R.drawable.ic_pause);
-		seekbar1.setMax((int) raone.getDuration());
+		seekbar1.setMax(raone.getDuration());
 		seekbar1.setProgress((int) song_duration);
 		t = new TimerTask() {
 			@Override
 			public void run() {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						if (sp.getString("player", "").equals("yes") && raone.isPlaying()) {
-							textview3.setText(new DecimalFormat("00").format((raone.getCurrentPosition() / 1000) / 60).concat(":".concat(new DecimalFormat("00").format((raone.getCurrentPosition() / 1000) % 60))));
-							textview4.setText("-".concat(new DecimalFormat("00").format(((raone.getDuration() - raone.getCurrentPosition()) / 1000) / 60).concat(":".concat(new DecimalFormat("00").format(((raone.getDuration() - raone.getCurrentPosition()) / 1000) % 60)))));
-							textview4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-							textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-							seekbar1.setProgress((int) raone.getCurrentPosition());
-							song_duration = raone.getCurrentPosition();
-							seekbar1.setProgress((int) song_duration);
-						} else if (sp.getString("player", "").equals("no") && raone.isPlaying()) {
-							raone.pause();
-						} else if (sp.getString("player", "").equals("yes") && !raone.isPlaying()) {
-							raone.start();
-						}
-					}
+				runOnUiThread(() -> {
+						textview3.setText(new DecimalFormat("00").format((raone.getCurrentPosition() / 1000) / 60).concat(":".concat(new DecimalFormat("00").format((raone.getCurrentPosition() / 1000) % 60))));
+						textview4.setText("-".concat(new DecimalFormat("00").format(((raone.getDuration() - raone.getCurrentPosition()) / 1000) / 60).concat(":".concat(new DecimalFormat("00").format(((raone.getDuration() - raone.getCurrentPosition()) / 1000) % 60)))));
+						textview4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+						textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+						seekbar1.setProgress(raone.getCurrentPosition());
+						song_duration = raone.getCurrentPosition();
+						seekbar1.setProgress((int) song_duration);
 				});
 			}
 		};
-		_timer.scheduleAtFixedRate(t, (int)(0), (int)(100));
+		_timer.scheduleAtFixedRate(t, 0, 100);
 	}
 
 	public void _music() {
-		sp.edit().putString("player", "yes").commit();
-		sp.edit().putString("player_explicit", map.get((int) 0).get("explicit").toString()).commit();
-		sp.edit().putString("player_name", map.get((int) 0).get("name").toString()).commit();
-		sp.edit().putString("player_artist", map.get((int) 0).get("artist").toString()).commit();
-		sp.edit().putString("player_image", map.get((int) 0).get("image").toString()).commit();
-		sp.edit().putString("player_duration", "yes").commit();
-		sp.edit().putString("player_time", "yes").commit();
-		currentfile = map.get((int) 0).get("music").toString();
+		currentfile = map.get(0).get("music").toString();
 		raone = new MediaPlayer();
 		raone.setAudioStreamType(3);
 		try {
@@ -407,28 +328,25 @@ public class MusicActivity extends AppCompatActivity {
 			Toast.makeText(getApplicationContext(), "Unknown URL!", Toast.LENGTH_LONG).show();
 		}
 		raone.start();
-		raone.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-			@Override
-			public void onCompletion(MediaPlayer mp) {
-				if (map.get((int) 0).containsKey("next")) {
-					new BackTask().execute(map.get((int) 0).get("next").toString());
-				}
-				imageview4.setImageResource(R.drawable.ic_play_arrow);
-				t.cancel();
+		raone.setOnCompletionListener(mp -> {
+			if (map.get(0).containsKey("next")) {
+				new BackTask().execute(map.get(0).get("next").toString());
 			}
+			imageview4.setImageResource(R.drawable.ic_play_arrow);
+			t.cancel();
 		});
 		play1 = 1;
 		song_duration = raone.getCurrentPosition();
-		seekbar1.setProgress((int) raone.getCurrentPosition());
-		seekbar1.setMax((int) raone.getDuration());
+		seekbar1.setProgress(raone.getCurrentPosition());
+		seekbar1.setMax(raone.getDuration());
 		textview4.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		textview3.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-		if (map.get((int) 0).containsKey("next")) {
+		if (map.get(0).containsKey("next")) {
 			imageview5.setAlpha((float)(1));
 		} else {
 			imageview5.setAlpha((float)(0.5d));
 		}
-		if (map.get((int) 0).containsKey("previous")) {
+		if (map.get(0).containsKey("previous")) {
 			imageview3.setAlpha((float)(1));
 		} else {
 			imageview3.setAlpha((float)(0.5d));
@@ -455,23 +373,20 @@ public class MusicActivity extends AppCompatActivity {
 		bs_base.setCancelable(true);
 		View layBase = getLayoutInflater().inflate(R.layout.info, null);
 		bs_base.setContentView(layBase);
-		ImageView image = (ImageView) layBase.findViewById(R.id.image);
-		ImageView artist_image = (ImageView) layBase.findViewById(R.id.artist_image);
-		ImageView album_image = (ImageView) layBase.findViewById(R.id.album_image);
-		ImageView lyrics_image = (ImageView) layBase.findViewById(R.id.lyrics_image);
-		ImageView info_image = (ImageView) layBase.findViewById(R.id.info_image);
-		TextView name = (TextView) layBase.findViewById(R.id.name);
-		TextView album = (TextView) layBase.findViewById(R.id.album);
-		TextView artist = (TextView) layBase.findViewById(R.id.artist);
-		TextView artist_text = (TextView) layBase.findViewById(R.id.artist_text);
-		TextView album_text = (TextView) layBase.findViewById(R.id.album_text);
-		TextView lyrics_text = (TextView) layBase.findViewById(R.id.lyrics_text);
-		TextView info_text = (TextView) layBase.findViewById(R.id.info_text);
-		LinearLayout linear1 = (LinearLayout) layBase.findViewById(R.id.linear1);
-		LinearLayout artist_linear = (LinearLayout) layBase.findViewById(R.id.artist_linear);
-		LinearLayout album_linear = (LinearLayout) layBase.findViewById(R.id.album_linear);
-		LinearLayout lyrics_linear = (LinearLayout) layBase.findViewById(R.id.lyrics_linear);
-		LinearLayout info_linear = (LinearLayout) layBase.findViewById(R.id.info_linear);
+		ImageView image = layBase.findViewById(R.id.image);
+		ImageView artist_image = layBase.findViewById(R.id.artist_image);
+		ImageView album_image = layBase.findViewById(R.id.album_image);
+		ImageView lyrics_image = layBase.findViewById(R.id.lyrics_image);
+		TextView name = layBase.findViewById(R.id.name);
+		TextView album = layBase.findViewById(R.id.album);
+		TextView artist = layBase.findViewById(R.id.artist);
+		TextView artist_text = layBase.findViewById(R.id.artist_text);
+		TextView album_text = layBase.findViewById(R.id.album_text);
+		TextView lyrics_text = layBase.findViewById(R.id.lyrics_text);
+		TextView info_text = layBase.findViewById(R.id.info_text);
+		LinearLayout artist_linear = layBase.findViewById(R.id.artist_linear);
+		LinearLayout album_linear = layBase.findViewById(R.id.album_linear);
+		LinearLayout lyrics_linear = layBase.findViewById(R.id.lyrics_linear);
 		name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		artist.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -486,126 +401,87 @@ public class MusicActivity extends AppCompatActivity {
 			artist_image.setImageResource(R.drawable.ic_timer_auto);
 			artist_text.setText(getString(R.string.go_to_artist));
 		}
-		if (map.get((int) 0).containsKey("text")) {
+		if (map.get(0).containsKey("text")) {
 			lyrics_linear.setVisibility(View.VISIBLE);
 		} else {
 			lyrics_linear.setVisibility(View.GONE);
 		}
-		image.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (map.get((int) 0).containsKey("image4k")) {
-					if (sp.getString("quality", "").equals("mobile")) {
-						i.setClass(getApplicationContext(), ImageActivity.class);
-						i.putExtra("imageq", map.get((int) 0).get("image4k").toString());
-						i.putExtra("name", name.getText().toString().concat(" - ").concat(artist.getText().toString()));
-						i.putExtra("artist", album.getText().toString());
-						startActivity(i);
-					} else {
-						i.setClass(getApplicationContext(), ImageActivity.class);
-						i.putExtra("imageq", map.get((int) 0).get("image").toString());
-						i.putExtra("name", name.getText().toString().concat(" - ").concat(artist.getText().toString()));
-						i.putExtra("artist", album.getText().toString());
-						startActivity(i);
-					}
+		image.setOnClickListener(v -> {
+			if (map.get(0).containsKey("image4k")) {
+				if (sp.getString("quality", "").equals("mobile")) {
+					i.setClass(getApplicationContext(), ImageActivity.class);
+					i.putExtra("imageq", map.get(0).get("image4k").toString());
+					i.putExtra("name", name.getText().toString().concat(" - ").concat(artist.getText().toString()));
+					i.putExtra("artist", album.getText().toString());
+					startActivity(i);
 				} else {
 					i.setClass(getApplicationContext(), ImageActivity.class);
-					i.putExtra("imageq", map.get((int) 0).get("image").toString());
+					i.putExtra("imageq", map.get(0).get("image").toString());
 					i.putExtra("name", name.getText().toString().concat(" - ").concat(artist.getText().toString()));
 					i.putExtra("artist", album.getText().toString());
 					startActivity(i);
 				}
-			}
-		});
-		artist_text.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				_artist();
-			}
-		});
-		artist_image.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				bs_base.cancel();
-				_artist();
-			}
-		});
-		artist_linear.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				bs_base.cancel();
-				_artist();
-			}
-		});
-		album_text.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				bs_base.cancel();
-				_album();
-			}
-		});
-		album_image.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				bs_base.cancel();
-				_album();
-			}
-		});
-		album_linear.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				bs_base.cancel();
-				_album();
-			}
-		});
-		lyrics_text.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				_lyrics();
-			}
-		});
-		lyrics_image.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				_lyrics();
-			}
-		});
-		lyrics_linear.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				_lyrics();
-			}
-		});
-		if (map.get((int) 0).get("explicit").toString().equals("yes")) {
-			if (map.get((int) 0).containsKey("prefix")) {
-				infostr = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString()).concat(" 🅴");
 			} else {
-				infostr = map.get((int) 0).get("name").toString().concat(" 🅴");
+				i.setClass(getApplicationContext(), ImageActivity.class);
+				i.putExtra("imageq", map.get(0).get("image").toString());
+				i.putExtra("name", name.getText().toString().concat(" - ").concat(artist.getText().toString()));
+				i.putExtra("artist", album.getText().toString());
+				startActivity(i);
+			}
+		});
+		artist_text.setOnClickListener(v -> _artist());
+		artist_image.setOnClickListener(v -> {
+			bs_base.cancel();
+			_artist();
+		});
+		artist_linear.setOnClickListener(v -> {
+			bs_base.cancel();
+			_artist();
+		});
+		album_text.setOnClickListener(v -> {
+			bs_base.cancel();
+			_album();
+		});
+		album_image.setOnClickListener(v -> {
+			bs_base.cancel();
+			_album();
+		});
+		album_linear.setOnClickListener(v -> {
+			bs_base.cancel();
+			_album();
+		});
+		lyrics_text.setOnClickListener(v -> _lyrics());
+		lyrics_image.setOnClickListener(v -> _lyrics());
+		lyrics_linear.setOnClickListener(v -> _lyrics());
+		if (map.get(0).get("explicit").toString().equals("yes")) {
+			if (map.get(0).containsKey("prefix")) {
+				infostr = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString()).concat(" 🅴");
+			} else {
+				infostr = map.get(0).get("name").toString().concat(" 🅴");
 			}
 		} else {
-			if (map.get((int) 0).containsKey("prefix")) {
-				infostr = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString());
+			if (map.get(0).containsKey("prefix")) {
+				infostr = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString());
 			} else {
-				infostr = map.get((int) 0).get("name").toString();
+				infostr = map.get(0).get("name").toString();
 			}
 		}
-		SpannableString ss = new SpannableString(infostr);
 		SpannableStringBuilder ssb = new SpannableStringBuilder(infostr);
 		int color = ContextCompat.getColor(MusicActivity.this, R.color.text2);
 		ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
-		ssb.setSpan(fcsRed, map.get((int) 0).get("name").toString().length(), infostr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		ssb.setSpan(fcsRed, map.get(0).get("name").toString().length(), infostr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		_marque(name, ssb);
 		if (map.get(0).containsKey("additional")) {
 			if (map.get(0).get("additional").equals("single")) {
-				_marquee(album, map.get((int) 0).get("album").toString().concat(" - ").concat(getString(R.string.single)));
+				_marquee(album, map.get(0).get("album").toString().concat(" - ").concat(getString(R.string.single)));
 			} else {
-				_marquee(album, map.get((int) 0).get("album").toString().concat(" - ").concat(getString(R.string.ep)));
+				_marquee(album, map.get(0).get("album").toString().concat(" - ").concat(getString(R.string.ep)));
 			}
 		} else {
-			_marquee(album, map.get((int) 0).get("album").toString());
+			_marquee(album, map.get(0).get("album").toString());
 		}
-		artist.setText(map.get((int) 0).get("artist").toString());
-		Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(image);
+		artist.setText(map.get(0).get("artist").toString());
+		Glide.with(getApplicationContext()).load(Uri.parse(map.get(0).get("image").toString())).into(image);
 		bs_base.show();
 	}
 
@@ -613,26 +489,23 @@ public class MusicActivity extends AppCompatActivity {
 		if (uri.size() > 1) {
 			i.setClass(getApplicationContext(), FullActivity.class);
 			i.putExtra("data", new Gson().toJson(uri));
-			i.putExtra("artist", map.get((int) 0).get("artist").toString());
+			i.putExtra("artist", map.get(0).get("artist").toString());
 			i.putExtra("title", getString(R.string.featured_artists_1));
 			startActivity(i);
 		} else {
-			if (uri.get((int) 0).containsKey("link")) {
+			if (uri.get(0).containsKey("link")) {
 			i.setClass(getApplicationContext(), ArtistActivity.class);
-			i.putExtra("link", uri.get((int) 0).get("link").toString());
+			i.putExtra("link", uri.get(0).get("link").toString());
 			startActivity(i);
 			} else {
-				com.google.android.material.snackbar.Snackbar.make(linear1, R.string.artist_will_be_added_soon, Snackbar.LENGTH_INDEFINITE).setAction("Ok", new View.OnClickListener() {
-					@Override
-					public void onClick(View _view) {}
-				}).show();
+				com.google.android.material.snackbar.Snackbar.make(linear1, R.string.artist_will_be_added_soon, Snackbar.LENGTH_INDEFINITE).setAction("Ok", _view -> {}).show();
 			}
 		}
 	}
 
 	public void _album() {
 		i.setClass(getApplicationContext(), AlbumActivity.class);
-		i.putExtra("link", map.get((int) 0).get("album_uri").toString());
+		i.putExtra("link", map.get(0).get("album_uri").toString());
 		startActivity(i);
 	}
 
@@ -641,99 +514,96 @@ public class MusicActivity extends AppCompatActivity {
 		bs_base.setCancelable(true);
 		View layBase = getLayoutInflater().inflate(R.layout.bottom, null);
 		bs_base.setContentView(layBase);
-		TextView text = (TextView) layBase.findViewById(R.id.text);
-		if (play.get((int) 0).containsKey("written")) {
-			text.setText(play.get((int) 0).get("text").toString().concat(getString(R.string.written_by)).concat(play.get((int) 0).get("written").toString()));
+		TextView text = layBase.findViewById(R.id.text);
+		if (play.get(0).containsKey("written")) {
+			text.setText(play.get(0).get("text").toString().concat(getString(R.string.written_by)).concat(play.get(0).get("written").toString()));
 		} else {
-			text.setText(play.get((int) 0).get("text").toString());
+			text.setText(play.get(0).get("text").toString());
 		}
 		text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-		TextView about = (TextView) layBase.findViewById(R.id.about);
+		TextView about = layBase.findViewById(R.id.about);
 		about.setVisibility(View.VISIBLE);
-		if (map.get((int) 0).get("explicit").toString().equals("yes")) {
-			if (map.get((int) 0).containsKey("prefix")) {
-				lyrics = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString()).concat(" 🅴\n").concat(map.get((int) 0).get("artist").toString());
+		if (map.get(0).get("explicit").toString().equals("yes")) {
+			if (map.get(0).containsKey("prefix")) {
+				lyrics = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString()).concat(" 🅴\n").concat(map.get(0).get("artist").toString());
 			} else {
-				lyrics = map.get((int) 0).get("name").toString().concat(" 🅴\n").concat(map.get((int) 0).get("artist").toString());
+				lyrics = map.get(0).get("name").toString().concat(" 🅴\n").concat(map.get(0).get("artist").toString());
 			}
 		} else {
-			if (map.get((int) 0).containsKey("prefix")) {
-				lyrics = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString()).concat(" \n").concat(map.get((int) 0).get("artist").toString());
+			if (map.get(0).containsKey("prefix")) {
+				lyrics = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString()).concat(" \n").concat(map.get(0).get("artist").toString());
 			} else {
-				lyrics = map.get((int) 0).get("name").toString().concat("\n").concat(map.get((int) 0).get("artist").toString());
+				lyrics = map.get(0).get("name").toString().concat("\n").concat(map.get(0).get("artist").toString());
 			}
 		}
-		SpannableString ss = new SpannableString(lyrics);
 		SpannableStringBuilder ssb = new SpannableStringBuilder(lyrics);
 		int color = ContextCompat.getColor(this, R.color.text2);
 		ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
-		ssb.setSpan(fcsRed, map.get((int)0).get("name").toString().length() + 1, lyrics.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		ssb.setSpan(fcsRed, map.get(0).get("name").toString().length() + 1, lyrics.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		about.setText(ssb);
 		about.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		bs_base.show();
 	}
 
     public void sendOnChannel2(View v) {
-		if (map.get((int) 0).get("explicit").toString().equals("yes")) {
-			if (map.get((int) 0).containsKey("prefix")) {
-				notifname = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString()).concat(" 🅴");
+		if (map.get(0).get("explicit").toString().equals("yes")) {
+			if (map.get(0).containsKey("prefix")) {
+				notifname = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString()).concat(" 🅴");
 			} else {
-				notifname = map.get((int) 0).get("name").toString().concat(" 🅴");
+				notifname = map.get(0).get("name").toString().concat(" 🅴");
 			}
 		} else {
-			if (map.get((int) 0).containsKey("prefix")) {
-				notifname = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString());
+			if (map.get(0).containsKey("prefix")) {
+				notifname = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString());
 			} else {
-				notifname = map.get((int) 0).get("name").toString();
+				notifname = map.get(0).get("name").toString();
 			}
 		}
-		image = map.get((int)0).get("image").toString();
-		//Bitmap bitmap = ((BitmapDrawable) imageview6.getDrawable()).getBitmap();
-
+		image = map.get(0).get("image").toString();
+		Bitmap artwork = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_2_ID)
                 .setSmallIcon(R.mipmap.ic_launcher_foreground)
                 .setContentTitle(notifname)
-                .setContentText(map.get((int)0).get("artist").toString())
-				//.setLargeIcon(bitmap)
+                .setContentText(map.get(0).get("artist").toString())
+				.setLargeIcon(artwork)
                 .addAction(R.drawable.ic_fast_rewind, "Previous", null)
                 .addAction(R.drawable.ic_pause, "Pause", null)
                 .addAction(R.drawable.ic_fast_forward, "Next", null)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(1)
                         .setMediaSession(mediaSession.getSessionToken()))
-                .setSubText(map.get((int)0).get("album").toString())
+                .setSubText(map.get(0).get("album").toString())
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .build();
         notificationManager.notify(2, notification);
     }
 
 	public void _me() {
-		currentfile = map.get((int) 0).get("music").toString();
-		if (map.get((int) 0).get("explicit").toString().equals("yes")) {
-			if (map.get((int) 0).containsKey("prefix")) {
-				namestr = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString()).concat(" 🅴");
+		currentfile = map.get(0).get("music").toString();
+		if (map.get(0).get("explicit").toString().equals("yes")) {
+			if (map.get(0).containsKey("prefix")) {
+				namestr = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString()).concat(" 🅴");
 			} else {
-				namestr = map.get((int) 0).get("name").toString().concat(" 🅴");
+				namestr = map.get(0).get("name").toString().concat(" 🅴");
 			}
 		} else {
-			if (map.get((int) 0).containsKey("prefix")) {
-				namestr = map.get((int) 0).get("name").toString().concat(" ").concat(map.get((int) 0).get("prefix").toString());
+			if (map.get(0).containsKey("prefix")) {
+				namestr = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString());
 			} else {
-				namestr = map.get((int) 0).get("name").toString();
+				namestr = map.get(0).get("name").toString();
 			}
 		}
-		SpannableString ss = new SpannableString(namestr);
 		SpannableStringBuilder ssb = new SpannableStringBuilder(namestr);
 		int color = ContextCompat.getColor(MusicActivity.this, R.color.text2);
 		ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
-		ssb.setSpan(fcsRed, map.get((int) 0).get("name").toString().length(), namestr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		ssb.setSpan(fcsRed, map.get(0).get("name").toString().length(), namestr.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		_marque(textview1, ssb);
-		_marquee(textview2, map.get((int) 0).get("artist").toString());
+		_marquee(textview2, map.get(0).get("artist").toString());
 		textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		textview2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-		Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(imageview6);
+		Glide.with(getApplicationContext()).load(Uri.parse(map.get(0).get("image").toString())).into(imageview6);
 		_music();
-		if (map.get((int) 0).containsKey("text")) {
+		if (map.get(0).containsKey("text")) {
 			imageview6.setVisibility(View.GONE);
 			imageview1.setVisibility(View.VISIBLE);
 			recyclerview1.setVisibility(View.GONE);
@@ -742,10 +612,10 @@ public class MusicActivity extends AppCompatActivity {
 			progressbar2.setVisibility(View.GONE);
 			linear11.setVisibility(View.GONE);
 			linear14.setVisibility(View.GONE);
-			play = new Gson().fromJson(map.get((int) 0).get("text").toString(), new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType());
+			play = new Gson().fromJson(map.get(0).get("text").toString(), new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType());
 			listview3.setAdapter(new Listview1Adapter(play));
 			((BaseAdapter)listview3.getAdapter()).notifyDataSetChanged();
-			Glide.with(getApplicationContext()).load(Uri.parse(map.get((int) 0).get("image").toString())).into(imageview1);
+			Glide.with(getApplicationContext()).load(Uri.parse(map.get(0).get("image").toString())).into(imageview1);
 		} else {
 			imageview6.setVisibility(View.VISIBLE);
 			imageview1.setVisibility(View.GONE);
@@ -785,19 +655,14 @@ public class MusicActivity extends AppCompatActivity {
 			if (_view == null) {
 				_view = _inflater.inflate(R.layout.text, null);
 			}
-
-			final LinearLayout linear1 = (LinearLayout) _view.findViewById(R.id.linear1);
-			final TextView textview1 = (TextView) _view.findViewById(R.id.textview1);
-
-			if (play.get((int)_position).containsKey("written")) {
-				textview1.setText(play.get((int)_position).get("text").toString().concat(getString(R.string.written_by).concat(play.get((int)_position).get("written").toString())));
+			final TextView textview1 = _view.findViewById(R.id.textview1);
+			if (play.get(_position).containsKey("written")) {
+				textview1.setText(play.get(_position).get("text").toString().concat(getString(R.string.written_by).concat(play.get(_position).get("written").toString())));
+				textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+			} else {
+				textview1.setText(play.get(_position).get("text").toString());
 				textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 			}
-			else {
-				textview1.setText(play.get((int)_position).get("text").toString());
-				textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-			}
-
 			return _view;
 		}
 	}

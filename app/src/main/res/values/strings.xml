@@ -90,4 +90,6 @@
     <string name="enabled">Enabled</string>
     <string name="single">Single</string>
     <string name="ep" translatable="false">EP</string>
+    <string name="confirm_short">Confirm the action</string>
+    <string name="confirm_long">Confirm you want to enable explicit content</string>
 </resources>

@@ -1,15 +1,11 @@
 package ru.kartofan.theme.music.app;
 
 import android.app.Activity;
-
 import java.util.HashMap;
 
 public class RequestNetwork {
-    private HashMap < String, Object > params = new HashMap < > ();
-    private HashMap < String, Object > headers = new HashMap < > ();
-
+    private HashMap < String, Object > params, headers = new HashMap < > ();
     private final Activity activity;
-
     private int requestType = 0;
 
     public RequestNetwork(Activity activity) {
