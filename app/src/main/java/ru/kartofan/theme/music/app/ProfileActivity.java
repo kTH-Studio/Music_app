@@ -92,8 +92,7 @@ public class ProfileActivity extends  AppCompatActivity  {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1000) {
-            initializeLogic();
-        }
+            initializeLogic();}
     }
 
     private void initialize() {
@@ -134,8 +133,7 @@ public class ProfileActivity extends  AppCompatActivity  {
                 nickname_field.setVisibility(View.VISIBLE);
                 description_field.setVisibility(View.VISIBLE);
                 save.setVisibility(View.VISIBLE);
-                preview.setText(R.string.preview);
-            }
+                preview.setText(R.string.preview);}
         });
 
         _user_child_listener = new ChildEventListener() {
@@ -160,8 +158,7 @@ public class ProfileActivity extends  AppCompatActivity  {
             }
 
             @Override
-            public void onChildMoved(DataSnapshot _param1, String _param2) {
-            }
+            public void onChildMoved(DataSnapshot _param1, String _param2) {}
 
             @Override
             public void onChildRemoved(DataSnapshot _param1) {
@@ -173,18 +170,15 @@ public class ProfileActivity extends  AppCompatActivity  {
             @Override
             public void onCancelled(DatabaseError _param1) {
                 final int _errorCode = _param1.getCode();
-                final String _errorMessage = _param1.getMessage();
-            }
+                final String _errorMessage = _param1.getMessage();}
         };
         user.addChildEventListener(_user_child_listener);
 
         _fstore_upload_progress_listener = (OnProgressListener<UploadTask.TaskSnapshot>) _param1 -> {
-            double _progressValue = (100.0 * _param1.getBytesTransferred()) / _param1.getTotalByteCount();
-        };
+            double _progressValue = (100.0 * _param1.getBytesTransferred()) / _param1.getTotalByteCount();};
 
         _fstore_download_progress_listener = (OnProgressListener<FileDownloadTask.TaskSnapshot>) _param1 -> {
-            double _progressValue = (100.0 * _param1.getBytesTransferred()) / _param1.getTotalByteCount();
-        };
+            double _progressValue = (100.0 * _param1.getBytesTransferred()) / _param1.getTotalByteCount();};
 
         _fstore_upload_success_listener = _param1 -> {
             final String _downloadUrl = _param1.getResult().toString();
@@ -196,15 +190,12 @@ public class ProfileActivity extends  AppCompatActivity  {
         };
 
         _fstore_download_success_listener = _param1 -> {
-            final long _totalByteCount = _param1.getTotalByteCount();
-        };
+            final long _totalByteCount = _param1.getTotalByteCount();};
 
-        _fstore_delete_success_listener = _param1 -> {
-        };
+        _fstore_delete_success_listener = _param1 -> {};
 
         _fstore_failure_listener = _param1 -> {
-            final String _message = _param1.getMessage();
-        };
+            final String _message = _param1.getMessage();};
 
         fauth_updateEmailListener = _param1 -> {
             final boolean _success = _param1.isSuccessful();
@@ -213,50 +204,41 @@ public class ProfileActivity extends  AppCompatActivity  {
 
         fauth_updatePasswordListener = _param1 -> {
             final boolean _success = _param1.isSuccessful();
-            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-        };
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";};
 
         fauth_emailVerificationSentListener = _param1 -> {
             final boolean _success = _param1.isSuccessful();
-            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-        };
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";};
 
         fauth_deleteUserListener = _param1 -> {
             final boolean _success = _param1.isSuccessful();
-            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-        };
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";};
 
         fauth_phoneAuthListener = task -> {
             final boolean _success = task.isSuccessful();
-            final String _errorMessage = task.getException() != null ? task.getException().getMessage() : "";
-        };
+            final String _errorMessage = task.getException() != null ? task.getException().getMessage() : "";};
 
         fauth_updateProfileListener = _param1 -> {
             final boolean _success = _param1.isSuccessful();
-            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-        };
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";};
 
         fauth_googleSignInListener = task -> {
             final boolean _success = task.isSuccessful();
-            final String _errorMessage = task.getException() != null ? task.getException().getMessage() : "";
-        };
+            final String _errorMessage = task.getException() != null ? task.getException().getMessage() : "";};
 
         _fauth_create_user_listener = _param1 -> {
             final boolean _success = _param1.isSuccessful();
-            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-        };
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";};
 
         _fauth_sign_in_listener = _param1 -> {
             final boolean _success = _param1.isSuccessful();
-            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-        };
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";};
 
         _fauth_reset_password_listener = new OnCompleteListener<Void>() {
             @Override
             public void onComplete(Task<Void> _param1) {
                 final boolean _success = _param1.isSuccessful();
-            }
-        };
+            }};
     }
 
     private void initializeLogic() {
@@ -267,8 +249,7 @@ public class ProfileActivity extends  AppCompatActivity  {
         } else if (sp.getString("theme", "").equals("dark")){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else if (sp.getString("theme", "").equals("light")){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);}
         verified.setVisibility(View.GONE);
         description.setVisibility(View.GONE);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -299,17 +280,12 @@ public class ProfileActivity extends  AppCompatActivity  {
                         if (_data.getClipData() != null) {
                             for (int _index = 0; _index < _data.getClipData().getItemCount(); _index++) {
                                 ClipData.Item _item = _data.getClipData().getItemAt(_index);
-                                _filePath.add(FileUtil.convertUriToFilePath(getApplicationContext(), _item.getUri()));
-                            }
+                                _filePath.add(FileUtil.convertUriToFilePath(getApplicationContext(), _item.getUri()));}
                         } else {
-                            _filePath.add(FileUtil.convertUriToFilePath(getApplicationContext(), _data.getData()));
-                        }
-                    }
-                    path = _filePath.get(0);
-                }
+                            _filePath.add(FileUtil.convertUriToFilePath(getApplicationContext(), _data.getData()));}}
+                    path = _filePath.get(0);}
                 break;
-            default: break;
-        }
+            default: break;}
     }
 
     @Deprecated
@@ -343,8 +319,7 @@ public class ProfileActivity extends  AppCompatActivity  {
         SparseBooleanArray _arr = _list.getCheckedItemPositions();
         for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {
             if (_arr.valueAt(_iIdx))
-                _result.add((double)_arr.keyAt(_iIdx));
-        }
+                _result.add((double)_arr.keyAt(_iIdx));}
         return _result;
     }
 

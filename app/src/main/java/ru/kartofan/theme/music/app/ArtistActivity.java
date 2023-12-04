@@ -29,11 +29,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 public class ArtistActivity extends AppCompatActivity {
-	private ImageView image_quality;
+	private ImageView image_quality, imageview1;
 	private String str, lateststr, topstr, albumsstr, singlesstr, livestr, compilationsstr, appearsstr;
 	private ArrayList < HashMap < String, Object >> map, latest, top, albums, singles, live, compilations, appears, links, info = new ArrayList < > ();
 	private LinearLayout about_segment, links_segment, about_line, hometown_line, born_line, genre_line, segment, segment_more, latest_release_linear, top_songs_linear, albums_linear, singles_linear, live_linear, compilations_linear, appear_on_linear;
-	private ImageView imageview1;
 	private TextView textview1, about_hint, about_text, hometown_hint, hometown_text, born_hint, born_text, genre_hint, genre_text, links_hint, links_more, albums_hint, latest_release_hint, top_songs_hint, singles_hint, live_hint, compilations_hint, appears_on_hint;
 	private double visibility = 0;
 	private ListView albums_list, links_list, latest_release_list, top_songs_list, singles_list, live_list, compilations_list, appears_on_list;
@@ -97,195 +96,39 @@ public class ArtistActivity extends AppCompatActivity {
 		appears_on_list = findViewById(R.id.appears_on_list);
 		sp = getSharedPreferences("sp", Activity.MODE_PRIVATE);
 
-		latest_release_hint.setOnClickListener(v -> {
-			p.setClass(getApplicationContext(), FullActivity.class);
-			p.putExtra("data", new Gson().toJson(latest));
-			p.putExtra("artist", map.get(0).get("name").toString());
-			p.putExtra("title", getString(R.string.latest_release_1));
-			startActivity(p);
-		});
+		latest_release_hint.setOnClickListener(v -> {_hint(latest, R.string.latest_release_1);});
+		albums_hint.setOnClickListener(v -> {_hint(albums, R.string.albums_1);});
+		singles_hint.setOnClickListener(v -> {_hint(singles, R.string.singles_1);});
+		live_hint.setOnClickListener(v -> {_hint(live, R.string.live_1);});
+		compilations_hint.setOnClickListener(v -> {_hint(compilations, R.string.compilations_1);});
+		appears_on_hint.setOnClickListener(v -> {_hint(appears, R.string.appears_on_1);});
 
-		albums_hint.setOnClickListener(v -> {
-			p.setClass(getApplicationContext(), FullActivity.class);
-			p.putExtra("data", new Gson().toJson(albums));
-			p.putExtra("artist", map.get(0).get("name").toString());
-			p.putExtra("title", getString(R.string.albums_1));
-			startActivity(p);
-		});
-
-		singles_hint.setOnClickListener(v -> {
-			p.setClass(getApplicationContext(), FullActivity.class);
-			p.putExtra("data", new Gson().toJson(singles));
-			p.putExtra("artist", map.get(0).get("name").toString());
-			p.putExtra("title", getString(R.string.singles_1));
-			startActivity(p);
-		});
-
-		live_hint.setOnClickListener(v -> {
-			p.setClass(getApplicationContext(), FullActivity.class);
-			p.putExtra("data", new Gson().toJson(live));
-			p.putExtra("artist", Objects.requireNonNull(map.get(0).get("name")).toString());
-			p.putExtra("title", getString(R.string.live_1));
-			startActivity(p);
-		});
-
-		compilations_hint.setOnClickListener(v -> {
-			p.setClass(getApplicationContext(), FullActivity.class);
-			p.putExtra("data", new Gson().toJson(compilations));
-			p.putExtra("artist", map.get(0).get("name").toString());
-			p.putExtra("title", getString(R.string.compilations_1));
-			startActivity(p);
-		});
-
-		appears_on_hint.setOnClickListener(v -> {
-			p.setClass(getApplicationContext(), FullActivity.class);
-			p.putExtra("data", new Gson().toJson(appears));
-			p.putExtra("artist", map.get(0).get("name").toString());
-			p.putExtra("title", getString(R.string.appears_on_1));
-			startActivity(p);
-		});
-
-		segment_more.setOnClickListener(v -> {
-			if (map.get(0).containsKey("about")) {
-				if (visibility == 0) {
-					links_more.setText(R.string.hide);
-					segment.setVisibility(View.VISIBLE);
-					links_list.setVisibility(View.VISIBLE);
-					visibility++;
-				} else {
-					links_more.setText(R.string.show);
-					segment.setVisibility(View.GONE);
-					links_list.setVisibility(View.GONE);
-					visibility = 0;
-				}
-			}
-		});
-
-		links_hint.setOnClickListener(v -> {
-			if (map.get(0).containsKey("about")) {
-				if (visibility == 0) {
-					links_more.setText(R.string.hide);
-					segment.setVisibility(View.VISIBLE);
-					links_list.setVisibility(View.VISIBLE);
-					visibility++;
-				} else {
-					links_more.setText(R.string.show);
-					segment.setVisibility(View.GONE);
-					links_list.setVisibility(View.GONE);
-					visibility = 0;
-				}
-			}
-		});
-
-		segment_more.setOnClickListener(v -> {
-			if (map.get(0).containsKey("about")) {
-				if (visibility == 0) {
-					links_more.setText(R.string.hide);
-					segment.setVisibility(View.VISIBLE);
-					links_list.setVisibility(View.VISIBLE);
-					visibility++;
-				} else {
-					links_more.setText(R.string.show);
-					segment.setVisibility(View.GONE);
-					links_list.setVisibility(View.GONE);
-					visibility = 0;
-				}
-			}
-		});
+		segment_more.setOnClickListener(v -> {_more();});
+		links_hint.setOnClickListener(v -> {_more();});
+		segment_more.setOnClickListener(v -> {_more();});
 
 		imageview1.setOnClickListener(_view -> {
 			if (map.get(0).containsKey("image4k")) {
 				if (sp.getString("quality", "").equals("yes")) {
-					i.setClass(getApplicationContext(), ImageActivity.class);
-					i.putExtra("imageq", map.get(0).get("image4k").toString());
-					i.putExtra("name", map.get(0).get("name").toString());
-					i.putExtra("artist", "");
-					startActivity(i);
-				} else {
-					i.setClass(getApplicationContext(), ImageActivity.class);
-					i.putExtra("imageq", map.get(0).get("image").toString());
-					i.putExtra("name", map.get(0).get("name").toString());
-					i.putExtra("artist", "");
-					startActivity(i);
-				}
-			} else {
-				i.setClass(getApplicationContext(), ImageActivity.class);
-				i.putExtra("imageq", map.get(0).get("image").toString());
-				i.putExtra("name", map.get(0).get("name").toString());
-				i.putExtra("artist", "");
-				startActivity(i);
-			}
-		});
+					_image("image4k");
+				} else {_image("image");
+				}} else {_image("image");
+			}});
 
 		latest_release_list.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
-			if (latest.get(_param3).containsKey("link")) {
-				l.setClass(getApplicationContext(), AlbumActivity.class);
-				l.putExtra("link", albums.get(_param3).get("link").toString());
-				startActivity(l);
-			} else {
-				com.google.android.material.snackbar.Snackbar.make(latest_release_list,
-						R.string.album_will_be_added_soon, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("ok", _view -> {}).show();
-			}
-		});
-
+			_list(latest, _param3, R.string.album_will_be_added_soon, latest_release_list);});
 		top_songs_list.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
-			if (top.get(_param3).containsKey("link")) {
-				l.setClass(getApplicationContext(), AlbumActivity.class);
-				l.putExtra("link", albums.get(_param3).get("link").toString());
-				startActivity(l);
-			} else {
-				com.google.android.material.snackbar.Snackbar.make(top_songs_list, R.string.song_will_be_added_soon, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("ok", _view -> {}).show();
-			}
-		});
-
+			_list(top, _param3, R.string.song_will_be_added_soon, top_songs_list);});
 		albums_list.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
-			if (albums.get(_param3).containsKey("link")) {
-				l.setClass(getApplicationContext(), AlbumActivity.class);
-				l.putExtra("link", albums.get(_param3).get("link").toString());
-				startActivity(l);
-			} else {
-				com.google.android.material.snackbar.Snackbar.make(albums_list, R.string.album_will_be_added_soon, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("ok", _view -> {}).show();
-			}
-		});
-
+			_list(albums, _param3, R.string.album_will_be_added_soon, albums_list);});
 		singles_list.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
-			if (singles.get(_param3).containsKey("link")) {
-				l.setClass(getApplicationContext(), AlbumActivity.class);
-				l.putExtra("link", singles.get(_param3).get("link").toString());
-				startActivity(l);
-			} else {
-				com.google.android.material.snackbar.Snackbar.make(singles_list, R.string.song_will_be_added_soon, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("ok", _view -> {}).show();
-			}
-		});
-
+			_list(singles, _param3, R.string.song_will_be_added_soon, singles_list);});
 		live_list.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
-			if (live.get(_param3).containsKey("link")) {
-				l.setClass(getApplicationContext(), AlbumActivity.class);
-				l.putExtra("link", albums.get(_param3).get("link").toString());
-				startActivity(l);
-			} else {
-				com.google.android.material.snackbar.Snackbar.make(compilations_list, R.string.album_will_be_added_soon, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("ok", _view -> {}).show();
-			}
-		});
-
+			_list(live, _param3, R.string.album_will_be_added_soon, compilations_list);});
 		compilations_list.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
-			if (compilations.get(_param3).containsKey("link")) {
-				l.setClass(getApplicationContext(), AlbumActivity.class);
-				l.putExtra("link", compilations.get(_param3).get("link").toString());
-				startActivity(l);
-			} else {
-				com.google.android.material.snackbar.Snackbar.make(compilations_list, R.string.album_will_be_added_soon, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("ok", _view -> {}).show();
-			}
-		});
-
+			_list(compilations, _param3, R.string.album_will_be_added_soon, compilations_list);});
 		appears_on_list.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
-			if (appears.get(_param3).containsKey("link")) {
-				l.setClass(getApplicationContext(), AlbumActivity.class);
-				l.putExtra("link", albums.get(_param3).get("link").toString());
-				startActivity(l);
-			} else {
-				com.google.android.material.snackbar.Snackbar.make(appears_on_list, R.string.album_will_be_added_soon, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("ok", _view -> {}).show();
-			}
+			_list(appears, _param3, R.string.album_will_be_added_soon, appears_on_list);
 		});
 
 		links_list.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
@@ -301,10 +144,10 @@ public class ArtistActivity extends AppCompatActivity {
 			bs_base.setContentView(layBase);
 			TextView text = layBase.findViewById(R.id.text);
 			text.setText(info.get(0).get("tale_".concat(sp.getString("prefix", ""))).toString());
-			text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+			_typeface(text);
 			TextView about = layBase.findViewById(R.id.about);
 			about.setVisibility(View.GONE);
-			about.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+			_typeface(about);
 			bs_base.show();
 		});
 	}
@@ -319,13 +162,13 @@ public class ArtistActivity extends AppCompatActivity {
 		} else if (sp.getString("theme", "").equals("light")){
 			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 		}
-		latest_release_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-		top_songs_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-		albums_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-		singles_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-		live_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-		compilations_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-		appears_on_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		_typeface(latest_release_hint);
+		_typeface(top_songs_hint);
+		_typeface(albums_hint);
+		_typeface(singles_hint);
+		_typeface(live_hint);
+		_typeface(compilations_hint);
+		_typeface(appears_on_hint);
 		about_segment.setVisibility(View.GONE);
 		latest_release_linear.setVisibility(View.GONE);
 		top_songs_linear.setVisibility(View.GONE);
@@ -334,6 +177,7 @@ public class ArtistActivity extends AppCompatActivity {
 		live_linear.setVisibility(View.GONE);
 		compilations_linear.setVisibility(View.GONE);
 		appear_on_linear.setVisibility(View.GONE);
+		image_quality.setVisibility(View.GONE);
 		new BackTask().execute(getIntent().getStringExtra("link"));
 	}
 
@@ -368,25 +212,6 @@ public class ArtistActivity extends AppCompatActivity {
 		protected void onPostExecute(String s) {
 			str = s;
 			map = new Gson().fromJson(str, new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
-			if (map.get(0).containsKey("latest")) {
-				latest_release_linear.setVisibility(View.VISIBLE);
-				latest = new Gson().fromJson(map.get(0).get("latest").toString(), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
-				latest_release_list.setAdapter(new Latest_release_listAdapter(albums));
-				_ViewSetHeight(latest_release_list, latest.size() * kTHUtil.getDip(getApplicationContext(), 77));
-				latest_release_hint.setText(getString(R.string.albums_1).concat(" (").concat(String.valueOf(latest.size())).concat(") >"));
-				((BaseAdapter) latest_release_list.getAdapter()).notifyDataSetChanged();
-			} else {
-				latest_release_linear.setVisibility(View.GONE);
-			}
-			if (map.get(0).containsKey("top_songs")) {
-				top_songs_linear.setVisibility(View.VISIBLE);
-				top = new Gson().fromJson(map.get(0).get("top_songs").toString(), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
-				top_songs_list.setAdapter(new Top_songs_listAdapter(top));
-				_ViewSetHeight(top_songs_list, top.size() * kTHUtil.getDip(getApplicationContext(), 51));
-				((BaseAdapter) top_songs_list.getAdapter()).notifyDataSetChanged();
-			} else {
-				top_songs_linear.setVisibility(View.GONE);
-			}
 			if (map.get(0).containsKey("albums")) {
 				albums_linear.setVisibility(View.VISIBLE);
 				albums = new Gson().fromJson(map.get(0).get("albums").toString(), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
@@ -394,8 +219,7 @@ public class ArtistActivity extends AppCompatActivity {
 				if (albums.size() < 5) {
 					_ViewSetHeight(albums_list, albums.size() * kTHUtil.getDip(getApplicationContext(), 77));
 				} else {
-					_ViewSetHeight(albums_list, 5 * kTHUtil.getDip(getApplicationContext(),
-							77));
+					_ViewSetHeight(albums_list, 5 * kTHUtil.getDip(getApplicationContext(),  77));
 				}
 				albums_hint.setText(getString(R.string.albums_1).concat(" (").concat(String.valueOf(albums.size())).concat(") >"));
 				((BaseAdapter) albums_list.getAdapter()).notifyDataSetChanged();
@@ -470,7 +294,7 @@ public class ArtistActivity extends AppCompatActivity {
 					links_list.setVisibility(View.GONE);
 					segment.setVisibility(View.GONE);
 					links_more.setVisibility(View.VISIBLE);
-					links_more.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+					_typeface(links_more);
 				} else {
 					links_list.setVisibility(View.VISIBLE);
 					segment.setVisibility(View.GONE);
@@ -487,24 +311,20 @@ public class ArtistActivity extends AppCompatActivity {
 
 	public void _text() {
 		Glide.with(getApplicationContext()).load(Uri.parse(map.get(0).get("image").toString())).into(imageview1);
-		image_quality.setImageResource(R.drawable.ic_hd);
 		if (sp.getString("quality", "").equals("yes")) {
 			if (map.get(0).containsKey("image4k")) {
-				Glide.with(getApplicationContext()).load(Uri.parse(map.get(0).get("image4k").toString())).into(imageview1);
-				image_quality.setImageResource(R.drawable.ic_4k);
+				_quality("image4k", R.drawable.ic_4k);
 			}
 		} else {
-			Glide.with(getApplicationContext()).load(Uri.parse(map.get(0).get("image").toString())).into(imageview1);
-			image_quality.setImageResource(R.drawable.ic_hd);
+			_quality("image", R.drawable.ic_hd);
 		}
 		if (sp.getString("animation", "").equals("yes")) {
 			if (map.get(0).containsKey("gif")) {
-				Glide.with(getApplicationContext()).load(Uri.parse(map.get(0).get("gif").toString())).into(imageview1);
-			image_quality.setImageResource(R.drawable.ic_gif);
+				_quality("gif", R.drawable.ic_gif);
 			}
 		}
 		_marquee(textview1, map.get(0).get("name").toString());
-		textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		_typeface(textview1);
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -514,8 +334,8 @@ public class ArtistActivity extends AppCompatActivity {
 			if (info.get(0).containsKey("tale_".concat(sp.getString("prefix", "")))) {
 				_marquee1(about_text, info.get(0).get("tale_".concat(sp.getString("prefix", ""))).toString());
 				about_line.setVisibility(View.VISIBLE);
-				about_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				about_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				_typeface(about_hint);
+				_typeface(about_text);
 			} else {
 				about_line.setVisibility(View.GONE);
 			}
@@ -528,8 +348,8 @@ public class ArtistActivity extends AppCompatActivity {
 					_marquee(hometown_text, info.get(0).get("from_".concat(sp.getString("prefix", ""))).toString());
 				}
 				hometown_line.setVisibility(View.VISIBLE);
-				hometown_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				hometown_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				_typeface(hometown_hint);
+				_typeface(hometown_text);
 			} else {
 				hometown_line.setVisibility(View.GONE);
 			}
@@ -542,16 +362,16 @@ public class ArtistActivity extends AppCompatActivity {
 					born_text.setText(info.get(0).get("formed_".concat(sp.getString("prefix", ""))).toString());
 				}
 				born_line.setVisibility(View.VISIBLE);
-				born_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				born_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				_typeface(born_hint);
+				_typeface(born_text);
 			} else {
 				born_line.setVisibility(View.GONE);
 			}
 			if (info.get(0).containsKey("genre_".concat(sp.getString("prefix", "")))) {
 				genre_text.setText(info.get(0).get("genre_".concat(sp.getString("prefix", ""))).toString());
 				genre_line.setVisibility(View.VISIBLE);
-				genre_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				genre_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				_typeface(genre_hint);
+				_typeface(genre_text);
 			} else {
 				genre_line.setVisibility(View.GONE);
 			}
@@ -559,7 +379,7 @@ public class ArtistActivity extends AppCompatActivity {
 			about_segment.setVisibility(View.GONE);
 		}
 		if (map.get(0).containsKey("links")) {
-			links_hint.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+			_typeface(links_hint);
 			links_segment.setVisibility(View.VISIBLE);
 		} else {
 			links_segment.setVisibility(View.GONE);
@@ -600,6 +420,58 @@ public class ArtistActivity extends AppCompatActivity {
 		_textview.setMaxLines(2);
 		_textview.setEllipsize(TextUtils.TruncateAt.END);
 		_textview.setSelected(true);
+	}
+
+	public void _more() {
+		if (map.get(0).containsKey("about")) {
+			if (visibility == 0) {
+				links_more.setText(R.string.hide);
+				segment.setVisibility(View.VISIBLE);
+				links_list.setVisibility(View.VISIBLE);
+				visibility++;
+			} else {
+				links_more.setText(R.string.show);
+				segment.setVisibility(View.GONE);
+				links_list.setVisibility(View.GONE);
+				visibility = 0;
+			}
+		}
+	}
+
+	public void _hint(ArrayList<HashMap<String, Object>> _map, int _str) {
+		p.setClass(getApplicationContext(), FullActivity.class);
+		p.putExtra("data", new Gson().toJson(_map));
+		p.putExtra("artist", map.get(0).get("name").toString());
+		p.putExtra("title", _str);
+		startActivity(p);
+	}
+
+	public void _image(String _img) {
+		i.setClass(getApplicationContext(), ImageActivity.class);
+		i.putExtra("imageq", map.get(0).get(_img).toString());
+		i.putExtra("name", map.get(0).get("name").toString());
+		i.putExtra("artist", "");
+		startActivity(i);
+	}
+
+	public void _list(ArrayList<HashMap<String, Object>> _map, Number _param3, int _str, ListView _list) {
+		if (_map.get((int) _param3).containsKey("link")) {
+			l.setClass(getApplicationContext(), AlbumActivity.class);
+			l.putExtra("link", _map.get((int) _param3).get("link").toString());
+			startActivity(l);
+		} else {
+			com.google.android.material.snackbar.Snackbar.make(_list, _str, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("ok", _view -> {}).show();
+		}
+	}
+
+	public void _quality(String _key, int _res) {
+		Glide.with(getApplicationContext()).load(Uri.parse(map.get(0).get(_key).toString())).into(imageview1);
+		image_quality.setImageResource(_res);
+		image_quality.setVisibility(View.VISIBLE);
+	}
+
+	public void _typeface(TextView _txt) {
+		_txt.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 	}
 
 	public class Latest_release_listAdapter extends BaseAdapter {
@@ -673,9 +545,9 @@ public class ArtistActivity extends AppCompatActivity {
 				if (latest.get(_position).containsKey("release_".concat(sp.getString("prefix", ""))) && latest.get(_position).containsKey("time_".concat(sp.getString("prefix", "")))) {
 					_marquee(Release, latest.get(_position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(latest.get(_position).get("time_".concat(sp.getString("prefix", ""))).toString())));
 				}
-				Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				Release.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				_typeface(Name);
+				_typeface(album);
+				_typeface(Release);
 			} else {
 				linear1.setVisibility(View.GONE);
 			}
@@ -744,9 +616,9 @@ public class ArtistActivity extends AppCompatActivity {
 			if (top.get(_position).containsKey("release_".concat(sp.getString("prefix", ""))) && top.get(_position).containsKey("time_".concat(sp.getString("prefix", "")))) {
 				_marquee(Release, top.get(_position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(top.get(_position).get("time_".concat(sp.getString("prefix", ""))).toString())));
 			}
-			Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-			album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-			Release.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+			_typeface(Name);
+			_typeface(album);
+			_typeface(Release);
 			return _view;
 		}
 	}
@@ -822,9 +694,9 @@ public class ArtistActivity extends AppCompatActivity {
 				if (albums.get(_position).containsKey("release_".concat(sp.getString("prefix", ""))) && albums.get(_position).containsKey("time_".concat(sp.getString("prefix", "")))) {
 					_marquee(Release, albums.get(_position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(albums.get(_position).get("time_".concat(sp.getString("prefix", ""))).toString())));
 				}
-				Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				Release.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				_typeface(Name);
+				_typeface(album);
+				_typeface(Release);
 			} else {
 				linear1.setVisibility(View.GONE);
 			}
@@ -903,9 +775,9 @@ public class ArtistActivity extends AppCompatActivity {
 				if (singles.get(_position).containsKey("release_".concat(sp.getString("prefix", ""))) && singles.get(_position).containsKey("time_".concat(sp.getString("prefix", "")))) {
 					_marquee(Release, singles.get(_position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(singles.get(_position).get("time_".concat(sp.getString("prefix", ""))).toString())));
 				}
-				Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				Release.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				_typeface(Name);
+				_typeface(album);
+				_typeface(Release);
 			} else {
 				linear1.setVisibility(View.GONE);
 			}
@@ -984,9 +856,9 @@ public class ArtistActivity extends AppCompatActivity {
 				if (live.get(_position).containsKey("release_".concat(sp.getString("prefix", ""))) && live.get(_position).containsKey("time_".concat(sp.getString("prefix", "")))) {
 					_marquee(Release, live.get(_position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(live.get(_position).get("time_".concat(sp.getString("prefix", ""))).toString())));
 				}
-				Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				Release.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				_typeface(Name);
+				_typeface(album);
+				_typeface(Release);
 			} else {
 				linear1.setVisibility(View.GONE);
 			}
@@ -1065,9 +937,9 @@ public class ArtistActivity extends AppCompatActivity {
 				if (compilations.get(_position).containsKey("release_".concat(sp.getString("prefix", ""))) && compilations.get(_position).containsKey("time_".concat(sp.getString("prefix", "")))) {
 					_marquee(Release, compilations.get(_position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(compilations.get(_position).get("time_".concat(sp.getString("prefix", ""))).toString())));
 				}
-				Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				Release.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				_typeface(Name);
+				_typeface(album);
+				_typeface(Release);
 			} else {
 				linear1.setVisibility(View.GONE);
 			}
@@ -1146,9 +1018,9 @@ public class ArtistActivity extends AppCompatActivity {
 				if (appears.get(_position).containsKey("release_".concat(sp.getString("prefix", ""))) && appears.get(_position).containsKey("time_".concat(sp.getString("prefix", "")))) {
 					_marquee(Release, appears.get(_position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(appears.get(_position).get("time_".concat(sp.getString("prefix", ""))).toString())));
 				}
-				Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-				Release.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+				_typeface(Name);
+				_typeface(album);
+				_typeface(Release);
 			} else {
 				linear1.setVisibility(View.GONE);
 			}
@@ -1189,8 +1061,8 @@ public class ArtistActivity extends AppCompatActivity {
 			Glide.with(getApplicationContext()).load(Uri.parse(links.get(_position).get("image").toString())).into(link_image);
 			link_text.setText(links.get(_position).get("text_".concat(sp.getString("prefix", ""))).toString());
 			_marquee(link_adress, links.get(_position).get("link").toString());
-			link_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-			link_adress.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+			_typeface(link_text);
+			_typeface(link_adress);
 			return _view;
 		}
 	}

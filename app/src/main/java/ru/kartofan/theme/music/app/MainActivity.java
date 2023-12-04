@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 	private TextView player_name, player_artist, textview1, textview2, textview4, textview5, textview6, toolbar_title, toolbar_subtitle;
 	private final FirebaseDatabase _firebase = FirebaseDatabase.getInstance();
 	private String str, language, site, latest_version, description, link, package_name = "";
-	private final String current_version = "2.1";
+	private final String current_version = "2.2";
 	private final String error = "";
 	private HashMap < String, Object > update = new HashMap < > ();
 	private ArrayList < HashMap < String, Object >> map, map1 = new ArrayList < > ();
@@ -106,23 +106,17 @@ public class MainActivity extends AppCompatActivity {
 		sp = getSharedPreferences("sp", Activity.MODE_PRIVATE);
 		sp = getSharedPreferences("sp", Activity.MODE_PRIVATE);
 		if (sp.getString("language", "").equals("")) {
-			sp.edit().putString("language", "default").apply();
-		}
+			sp.edit().putString("language", "default").apply();}
 		if (sp.getString("theme", "").equals("")) {
-			sp.edit().putString("theme", "default").apply();
-		}
+			sp.edit().putString("theme", "default").apply();}
 		if (sp.getString("explicit", "").equals("")) {
-			sp.edit().putString("explicit", "no").apply();
-		}
+			sp.edit().putString("explicit", "no").apply();}
 		if (sp.getString("animation", "").equals("")) {
-			sp.edit().putString("animation", "no").apply();
-		}
+			sp.edit().putString("animation", "no").apply();}
 		if (sp.getString("quality", "").equals("")) {
-			sp.edit().putString("quality", "no").apply();
-		}
+			sp.edit().putString("quality", "no").apply();}
 		if (sp.getString("player", "").equals("")) {
-			sp.edit().putString("player", "no").apply();
-		}
+			sp.edit().putString("player", "no").apply();}
 		fauth = FirebaseAuth.getInstance();
 
 		fauth_updateEmailListener = _param1 -> {
@@ -189,70 +183,12 @@ public class MainActivity extends AppCompatActivity {
 		_Ver_child_listener = new ChildEventListener() {
 			@Override
 			public void onChildAdded(DataSnapshot _param1, String _param2) {
-				GenericTypeIndicator < HashMap < String, Object >> _ind = new GenericTypeIndicator < HashMap < String, Object >> () {};
-				final String _childKey = _param1.getKey();
-				final HashMap < String, Object > _childValue = _param1.getValue(_ind);
-				Ver.addListenerForSingleValueEvent(new ValueEventListener() {
-					@Override
-					public void onDataChange(DataSnapshot _dataSnapshot) {
-						map1 = new ArrayList < > ();
-						try {
-							GenericTypeIndicator < HashMap < String, Object >> _ind = new GenericTypeIndicator < HashMap < String, Object >> () {};
-							for (DataSnapshot _data: _dataSnapshot.getChildren()) {
-								HashMap < String, Object > _map = _data.getValue(_ind);
-								map1.add(_map);
-							}
-						} catch (Exception _e) {
-							_e.printStackTrace();
-						}
-						latest_version = map1.get(0).get("version").toString();
-						description = map1.get(0).get("description_".concat(sp.getString("prefix", ""))).toString();
-						link = map1.get(0).get("link").toString();
-						if (Double.parseDouble(latest_version) > Double.parseDouble(current_version)) {
-							_bottom();
-						} else {
-							if (Double.parseDouble(current_version) > Double.parseDouble(latest_version)) {
-								Ver.child("Music").child("version").setValue(current_version);
-							}
-						}
-					}
-					@Override
-					public void onCancelled(DatabaseError _databaseError) {}
-				});
+				_fire(_param1);
 			}
 
 			@Override
 			public void onChildChanged(DataSnapshot _param1, String _param2) {
-				GenericTypeIndicator < HashMap < String, Object >> _ind = new GenericTypeIndicator < HashMap < String, Object >> () {};
-				final String _childKey = _param1.getKey();
-				final HashMap < String, Object > _childValue = _param1.getValue(_ind);
-				Ver.addListenerForSingleValueEvent(new ValueEventListener() {
-					@Override
-					public void onDataChange(DataSnapshot _dataSnapshot) {
-						map1 = new ArrayList < > ();
-						try {
-							GenericTypeIndicator < HashMap < String, Object >> _ind = new GenericTypeIndicator < HashMap < String, Object >> () {};
-							for (DataSnapshot _data: _dataSnapshot.getChildren()) {
-								HashMap < String, Object > _map = _data.getValue(_ind);
-								map1.add(_map);
-							}
-						} catch (Exception _e) {
-							_e.printStackTrace();
-						}
-						latest_version = map1.get(0).get("version").toString();
-						description = map1.get(0).get("description_".concat(sp.getString("prefix", ""))).toString();
-						link = map1.get(0).get("link").toString();
-						if (Double.parseDouble(latest_version) > Double.parseDouble(current_version)) {
-							_bottom();
-						} else {
-							if (Double.parseDouble(current_version) > Double.parseDouble(latest_version)) {
-								Ver.child("Music").child("version").setValue(current_version);
-							}
-						}
-					}
-					@Override
-					public void onCancelled(DatabaseError _databaseError) {}
-				});
+				_fire(_param1);
 			}
 
 			@Override
@@ -297,13 +233,12 @@ public class MainActivity extends AppCompatActivity {
 		} else if (sp.getString("theme", "").equals("dark")){
 			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 		} else if (sp.getString("theme", "").equals("light")){
-			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-		}
-		if ((FirebaseAuth.getInstance().getCurrentUser() != null)) {} else {
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);}
+		if ((FirebaseAuth.getInstance().getCurrentUser() != null)) {
+		} else {
 			i.setClass(getApplicationContext(), RegisterActivity.class);
 			startActivity(i);
-			finishAffinity();
-		}
+			finishAffinity();}
 		package_name = "ru.kartofan.theme.music.app";
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -334,25 +269,18 @@ public class MainActivity extends AppCompatActivity {
 		language = Locale.getDefault().getDisplayLanguage();
 		if (language.equals("Deutsch")) {
 			sp.edit().putString("prefix", "de").apply();
-		} else if (language.equals("Pусский") || language.equals("русский")) {
+		} else if (language.equals("Русский") || language.equals("русский")) {
 			sp.edit().putString("prefix", "ru").apply();
 		} else {
-			sp.edit().putString("prefix", "en").apply();
-		}
+			sp.edit().putString("prefix", "en").apply();}
 		android.net.ConnectivityManager connMgr = (android.net.ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		android.net.NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 		if (networkInfo != null && networkInfo.isConnected()) {
 			site = "https://kth-studio.github.io/Music/music.json";
 			new BackTask().execute(site);
 		} else {
-			com.google.android.material.snackbar.Snackbar.make(listview1, R.string.internet_lost, Snackbar.LENGTH_INDEFINITE).setAction("Ok", _view -> {}).show();
-		}
+			com.google.android.material.snackbar.Snackbar.make(listview1, R.string.internet_lost, Snackbar.LENGTH_INDEFINITE).setAction("Ok", _view -> {}).show();}
 		listview1.setVisibility(View.INVISIBLE);
-	}
-
-	@Override
-	protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
-		super.onActivityResult(_requestCode, _resultCode, _data);
 	}
 
 	public void _marquee(final TextView _textview, final String _text) {
@@ -360,6 +288,39 @@ public class MainActivity extends AppCompatActivity {
 		_textview.setSingleLine(true);
 		_textview.setEllipsize(TextUtils.TruncateAt.MARQUEE);
 		_textview.setSelected(true);
+	}
+
+	public void _fire(DataSnapshot _param1) {
+		GenericTypeIndicator < HashMap < String, Object >> _ind = new GenericTypeIndicator < HashMap < String, Object >> () {};
+		final String _childKey = _param1.getKey();
+		final HashMap < String, Object > _childValue = _param1.getValue(_ind);
+		Ver.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot _dataSnapshot) {
+				map1 = new ArrayList < > ();
+				try {
+					GenericTypeIndicator < HashMap < String, Object >> _ind = new GenericTypeIndicator < HashMap < String, Object >> () {};
+					for (DataSnapshot _data: _dataSnapshot.getChildren()) {
+						HashMap < String, Object > _map = _data.getValue(_ind);
+						map1.add(_map);
+					}
+				} catch (Exception _e) {
+					_e.printStackTrace();
+				}
+				latest_version = map1.get(0).get("version").toString();
+				description = map1.get(0).get("description_".concat(sp.getString("prefix", ""))).toString();
+				link = map1.get(0).get("link").toString();
+				if (Double.parseDouble(latest_version) > Double.parseDouble(current_version)) {
+					_bottom();
+				} else {
+					if (Double.parseDouble(current_version) > Double.parseDouble(latest_version)) {
+						Ver.child("Music").child("version").setValue(current_version);
+					}
+				}
+			}
+			@Override
+			public void onCancelled(DatabaseError _databaseError) {}
+		});
 	}
 
 	public void _bottom(){

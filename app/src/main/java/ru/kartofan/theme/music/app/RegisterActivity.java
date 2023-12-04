@@ -107,21 +107,16 @@ public class RegisterActivity extends  AppCompatActivity  {
                     kTHUtil.hideKeyboard(getApplicationContext());
                 } else {
                     kTHUtil.hideKeyboard(getApplicationContext());
-                    Snackbar.make(linear1, R.string.phone_number_short, Snackbar.LENGTH_SHORT).setAction("Ok", _view13 -> {}).show();
-                }
+                    Snackbar.make(linear1, R.string.phone_number_short, Snackbar.LENGTH_SHORT).setAction("Ok", _view13 -> {}).show();}
             } else {
-                Snackbar.make(linear1, R.string.internet_lost, Snackbar.LENGTH_INDEFINITE).setAction("Ok", _view12 -> {}).show();
-            }
-        });
+                Snackbar.make(linear1, R.string.internet_lost, Snackbar.LENGTH_INDEFINITE).setAction("Ok", _view12 -> {}).show();}});
 
         button2.setOnClickListener(_view -> {
             if (edittext3.length() == 6) {
                 _verifyCode();
             } else {
                 kTHUtil.hideKeyboard(getApplicationContext());
-                Snackbar.make(linear1, R.string.verify_code_short, Snackbar.LENGTH_SHORT).setAction("Ok", _view1 -> {}).show();
-            }
-        });
+                Snackbar.make(linear1, R.string.verify_code_short, Snackbar.LENGTH_SHORT).setAction("Ok", _view1 -> {}).show();}});
 
         _user_child_listener = new ChildEventListener() {
             @Override
@@ -137,17 +132,12 @@ public class RegisterActivity extends  AppCompatActivity  {
                             GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {};
                             for (DataSnapshot _data : _dataSnapshot.getChildren()) {
                                 HashMap<String, Object> _map = _data.getValue(_ind);
-                                list.add(_map);
-                            }
-                        }
+                                list.add(_map);}}
                         catch (Exception _e) {
-                            _e.printStackTrace();
-                        }
-                    }
+                            _e.printStackTrace();}}
                     @Override
                     public void onCancelled(DatabaseError _databaseError) {
-                    }
-                });
+                    }});
             }
 
             @Override
@@ -163,17 +153,12 @@ public class RegisterActivity extends  AppCompatActivity  {
                             GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {};
                             for (DataSnapshot _data : _dataSnapshot.getChildren()) {
                                 HashMap<String, Object> _map = _data.getValue(_ind);
-                                list.add(_map);
-                            }
-                        }
+                                list.add(_map);}}
                         catch (Exception _e) {
-                            _e.printStackTrace();
-                        }
-                    }
+                            _e.printStackTrace();}}
                     @Override
                     public void onCancelled(DatabaseError _databaseError) {
-                    }
-                });
+                    }});
             }
 
             @Override
@@ -197,46 +182,38 @@ public class RegisterActivity extends  AppCompatActivity  {
 
         fauth_updateEmailListener = _param1 -> {
             final boolean _success = _param1.isSuccessful();
-            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-        };
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";};
 
         fauth_updatePasswordListener = _param1 -> {
             final boolean _success = _param1.isSuccessful();
-            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-        };
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";};
 
         fauth_emailVerificationSentListener = _param1 -> {
             final boolean _success = _param1.isSuccessful();
-            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-        };
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";};
 
         fauth_deleteUserListener = _param1 -> {
             final boolean _success = _param1.isSuccessful();
-            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-        };
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";};
 
         fauth_phoneAuthListener = task -> {
             final boolean _success = task.isSuccessful();
-            final String _errorMessage = task.getException() != null ? task.getException().getMessage() : "";
-        };
+            final String _errorMessage = task.getException() != null ? task.getException().getMessage() : "";};
 
         fauth_updateProfileListener = _param1 -> {
             final boolean _success = _param1.isSuccessful();
-            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
-        };
+            final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";};
 
         fauth_googleSignInListener = task -> {
             final boolean _success = task.isSuccessful();
-            final String _errorMessage = task.getException() != null ? task.getException().getMessage() : "";
-        };
+            final String _errorMessage = task.getException() != null ? task.getException().getMessage() : "";};
 
         _fauth_create_user_listener = _param1 -> {
             final boolean _success = _param1.isSuccessful();
             final String _errorMessage = _param1.getException() != null ? _param1.getException().getMessage() : "";
             if (_success) {
                 _user();
-            } else {}
-        };
+            } else {}};
 
         _fauth_sign_in_listener = _param1 -> {
             final boolean _success = _param1.isSuccessful();
@@ -251,41 +228,30 @@ public class RegisterActivity extends  AppCompatActivity  {
                             GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {};
                             for (DataSnapshot _data : _dataSnapshot.getChildren()) {
                                 HashMap<String, Object> _map = _data.getValue(_ind);
-                                list.add(_map);
-                            }
-                        }
+                                list.add(_map);}}
                         catch (Exception _e) {
-                            _e.printStackTrace();
-                        }
+                            _e.printStackTrace();}
                         if (list.size() == 0) {
                             if (_success) {
-                                _user();
-                            } else {}
+                                _user();} else {}
                         } else {
                             for(int _repeat72 = 0; _repeat72 < list.size(); _repeat72++) {
                                 if (list.get((int)n).containsKey(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                                 } else {
                                     if (_success) {
-                                        _user();
-                                    }
-                                }
+                                        _user();}}
                                 n = n + 1;
-                            }
-                        }
+                            }}
                     }
                     @Override
-                    public void onCancelled(DatabaseError _databaseError) {
-                    }
-                });
+                    public void onCancelled(DatabaseError _databaseError) {}});
                 i.setClass(getApplicationContext(), MainActivity.class);
                 startActivity(i);
                 finishAffinity();
-            }
-        };
+            }};
 
         _fauth_reset_password_listener = _param1 -> {
-            final boolean _success = _param1.isSuccessful();
-        };
+            final boolean _success = _param1.isSuccessful();};
     }
 
     private void initializeLogic() {
@@ -296,8 +262,7 @@ public class RegisterActivity extends  AppCompatActivity  {
         } else if (sp.getString("theme", "").equals("dark")){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else if (sp.getString("theme", "").equals("light")){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);}
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
@@ -326,8 +291,7 @@ public class RegisterActivity extends  AppCompatActivity  {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             map.put("os", (Build.VERSION.BASE_OS.concat(Build.VERSION.RELEASE)));
         } else {
-            map.put("os", (Build.VERSION.RELEASE));
-        }
+            map.put("os", (Build.VERSION.RELEASE));}
         map.put("name", "");
         map.put("surname", "");
         map.put("nickname", "");
@@ -357,23 +321,19 @@ public class RegisterActivity extends  AppCompatActivity  {
         public void onCodeSent(String s, com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
             codeSent = s;
-        }
-    };{}
+        }};{}
 
     public void _verifyCode () {
         code = edittext3.getText().toString();
         com.google.firebase.auth.PhoneAuthCredential credential = com.google.firebase.auth.PhoneAuthProvider.getCredential(codeSent, code);
-        signInWithPhoneAuthCredential(credential);
-    }
+        signInWithPhoneAuthCredential(credential);}
 
     private void signInWithPhoneAuthCredential(com.google.firebase.auth.PhoneAuthCredential credential) {
-        fauth.signInWithCredential(credential) .addOnCompleteListener(this, _fauth_sign_in_listener);
-    }{}
+        fauth.signInWithCredential(credential) .addOnCompleteListener(this, _fauth_sign_in_listener);}{}
 
     @Deprecated
     public void showMessage(String _s) {
-        Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();
-    }
+        Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();}
 
     @Deprecated
     public int getLocationX(View _v) {

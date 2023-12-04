@@ -59,8 +59,7 @@ public class FullActivity extends AppCompatActivity {
                     i.setClass(getApplicationContext(), AlbumActivity.class);
                 }
                 i.putExtra("link", play.get(_param3).get("link").toString());
-                startActivity(i);
-            } else {
+                startActivity(i); } else {
                 if (getIntent().getStringExtra("title").equals(getString(R.string.albums_1))) {
                     com.google.android.material.snackbar.Snackbar.make(listview1, R.string.album_will_be_added_soon, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("ok", _view -> {}).show();
                 } else if (getIntent().getStringExtra("title").equals(getString(R.string.latest_release_1))) {
@@ -80,10 +79,7 @@ public class FullActivity extends AppCompatActivity {
                 } else if (getIntent().getStringExtra("title").equals(getString(R.string.featured_artists_1))) {
                     com.google.android.material.snackbar.Snackbar.make(listview1, R.string.artist_will_be_added_soon, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("ok", _view -> {}).show();
                 } else {
-                    com.google.android.material.snackbar.Snackbar.make(listview1, R.string.album_will_be_added_soon, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("ok", _view -> {}).show();
-                }
-            }
-        });
+                    com.google.android.material.snackbar.Snackbar.make(listview1, R.string.album_will_be_added_soon, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction("ok", _view -> {}).show();}}});
     }
 
     private void initializeLogic() {
@@ -94,25 +90,17 @@ public class FullActivity extends AppCompatActivity {
         } else if (sp.getString("theme", "").equals("dark")){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else if (sp.getString("theme", "").equals("light")){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);}
         play = new Gson().fromJson(getIntent().getStringExtra("data"), new TypeToken < ArrayList < HashMap < String, Object >>> () {}.getType());
         if (getIntent().getStringExtra("title").equals(getString(R.string.featured_artists_1))) {
-            listview1.setAdapter(new ArtistsAdapter(play));
-        } else {
-            listview1.setAdapter(new Listview1Adapter(play));
-        }
+            listview1.setAdapter(new ArtistsAdapter(play)); } else {
+            listview1.setAdapter(new Listview1Adapter(play));}
         ((BaseAdapter) listview1.getAdapter()).notifyDataSetChanged();
         setSupportActionBar(_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         setTitle(getIntent().getStringExtra("title").concat(" (").concat(String.valueOf(play.size())).concat(")"));
         _toolbar.setNavigationOnClickListener(_v -> onBackPressed());
-    }
-
-    @Override
-    protected void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
-        super.onActivityResult(_requestCode, _resultCode, _data);
     }
 
     public void _marque(final TextView _textview, final SpannableStringBuilder _text) {
@@ -154,8 +142,7 @@ public class FullActivity extends AppCompatActivity {
             LayoutInflater _inflater = (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View _view = _v;
             if (_view == null) {
-                _view = _inflater.inflate(R.layout.playlists, null);
-            }
+                _view = _inflater.inflate(R.layout.playlists, null); }
             final ImageView imageview1 = _view.findViewById(R.id.imageview1);
             final TextView Name = _view.findViewById(R.id.Name);
             final TextView album = _view.findViewById(R.id.album);
@@ -164,14 +151,12 @@ public class FullActivity extends AppCompatActivity {
                 if (play.get(_position).containsKey("prefix")) {
                     playstr = play.get(_position).get("name").toString().concat(" ").concat(play.get(_position).get("prefix").toString()).concat(" 🅴");
                 } else {
-                    playstr = play.get(_position).get("name").toString().concat(" 🅴");
-                }
+                    playstr = play.get(_position).get("name").toString().concat(" 🅴");}
             } else {
                 if (play.get(_position).containsKey("prefix")) {
                     playstr = play.get(_position).get("name").toString().concat(" ").concat(play.get(_position).get("prefix").toString());
                 } else {
-                    playstr = play.get(_position).get("name").toString();
-                }
+                    playstr = play.get(_position).get("name").toString();}
             }
             SpannableStringBuilder ssb = new SpannableStringBuilder(playstr);
             int color = ContextCompat.getColor(FullActivity.this, R.color.text2);
@@ -191,11 +176,9 @@ public class FullActivity extends AppCompatActivity {
                 album.setVisibility(View.GONE);
             } else {
                 album.setVisibility(View.VISIBLE);
-                _marquee(album, play.get(_position).get("artist").toString());
-            }
+                _marquee(album, play.get(_position).get("artist").toString());}
             if (play.get(_position).containsKey("release_".concat(sp.getString("prefix", ""))) && play.get(_position).containsKey("time_".concat(sp.getString("prefix", "")))) {
-                _marquee(Release, play.get(_position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(play.get(_position).get("time_".concat(sp.getString("prefix", ""))).toString())));
-            }
+                _marquee(Release, play.get(_position).get("release_".concat(sp.getString("prefix", ""))).toString().concat(" • ".concat(play.get(_position).get("time_".concat(sp.getString("prefix", ""))).toString())));}
             Name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
             album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
             Release.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -242,13 +225,11 @@ public class FullActivity extends AppCompatActivity {
             } else {
                 textview3.setAlpha((float) 0.5d);
                 textview2.setAlpha((float) 0.5d);
-                imageview2.setAlpha((float) 0.5d);
-            }
+                imageview2.setAlpha((float) 0.5d);}
             if (play.get(_position).containsKey("image")) {
                 Glide.with(getApplicationContext()).load(Uri.parse(play.get(_position).get("image").toString())).into(imageview2);
             } else {
-                imageview2.setImageResource(R.drawable.ic_timer_auto);
-            }
+                imageview2.setImageResource(R.drawable.ic_timer_auto);}
             _marquee(textview2, play.get(_position).get("name").toString());
             textview3.setVisibility(View.GONE);
             textview2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);

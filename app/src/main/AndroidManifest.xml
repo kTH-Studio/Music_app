@@ -5,7 +5,6 @@
     xmlns:dist="http://schemas.android.com/apk/distribution">
 
     <dist:module dist:instant="true" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -85,6 +84,14 @@
             android:screenOrientation="portrait"
             android:supportsPictureInPicture="true"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".DetailsActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:supportsPictureInPicture="true"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/Theme.Music.NoActionBar"/>
         <activity
             android:name=".ImageActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"

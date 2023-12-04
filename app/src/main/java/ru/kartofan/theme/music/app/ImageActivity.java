@@ -72,8 +72,7 @@ public class ImageActivity extends AppCompatActivity {
 		} else {
 			artist.setVisibility(View.VISIBLE);
 			_marquee(artist, getIntent().getStringExtra("artist"));
-			artist.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-		}
+			artist.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);}
 	}
 
 	@Override

@@ -44,21 +44,10 @@ import static ru.kartofan.theme.music.app.App.CHANNEL_2_ID;
 
 public class MusicActivity extends AppCompatActivity {
 	private final Timer _timer = new Timer();
-	private String str;
-	private String namestr;
-	private String infostr;
-	private String notifname;
-	private String currentfile;
-	private String text;
-	private String lyrics;
-	private String str1;
-	private String image;
-	private String str2;
+	private String str, namestr, infostr, notifname, currentfile, text, lyrics, str1, image, str2;
 	private final String color = "";
 	private double song_duration, pos, time, play1, tr = 0;
-	private ArrayList < HashMap < String, Object >> map;
-	private ArrayList < HashMap < String, Object >> play;
-	private ArrayList < HashMap < String, Object >> uri;
+	private ArrayList < HashMap < String, Object >> map, play, uri;
 	private final ArrayList < HashMap < String, Object >> artists = new ArrayList < > ();
 	private final ArrayList < String > n = new ArrayList < > ();
 	private LinearLayout linear1, linear11, linear14, linear2, linear3;
@@ -170,24 +159,21 @@ public class MusicActivity extends AppCompatActivity {
 			if (map.get(0).containsKey("previous")) {
 					raone.pause();
 					t.cancel();
-				new BackTask().execute(map.get(0).get("previous").toString());
-			}
+				new BackTask().execute(map.get(0).get("previous").toString());}
 		});
 
 		imageview5.setOnClickListener(_view -> {
 			if (map.get(0).containsKey("next")) {
 					raone.pause();
 					t.cancel();
-				new BackTask().execute(map.get(0).get("next").toString());
-			}
+				new BackTask().execute(map.get(0).get("next").toString());}
 		});
 
 		listview3.setOnItemClickListener((_param1, _param2, _param3, _param4) -> {
 			if (play.get(_param3).get("text").toString().equals("!")) {
 				i.setClass(getApplicationContext(), ImageActivity.class);
 				i.putExtra("imageq", play.get(_param3).get("link").toString());
-				startActivity(i);
-			}
+				startActivity(i);}
 		});
 
 		imageview1.setOnClickListener(_view -> {
@@ -213,11 +199,8 @@ public class MusicActivity extends AppCompatActivity {
 					if (map.get(0).containsKey("next")) {
 						new BackTask().execute(map.get(0).get("next").toString());
 					} else {
-						_music();
-					}
-				}
-			}
-		});
+						_music();}}
+			}});
 	}
 
 	private void initializeLogic() {
@@ -228,8 +211,7 @@ public class MusicActivity extends AppCompatActivity {
 		} else if (sp.getString("theme", "").equals("dark")){
 			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 		} else if (sp.getString("theme", "").equals("light")){
-			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-		}
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);}
 		pos = 0;
 		tr = 0;
 		textview5.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -278,8 +260,7 @@ public class MusicActivity extends AppCompatActivity {
 			if (sp.getString("player", "").equals("yes")) {
 				if (raone != null && raone.isPlaying()) {
 					raone.stop();
-				}
-			}
+				}}
 			_me();
 		}
 	}
@@ -330,8 +311,7 @@ public class MusicActivity extends AppCompatActivity {
 		raone.start();
 		raone.setOnCompletionListener(mp -> {
 			if (map.get(0).containsKey("next")) {
-				new BackTask().execute(map.get(0).get("next").toString());
-			}
+				new BackTask().execute(map.get(0).get("next").toString());}
 			imageview4.setImageResource(R.drawable.ic_play_arrow);
 			t.cancel();
 		});
@@ -344,13 +324,11 @@ public class MusicActivity extends AppCompatActivity {
 		if (map.get(0).containsKey("next")) {
 			imageview5.setAlpha((float)(1));
 		} else {
-			imageview5.setAlpha((float)(0.5d));
-		}
+			imageview5.setAlpha((float)(0.5d));}
 		if (map.get(0).containsKey("previous")) {
 			imageview3.setAlpha((float)(1));
 		} else {
-			imageview3.setAlpha((float)(0.5d));
-		}
+			imageview3.setAlpha((float)(0.5d));}
 		_player();
 	}
 
@@ -377,6 +355,7 @@ public class MusicActivity extends AppCompatActivity {
 		ImageView artist_image = layBase.findViewById(R.id.artist_image);
 		ImageView album_image = layBase.findViewById(R.id.album_image);
 		ImageView lyrics_image = layBase.findViewById(R.id.lyrics_image);
+		ImageView info_image = layBase.findViewById(R.id.info_image);
 		TextView name = layBase.findViewById(R.id.name);
 		TextView album = layBase.findViewById(R.id.album);
 		TextView artist = layBase.findViewById(R.id.artist);
@@ -387,6 +366,7 @@ public class MusicActivity extends AppCompatActivity {
 		LinearLayout artist_linear = layBase.findViewById(R.id.artist_linear);
 		LinearLayout album_linear = layBase.findViewById(R.id.album_linear);
 		LinearLayout lyrics_linear = layBase.findViewById(R.id.lyrics_linear);
+		LinearLayout info_linear = layBase.findViewById(R.id.info_linear);
 		name.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		album.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		artist.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -394,18 +374,20 @@ public class MusicActivity extends AppCompatActivity {
 		album_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		lyrics_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		info_text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
+		if (!map.get(0).containsKey("info")) {
+			info_image.setAlpha((float) 0.5d);
+			info_linear.setAlpha((float) 0.5d);
+			info_text.setAlpha((float) 0.5d);}
 		if (uri.size() > 1) {
 			artist_image.setImageResource(R.drawable.ic_people);
 			artist_text.setText(getString(R.string.go_to_artists));
 		} else {
 			artist_image.setImageResource(R.drawable.ic_timer_auto);
-			artist_text.setText(getString(R.string.go_to_artist));
-		}
+			artist_text.setText(getString(R.string.go_to_artist));}
 		if (map.get(0).containsKey("text")) {
 			lyrics_linear.setVisibility(View.VISIBLE);
 		} else {
-			lyrics_linear.setVisibility(View.GONE);
-		}
+			lyrics_linear.setVisibility(View.GONE);}
 		image.setOnClickListener(v -> {
 			if (map.get(0).containsKey("image4k")) {
 				if (sp.getString("quality", "").equals("mobile")) {
@@ -419,53 +401,46 @@ public class MusicActivity extends AppCompatActivity {
 					i.putExtra("imageq", map.get(0).get("image").toString());
 					i.putExtra("name", name.getText().toString().concat(" - ").concat(artist.getText().toString()));
 					i.putExtra("artist", album.getText().toString());
-					startActivity(i);
-				}
+					startActivity(i);}
 			} else {
 				i.setClass(getApplicationContext(), ImageActivity.class);
 				i.putExtra("imageq", map.get(0).get("image").toString());
 				i.putExtra("name", name.getText().toString().concat(" - ").concat(artist.getText().toString()));
 				i.putExtra("artist", album.getText().toString());
-				startActivity(i);
-			}
+				startActivity(i);}
 		});
 		artist_text.setOnClickListener(v -> _artist());
 		artist_image.setOnClickListener(v -> {
 			bs_base.cancel();
-			_artist();
-		});
+			_artist();});
 		artist_linear.setOnClickListener(v -> {
 			bs_base.cancel();
-			_artist();
-		});
+			_artist();});
 		album_text.setOnClickListener(v -> {
 			bs_base.cancel();
-			_album();
-		});
+			_album();});
 		album_image.setOnClickListener(v -> {
 			bs_base.cancel();
-			_album();
-		});
+			_album();});
 		album_linear.setOnClickListener(v -> {
 			bs_base.cancel();
-			_album();
-		});
+			_album();});
 		lyrics_text.setOnClickListener(v -> _lyrics());
 		lyrics_image.setOnClickListener(v -> _lyrics());
 		lyrics_linear.setOnClickListener(v -> _lyrics());
+		info_text.setOnClickListener(v -> { if (map.get(0).containsKey("info")) {_info();}});
+		info_image.setOnClickListener(v -> { if (map.get(0).containsKey("info")) {_info();}});
+		info_linear.setOnClickListener(v -> { if (map.get(0).containsKey("info")) {_info();}});
 		if (map.get(0).get("explicit").toString().equals("yes")) {
 			if (map.get(0).containsKey("prefix")) {
 				infostr = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString()).concat(" 🅴");
 			} else {
-				infostr = map.get(0).get("name").toString().concat(" 🅴");
-			}
+				infostr = map.get(0).get("name").toString().concat(" 🅴");}
 		} else {
 			if (map.get(0).containsKey("prefix")) {
 				infostr = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString());
 			} else {
-				infostr = map.get(0).get("name").toString();
-			}
-		}
+				infostr = map.get(0).get("name").toString();}}
 		SpannableStringBuilder ssb = new SpannableStringBuilder(infostr);
 		int color = ContextCompat.getColor(MusicActivity.this, R.color.text2);
 		ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
@@ -475,11 +450,9 @@ public class MusicActivity extends AppCompatActivity {
 			if (map.get(0).get("additional").equals("single")) {
 				_marquee(album, map.get(0).get("album").toString().concat(" - ").concat(getString(R.string.single)));
 			} else {
-				_marquee(album, map.get(0).get("album").toString().concat(" - ").concat(getString(R.string.ep)));
-			}
+				_marquee(album, map.get(0).get("album").toString().concat(" - ").concat(getString(R.string.ep)));}
 		} else {
-			_marquee(album, map.get(0).get("album").toString());
-		}
+			_marquee(album, map.get(0).get("album").toString());}
 		artist.setText(map.get(0).get("artist").toString());
 		Glide.with(getApplicationContext()).load(Uri.parse(map.get(0).get("image").toString())).into(image);
 		bs_base.show();
@@ -498,15 +471,20 @@ public class MusicActivity extends AppCompatActivity {
 			i.putExtra("link", uri.get(0).get("link").toString());
 			startActivity(i);
 			} else {
-				com.google.android.material.snackbar.Snackbar.make(linear1, R.string.artist_will_be_added_soon, Snackbar.LENGTH_INDEFINITE).setAction("Ok", _view -> {}).show();
-			}
-		}
+				com.google.android.material.snackbar.Snackbar.make(linear1, R.string.artist_will_be_added_soon, Snackbar.LENGTH_INDEFINITE).setAction("Ok", _view -> {}).show();}}
 	}
 
 	public void _album() {
 		i.setClass(getApplicationContext(), AlbumActivity.class);
 		i.putExtra("link", map.get(0).get("album_uri").toString());
 		startActivity(i);
+	}
+
+	public void _info() {
+		if (map.get(0).containsKey("info")) {
+			i.setClass(getApplicationContext(), DetailsActivity.class);
+			i.putExtra("info", map.get(0).get("info").toString());
+			startActivity(i);}
 	}
 
 	public void _lyrics() {
@@ -518,8 +496,7 @@ public class MusicActivity extends AppCompatActivity {
 		if (play.get(0).containsKey("written")) {
 			text.setText(play.get(0).get("text").toString().concat(getString(R.string.written_by)).concat(play.get(0).get("written").toString()));
 		} else {
-			text.setText(play.get(0).get("text").toString());
-		}
+			text.setText(play.get(0).get("text").toString());}
 		text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 		TextView about = layBase.findViewById(R.id.about);
 		about.setVisibility(View.VISIBLE);
@@ -527,15 +504,12 @@ public class MusicActivity extends AppCompatActivity {
 			if (map.get(0).containsKey("prefix")) {
 				lyrics = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString()).concat(" 🅴\n").concat(map.get(0).get("artist").toString());
 			} else {
-				lyrics = map.get(0).get("name").toString().concat(" 🅴\n").concat(map.get(0).get("artist").toString());
-			}
+				lyrics = map.get(0).get("name").toString().concat(" 🅴\n").concat(map.get(0).get("artist").toString());}
 		} else {
 			if (map.get(0).containsKey("prefix")) {
 				lyrics = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString()).concat(" \n").concat(map.get(0).get("artist").toString());
 			} else {
-				lyrics = map.get(0).get("name").toString().concat("\n").concat(map.get(0).get("artist").toString());
-			}
-		}
+				lyrics = map.get(0).get("name").toString().concat("\n").concat(map.get(0).get("artist").toString());}}
 		SpannableStringBuilder ssb = new SpannableStringBuilder(lyrics);
 		int color = ContextCompat.getColor(this, R.color.text2);
 		ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
@@ -550,15 +524,12 @@ public class MusicActivity extends AppCompatActivity {
 			if (map.get(0).containsKey("prefix")) {
 				notifname = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString()).concat(" 🅴");
 			} else {
-				notifname = map.get(0).get("name").toString().concat(" 🅴");
-			}
+				notifname = map.get(0).get("name").toString().concat(" 🅴");}
 		} else {
 			if (map.get(0).containsKey("prefix")) {
 				notifname = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString());
 			} else {
-				notifname = map.get(0).get("name").toString();
-			}
-		}
+				notifname = map.get(0).get("name").toString();}}
 		image = map.get(0).get("image").toString();
 		Bitmap artwork = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_2_ID)
@@ -584,15 +555,12 @@ public class MusicActivity extends AppCompatActivity {
 			if (map.get(0).containsKey("prefix")) {
 				namestr = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString()).concat(" 🅴");
 			} else {
-				namestr = map.get(0).get("name").toString().concat(" 🅴");
-			}
+				namestr = map.get(0).get("name").toString().concat(" 🅴");}
 		} else {
 			if (map.get(0).containsKey("prefix")) {
 				namestr = map.get(0).get("name").toString().concat(" ").concat(map.get(0).get("prefix").toString());
 			} else {
-				namestr = map.get(0).get("name").toString();
-			}
-		}
+				namestr = map.get(0).get("name").toString();}}
 		SpannableStringBuilder ssb = new SpannableStringBuilder(namestr);
 		int color = ContextCompat.getColor(MusicActivity.this, R.color.text2);
 		ForegroundColorSpan fcsRed = new ForegroundColorSpan(color);
@@ -624,7 +592,7 @@ public class MusicActivity extends AppCompatActivity {
 			progressbar2.setVisibility(View.GONE);
 			linear11.setVisibility(View.VISIBLE);
 			linear14.setVisibility(View.VISIBLE);
-			}
+		}
 		sendOnChannel2(imageview6);
 	}
 
@@ -653,16 +621,14 @@ public class MusicActivity extends AppCompatActivity {
 			LayoutInflater _inflater = (LayoutInflater)getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View _view = _v;
 			if (_view == null) {
-				_view = _inflater.inflate(R.layout.text, null);
-			}
+				_view = _inflater.inflate(R.layout.text, null);}
 			final TextView textview1 = _view.findViewById(R.id.textview1);
 			if (play.get(_position).containsKey("written")) {
 				textview1.setText(play.get(_position).get("text").toString().concat(getString(R.string.written_by).concat(play.get(_position).get("written").toString())));
 				textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
 			} else {
 				textview1.setText(play.get(_position).get("text").toString());
-				textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
-			}
+				textview1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);}
 			return _view;
 		}
 	}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Музыка</string>
-    <string name="version">Версия: 2.1 от 26 ноября 2023. @kTH-Studio.</string>
+    <string name="version">Версия: 2.2 от 4 декабря 2023. @kTH-Studio.</string>
     <string name="new_in_music">Новое в Музыке:</string>
     <string name="about">ИНФОРМАЦИЯ</string>
     <string name="hometown">МЕСТО РОЖДЕНИЯ</string>
@@ -92,4 +92,7 @@
     <string name="single">Сингл</string>
     <string name="confirm_short">Подтвердите действие</string>
     <string name="confirm_long">Подтвердите, что вы хотите включить Откровенный контент</string>
+    <string name="performing_artists">Исполнители</string>
+    <string name="composition_lyrics">Музыка и слова</string>
+    <string name="production_engineering">Продюсеры и звукорежиссеры</string>
 </resources>

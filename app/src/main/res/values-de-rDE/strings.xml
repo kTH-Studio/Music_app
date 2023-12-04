@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Musik</string>
-    <string name="version">Version: 2.1 vom 26.November 2023. @kTH-Studio.</string>
+    <string name="version">Version: 2.2 vom 4.Dexember 2023. @kTH-Studio.</string>
     <string name="new_in_music">Neu in der Musik:</string>
     <string name="about">ÜBER</string>
     <string name="hometown">HEIMATSTADT</string>
@@ -92,4 +92,7 @@
     <string name="single">Single</string>
     <string name="confirm_short">Bestätigen Sie die Aktion</string>
     <string name="confirm_long">Bestätige, dass du explizite Inhalte aktivieren möchtest</string>
+    <string name="performing_artists">Ausführende Künstler Innen</string>
+    <string name="composition_lyrics">Komposition Und Liedtext</string>
+    <string name="production_engineering">Produktion Und Technik</string>
 </resources>

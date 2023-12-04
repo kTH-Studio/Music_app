@@ -124,13 +124,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
-                android:alpha="0.5"
                 android:id="@+id/info_image"
                 android:src="@drawable/ic_info"
                 android:layout_width="25dp"
                 android:layout_height="25dp"/>
             <TextView
-                android:alpha="0.5"
                 android:id="@+id/info_text"
                 android:paddingLeft="8dp"
                 android:text="@string/track_details"

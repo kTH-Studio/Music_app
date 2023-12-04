@@ -53,15 +53,13 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                sp.edit().putString("explicit", "yes").apply();
-            }
+                sp.edit().putString("explicit", "yes").apply();}
 
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
                 explicit_switch.setChecked(false);
-                explicit_choice.setText(getString(R.string.explicit_off));
-            }
+                explicit_choice.setText(getString(R.string.explicit_off));}
         });
 
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
@@ -124,8 +122,7 @@ public class SettingsActivity extends AppCompatActivity {
                 } else {
                     sp.edit().putString("explicit", "no").apply();
                     explicit_switch.setChecked(false);
-                    explicit_choice.setText(getString(R.string.explicit_off));
-                }
+                    explicit_choice.setText(getString(R.string.explicit_off));}
         });
 
         explicit_choice.setOnClickListener(v -> {
@@ -136,8 +133,7 @@ public class SettingsActivity extends AppCompatActivity {
                 } else {
                     sp.edit().putString("explicit", "no").apply();
                     explicit_switch.setChecked(false);
-                    explicit_choice.setText(getString(R.string.explicit_off));
-                }
+                    explicit_choice.setText(getString(R.string.explicit_off));}
         });
 
         explicit_hint.setOnClickListener(v -> {
@@ -148,8 +144,7 @@ public class SettingsActivity extends AppCompatActivity {
                 } else {
                     sp.edit().putString("explicit", "no").apply();
                     explicit_switch.setChecked(false);
-                    _marquee(explicit_choice, getString(R.string.explicit_off));
-                }
+                    _marquee(explicit_choice, getString(R.string.explicit_off));}
         });
 
         display_switch.setOnCheckedChangeListener((_param1, _param2) -> {
@@ -158,8 +153,7 @@ public class SettingsActivity extends AppCompatActivity {
                     display_switch.setChecked(true);
                 } else {
                     sp.edit().putString("animation", "no").apply();
-                    display_switch.setChecked(false);
-                }
+                    display_switch.setChecked(false);}
         });
 
         display_choice.setOnClickListener(v -> {
@@ -168,8 +162,7 @@ public class SettingsActivity extends AppCompatActivity {
                     display_switch.setChecked(true);
                 } else {
                     sp.edit().putString("animation", "no").apply();
-                    display_switch.setChecked(false);
-                }
+                    display_switch.setChecked(false);}
         });
 
         display_hint.setOnClickListener(v -> {
@@ -178,16 +171,13 @@ public class SettingsActivity extends AppCompatActivity {
                 display_switch.setChecked(true);
             } else {
                 sp.edit().putString("animation", "no").apply();
-                display_switch.setChecked(false);
-            }
+                display_switch.setChecked(false);}
         });
 
         quality_choice.setOnClickListener(v -> _quality());
-
         quality_hint.setOnClickListener(v -> _quality());
 
         theme_choice.setOnClickListener(v -> _theme());
-
         theme_hint.setOnClickListener(v -> _theme());
     }
 
@@ -199,8 +189,7 @@ public class SettingsActivity extends AppCompatActivity {
         } else if (sp.getString("theme", "").equals("dark")){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else if (sp.getString("theme", "").equals("light")){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);}
         language_settings.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         theme_settings.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
         restrictions_settings.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/moscow.ttf"), Typeface.NORMAL);
@@ -225,13 +214,11 @@ public class SettingsActivity extends AppCompatActivity {
             _marquee(explicit_choice, getString(R.string.explicit_off));
         } else {
             explicit_switch.setChecked(true);
-            _marquee(explicit_choice, getString(R.string.explicit_on));
-        }
+            _marquee(explicit_choice, getString(R.string.explicit_on));}
         if (sp.getString("quality", "").equals("yes")) {
             quality_choice.setText(getString(R.string.enabled));
        } else {
-            quality_choice.setText(getString(R.string.disabled));
-        }
+            quality_choice.setText(getString(R.string.disabled));}
         if (sp.getString("theme", "").equals("battery")) {
             theme_choice.setText(getString(R.string.battery));
         } else if (sp.getString("theme", "").equals("light")) {
@@ -239,8 +226,7 @@ public class SettingsActivity extends AppCompatActivity {
         } else if (sp.getString("theme", "").equals("dark")) {
             theme_choice.setText(getString(R.string.dark));
         } else {
-            theme_choice.setText(getString(R.string.system_default));
-        }
+            theme_choice.setText(getString(R.string.system_default));}
     }
 
     public void _marquee(final TextView _textview, final String _text) {
@@ -277,22 +263,17 @@ public class SettingsActivity extends AppCompatActivity {
             theme_choice.setText(getString(R.string.battery));
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
             sp.edit().putString("theme", "battery").apply();
-            bs_base.cancel();
-        });
-
+            bs_base.cancel();});
         light.setOnClickListener(v -> {
             theme_choice.setText(getString(R.string.light));
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             sp.edit().putString("theme", "light").apply();
-            bs_base.cancel();
-        });
-
+            bs_base.cancel();});
         dark.setOnClickListener(v -> {
             theme_choice.setText(getString(R.string.dark));
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             sp.edit().putString("theme", "dark").apply();
-            bs_base.cancel();
-        });
+            bs_base.cancel();});
         bs_base.show();
     }
 
@@ -311,13 +292,11 @@ public class SettingsActivity extends AppCompatActivity {
         mobile.setOnClickListener(v -> {
             quality_choice.setText(getString(R.string.enabled));
             sp.edit().putString("quality", "yes").apply();
-            bs_base.cancel();
-        });
+            bs_base.cancel();});
         never.setOnClickListener(v -> {
             quality_choice.setText(getString(R.string.disabled));
             sp.edit().putString("quality", "no").apply();
-            bs_base.cancel();
-        });
+            bs_base.cancel();});
         bs_base.show();
     }
 
