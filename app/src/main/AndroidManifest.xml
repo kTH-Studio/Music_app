@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.kartofan.theme.music.app"
-    xmlns:dist="http://schemas.android.com/apk/distribution">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <dist:module dist:instant="true" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,6 +9,21 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
 
     <application
         android:allowBackup="true"
@@ -24,17 +38,17 @@
             android:name=".SettingsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:supportsPictureInPicture="true"
-            android:windowSoftInputMode="stateHidden" />
+            android:screenOrientation="user"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/Theme.Music.NoActionBar"/>
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:exported="true"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:supportsPictureInPicture="true"
-            android:windowSoftInputMode="stateHidden" >
+            android:screenOrientation="user"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/Theme.Music.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -44,52 +58,45 @@
             android:name=".AlbumActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:supportsPictureInPicture="true"
+            android:screenOrientation="user"
             android:windowSoftInputMode="stateHidden"
             android:theme="@style/Theme.Music.NoActionBar"/>
         <activity
             android:name=".MusicActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:supportsPictureInPicture="true"
+            android:screenOrientation="user"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ArtistActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:supportsPictureInPicture="true"
+            android:screenOrientation="user"
             android:windowSoftInputMode="stateHidden"
             android:theme="@style/Theme.Music.NoActionBar"/>
         <activity
             android:name=".RegisterActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:hardwareAccelerated="true"
-            android:supportsPictureInPicture="true"
-            android:screenOrientation="portrait"
+            android:screenOrientation="user"
             android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".ProfileActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:hardwareAccelerated="true"
-            android:supportsPictureInPicture="true"
-            android:screenOrientation="portrait"
+            android:screenOrientation="user"
             android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".FullActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:supportsPictureInPicture="true"
+            android:screenOrientation="user"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".DetailsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:supportsPictureInPicture="true"
+            android:screenOrientation="user"
             android:windowSoftInputMode="stateHidden"
             android:theme="@style/Theme.Music.NoActionBar"/>
         <activity
@@ -97,14 +104,34 @@
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:exported="true"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:supportsPictureInPicture="true"
+            android:screenOrientation="user"
             android:theme="@style/Theme.Music.NoActionBar"
             android:windowSoftInputMode="stateHidden">
         </activity>
         <uses-library
             android:name="org.apache.http.legacy"
-            android:required="false" />
-        <receiver android:name=".NotificationReceiver" />
+            android:required="false"/>
+        <service
+            android:name=".MusicActivity"
+            android:foregroundServiceType="mediaPlayback"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaSessionService"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name=".MediaSessionService"
+            android:enabled="true"
+            android:exported="true"
+            tools:node="merge"
+            android:foregroundServiceType="dataSync|mediaPlayback">
+        </service>
+        <receiver android:name="androidx.media.session.MediaButtonReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+                <action android:name="android.media.AUDIO_BECOMING_NOISY"/>
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Music</string>
-    <string name="version">Version: 2.2 from 4 December, 2023. @kTH-Studio.</string>
-    <string name="new_in_music">New in Music:</string>
+    <string name="version">Version</string>
     <string name="about">ABOUT</string>
     <string name="hometown">HOMETOWN</string>
     <string name="born">BORN</string>
@@ -28,15 +27,10 @@
     <string name="appears_on_1">Appears On</string>
     <string name="compilations_1">Compilations</string>
     <string name="language">Language</string>
-    <string name="set_language">Set Language</string>
     <string name="theme">Theme</string>
     <string name="set_theme">Set Theme</string>
     <string name="restrictions">Restrictions</string>
-    <string name="enable_restrictions">Enable Content Restrictions</string>
-    <string name="explicit_off">We will not play tracks labeled 🅴</string>
-    <string name="explicit_on">We will play tracks labeled 🅴</string>
-    <string name="explicit_hint">Allow Explicit Content</string>
-    <string name="app_info">App Info</string>
+    <string name="explicit_hint">Allow 🅴 Explicit Content</string>
     <string name="system_default">System Default</string>
     <string name="en">English</string>
     <string name="ru">Russian</string>
@@ -75,19 +69,15 @@
     <string name="phone_number_short">The phone number is too short!</string>
     <string name="verify_code_short">Verify code is too short!</string>
     <string name="animated_art">Animated Art</string>
-    <string name="animated_art_hint">Albums and artist pages will automatically play</string>
     <string name="high_quality">High Quality</string>
     <string name="profile">Profile</string>
-    <string name="disabled">Disabled</string>
     <string name="internet_lost">No Internet Connection!</string>
     <string name="battery" >Set by Battery Default</string>
-    <string name="more">More</string>
     <string name="go_to_artist">Go to artist</string>
     <string name="go_to_artists">Go to artists</string>
     <string name="go_to_album">Go to album</string>
     <string name="show_lyrics">Show lyrics</string>
     <string name="track_details">Track details</string>
-    <string name="enabled">Enabled</string>
     <string name="single">Single</string>
     <string name="ep" translatable="false">EP</string>
     <string name="confirm_short">Confirm the action</string>
@@ -95,4 +85,55 @@
     <string name="performing_artists">Performing Artists</string>
     <string name="composition_lyrics"><![CDATA[Composition & Lyrics]]></string>
     <string name="production_engineering"><![CDATA[Production & Engineering]]></string>
+    <string name="no_pin">No PIN, pattern, or password set. Unable to change settings</string>
+    <string name="canceled">Authentication canceled by user. Unable to change settings</string>
+    <string name="sec1">" second"</string>
+    <string name="sec2">" seconds"</string>
+    <string name="sec3">" seconds"</string>
+    <string name="sec4">" seconds"</string>
+    <string name="min1">" minute"</string>
+    <string name="min2">" minutes"</string>
+    <string name="min3">" minutes"</string>
+    <string name="min4">" minutes"</string>
+    <string name="hour1">" hour"</string>
+    <string name="hour2">" hours"</string>
+    <string name="hour3">" hours"</string>
+    <string name="hour4">" hours"</string>
+    <string name="Jan">January</string>
+    <string name="Feb">February</string>
+    <string name="Mar">March</string>
+    <string name="Apr">April</string>
+    <string name="May">May</string>
+    <string name="Jun">June</string>
+    <string name="Jul">July</string>
+    <string name="Aug">August</string>
+    <string name="Sep">September</string>
+    <string name="Oct">October</string>
+    <string name="Nov">November</string>
+    <string name="Dec">December</string>
+    <string name="retry">Retry</string>
+    <string name="restored">Connection restored</string>
+    <string name="expname_hint">Display 🅴 song titles</string>
+    <string name="app_release">Build from</string>
+    <string name="version_code" translatable="false">2.3</string>
+    <string name="app_release_date">June 7, 2024</string>
+    <string name="copyright" translatable="false">© 2018-2024 kTH-Studio</string>
+    <string name="build">Build №</string>
+    <string name="player">Media Player</string>
+    <string name="site" translatable="false">https://kth-studio.github.io/</string>
+    <string name="test">Test Features</string>
+    <string name="palette" translatable="false">Show palette colors under images</string>
+    <string name="quality" translatable="false">Show quality of image</string>
+    <string name="song1">" song"</string>
+    <string name="song2">" songs"</string>
+    <string name="song3">" songs"</string>
+    <string name="song4">" songs"</string>
+    <string name="build_code" translatable="false">1404</string>
+    <string name="additional" >The Music app contains information that is not suitable for all ages</string>
+    <string name="additional2">The Music app collects data from open sources, Apple Music, Spotify, Yandex Music and Genius</string>
+    <string name="link_json" translatable="false">/link.json</string>
+    <string name="image_jpg" translatable="false">/image.jpg</string>
+    <string name="privacy">Privacy Policy</string>
+    <string name="agreement">License Agreement</string>
+    <string name="beta">Beta Version</string>
 </resources>

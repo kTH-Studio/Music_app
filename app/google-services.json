@@ -45,20 +45,12 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1085948626505:android:be4f4dea7e3a7e1f30a198",
+        "mobilesdk_app_id": "1:1085948626505:android:8c068b89da75fb1730a198",
         "android_client_info": {
-          "package_name": "ru.kartofan.theme.music.app"
+          "package_name": "ru.kartofan.theme.offline.generator"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "1085948626505-9j2q6vdtuj6bq5ah85j07p2j15i2u0q0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "ru.kartofan.theme.music.app",
-            "certificate_hash": "b8f620fa0c2f94f9ca470a8940daa25c3186ff8d"
-          }
-        },
         {
           "client_id": "1085948626505-cqfmaik6qubl6res61t3l05ep9vb56ed.apps.googleusercontent.com",
           "client_type": 3
@@ -82,9 +74,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1085948626505:android:8c068b89da75fb1730a198",
+        "mobilesdk_app_id": "1:1085948626505:android:43696bd6a0b6351c30a198",
         "android_client_info": {
-          "package_name": "ru.kartofan.theme.offline.generator"
+          "package_name": "ru.kth.studio.music"
         }
       },
       "oauth_client": [

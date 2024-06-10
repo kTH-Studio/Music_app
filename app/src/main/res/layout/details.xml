@@ -1,41 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/inverse"
     android:fitsSystemWindows="true">
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
-        android:background="@color/inverse"
+    <include layout="@layout/collapsing_toolbar"/>
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="false"
-        android:theme="@style/Theme.Music.AppBarOverlay">
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            android:fitsSystemWindows="true"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/inverse"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|snap"
-            app:toolbarId="@+id/toolbar">
-            <pl.droidsonroids.gif.GifImageView
-                app:layout_collapseMode="parallax"
-                android:id="@+id/imageview1"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/performing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:fitsSystemWindows="true"/>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-        <include
-            layout="@layout/details_toolbar"
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </com.google.android.material.appbar.AppBarLayout>
-    <include layout="@layout/details1"/>
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:paddingBottom="8dp">
+                <TextView
+                    android:id="@+id/performing_text"
+                    android:padding="8dp"
+                    android:layout_gravity="center|left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text1"
+                    android:text="@string/performing_artists"
+                    android:textSize="22sp"/>
+                <ListView
+                    android:id="@+id/performing_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:choiceMode="none"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lyrics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:paddingBottom="8dp">
+                <TextView
+                    android:id="@+id/lyrics_text"
+                    android:padding="8dp"
+                    android:layout_gravity="center|left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text1"
+                    android:text="@string/composition_lyrics"
+                    android:textSize="22sp"/>
+                <ListView
+                    android:id="@+id/lyrics_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:choiceMode="none"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/production"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:paddingBottom="8dp">
+                <TextView
+                    android:id="@+id/production_text"
+                    android:padding="8dp"
+                    android:layout_gravity="center|left"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text1"
+                    android:text="@string/production_engineering"
+                    android:textSize="22sp"/>
+                <ListView
+                    android:id="@+id/production_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:choiceMode="none"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -2,7 +2,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:background="@color/inverse"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/_coordinator"
     android:layout_width="match_parent"
@@ -13,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.Music.AppBarOverlay">
-        <include layout="@layout/register_toolbar" android:id="@+id/toolbar"/>
+        <include layout="@layout/toolbar"/>
     </com.google.android.material.appbar.AppBarLayout>
     <LinearLayout
         android:id="@+id/linear1"
@@ -65,8 +64,7 @@
                     android:singleLine="true"
                     android:textColor="@color/text1"
                     android:textColorHint="@color/text2"
-                    android:textSize="18sp"
-                    tools:ignore="TouchTargetSizeCheck" />
+                    android:textSize="18sp"/>
             </LinearLayout>
             <Button
                 android:id="@+id/button1"

@@ -2,11 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="semitransparent">#CFFFFFFF</color>
+    <color name="semitransparent">#B3000000</color>
     <color name="text1">#FF000000</color>
     <color name="text2">#FF888888</color>
     <color name="text3">#FFBDBDBD</color>
     <color name="text4">#f5f5f5</color>
-    <color name="inverse">#FFFFFFFF</color>
+    <color name="inverse">@color/white</color>
     <color name="inverse2">#F5F5F5</color>
 </resources>

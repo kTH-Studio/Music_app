@@ -1,12 +1,11 @@
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
 	android:background="@color/inverse"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:fitsSystemWindows="true"
 	android:layout_height="match_parent"
 	android:orientation="vertical">
+	<include layout="@layout/color_test"/>
 	<WebView
 		android:background="@color/inverse"
 		android:fitsSystemWindows="true"
@@ -14,9 +13,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_weight="1"/>
-	<include
-		layout="@layout/album_toolbar"
-		android:id="@+id/toolbar"
+	<include layout="@layout/toolbar"
+		android:layout_gravity="bottom"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"/>
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

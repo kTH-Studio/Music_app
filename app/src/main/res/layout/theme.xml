@@ -36,14 +36,6 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"/>
             <Button
-                android:id="@+id/battery"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:text="@string/battery"
-                android:textColor="@color/text1"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"/>
-            <Button
                 android:id="@+id/light"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
